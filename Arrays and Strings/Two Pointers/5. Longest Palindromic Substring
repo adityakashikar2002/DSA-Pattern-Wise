@@ -1,0 +1,49 @@
+// Brute Force  Gives TLE
+// Time - O(N^3)
+// Space - O(N)
+
+class Solution {
+    public String longestPalindrome(String s) {
+        int maxLen=0;
+        int startIndex=-1;
+        int endIndex=-1;
+
+        for(int i=0;i<s.length();i++)
+        {
+            for(int j=i;j<s.length();j++)
+            {
+                if(isPalindrome(s.substring(i,j+1)))
+                {
+                    
+                    if(maxLen<j-i+1)
+                    {
+                        maxLen=j-i+1;
+                        startIndex=i;
+                        endIndex=j+1;
+                    }
+                    
+                }
+            }
+        }
+
+        return s.substring(startIndex,endIndex);
+    }
+
+    public boolean isPalindrome(String str)
+    {
+        String rev="";
+
+        for(int i=str.length()-1;i>=0;i--)
+        {
+            rev+=str.charAt(i);
+        }
+
+        if(str.equals(rev))
+            return true;
+
+        return false;
+    }
+}
+
+------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------
