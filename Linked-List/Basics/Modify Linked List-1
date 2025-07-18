@@ -1,0 +1,79 @@
+// Time O(N)
+// Space O(1)
+
+class Solution {
+    public static Node modifyTheList(Node head) {
+        // code here
+        int len=0;
+        
+        Node temp = head;
+        while(temp!=null)  // calculate the len of linked-list
+        {
+            temp=temp.next;
+            len++;
+        }
+        
+        int midIndex=-1;
+        
+        if(len%2==0) // len is even then midIndex will be accordingly
+        {
+            midIndex=len/2-1;
+        }
+        else
+        {
+            midIndex=len/2;
+        }
+        
+        Node mid = head;
+        
+        int counter=0;
+        while(counter!=midIndex) // mid points to mid of linked-list
+        {
+            counter++;
+            mid=mid.next;
+        }
+        
+        Node forward;           // 34-46 reverse the 2nd half of ll i.e from mid+1 to end
+        Node prev=null;
+        Node curr=mid.next;
+        
+        while(curr!=null)
+        {
+            forward=curr.next;
+            curr.next=prev;
+            prev=curr;
+            curr=forward;
+        }
+        
+        mid.next=prev;
+        
+        Node i=head;
+        Node j=mid.next;
+        
+        while(j!=null)             // do the subtraction thing
+        {
+            int store = i.data;
+            i.data=j.data-i.data;
+            j.data=store;
+            
+            i=i.next;
+            j=j.next;
+            
+        }
+        
+        prev=null;                  // reverse the 2nd half again 62-73 to get the result
+        curr=mid.next;
+        
+        while(curr!=null)
+        {
+            forward=curr.next;
+            curr.next=prev;
+            prev=curr;
+            curr=forward;
+        }
+        
+        mid.next=prev;
+        
+        return head;
+    }
+}
