@@ -1,0 +1,73 @@
+
+// Approach 1  T- O(N) & S - O(N)
+// Steps:-
+// 1) Reverse String
+// 2) Reverse Individual Words
+// 3) Add the word in answer
+
+import java.util.*;
+
+class Solution {
+    public String reverseWords(String s) {
+        int len = s.length();
+
+        String str = "";
+        String ans="";
+
+        // Step 1 Reverse the whole string
+        String sRev = new StringBuilder(s).reverse().toString();
+
+        // Now Atleast your words are at correct expected poistion but in reverse order so reverse the words
+        // Step 2 Reverse the Words
+
+        
+        for(int i=0;i<len;i++)
+        {
+            String word = "";
+            while(i<len && sRev.charAt(i)!=' ') // to form words with string 
+            {
+                word=word+sRev.charAt(i);
+                i++;
+            }
+
+            if(word.length()>0)
+            {
+                // reverse the words here
+                String wordRev = new StringBuilder(word).reverse().toString();
+
+                // once word reversed add it to ans string;
+                ans += " " + wordRev;
+            }
+            
+        }
+
+        return ans.trim();
+    }
+}
+
+---------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------
+
+// Approach 2 T - O(N) & S - O(N)  (EASY APPROACH)
+
+Use StringBuilder to spilt words in array
+Add words in reverse order
+
+class Solution {
+    public String reverseWords(String s) {
+        // 1. Trim leading/trailing spaces and split by one or more spaces
+        // The regex "\\s+" splits by one or more whitespace characters
+        String[] words = s.trim().split("\\s+");
+
+        // 2. Build the result string in reverse order of words
+        StringBuilder reversedString = new StringBuilder();
+        for (int i = words.length - 1; i >= 0; i--) {
+            reversedString.append(words[i]);
+            if (i > 0) { // Add a space between words, but not after the last word
+                reversedString.append(" ");
+            }
+        }
+
+        return reversedString.toString();
+    }
+}
