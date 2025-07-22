@@ -1,5 +1,6 @@
 // Approach 1 - OverWritting compare i-1, i and keep track of count <= 2 , if ele is different reset count
 // Time- O(N) Space- O(1)
+
 class Solution {
     public int removeDuplicates(int[] nums) {
         int n = nums.length;
@@ -33,3 +34,22 @@ class Solution {
 
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
+
+// Approach 2 - OverWritting compare i-2, i and keep track of count < 2 , if ele is different increment count else skip
+// Time- O(N) Space- O(1)
+
+class Solution {
+    
+    public int removeDuplicates(int[] nums) {
+        int count = 0;
+        
+        for (int i = 0; i < nums.length; i++) {
+            if (count < 2 || nums[i] != nums[count - 2]) {
+                nums[count] = nums[i];
+                count++;
+            }
+        }
+        
+        return count;
+    }
+}
