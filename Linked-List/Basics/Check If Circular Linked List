@@ -12,18 +12,16 @@ class Node
 */
 class Solution {
     boolean isCircular(Node head) {
-        // Your code here
-        Node temp = head;
+        if (head == null) 
+            return false; 
         
-        do
-        {
+        Node temp = head.next; // start from head.next
+        
+        while (temp != null && temp != head) {
             temp = temp.next;
         }
-        while(temp != null && temp != head);
         
-        if(temp == null)
-            return false;
-        
-        return true;
+        return temp == head ? true : false;
     }
 }
+
