@@ -1,0 +1,61 @@
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        if(head == null)
+            return head;        // if head is null, return null;
+        
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while(fast != null && fast.next != null)
+        {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if(slow == fast)
+                break;
+        }
+
+        if(fast == null || fast.next == null)     // if moves ahead of linked list no loop so null
+            return null;
+
+        slow = slow.next;
+        int lenLoop = 1;
+
+        while(slow != fast)
+        {
+            slow = slow.next;
+            lenLoop++;              // will calculate len of loop
+        }
+
+        ListNode main = head;
+        ListNode ref = head;
+
+        int counter = 0;
+
+        while(counter < lenLoop)     // move ref pointer loop len's times                          
+        {                            //so that when later both main and ref meet that's the starting point of loop
+            ref = ref.next;
+            counter++;
+        }
+
+        while(main != ref)
+        {
+            main = main.next;
+            ref = ref.next;
+        }
+
+        return main;              // as loop ends when both meet we return main or ref
+
+    }
+}
