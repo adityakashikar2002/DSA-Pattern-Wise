@@ -1,0 +1,144 @@
+// Approach-1 (Doubly Linked List)  (Slow)
+// Time - O(N)
+// Space - O(N)
+//---------------------------------------------
+
+class Node
+{
+    String data;
+    Node next;
+    Node prev;
+
+    Node(String d)
+    {
+        this.data=d;
+        this.next=null;
+        this.prev=null;
+    }
+}
+class BrowserHistory {
+
+    Node head;
+    Node curr;
+    Node temp;
+
+    public BrowserHistory(String homepage) {
+        head = new Node(homepage);
+        curr = head;
+    }
+    
+    public void visit(String url) {
+
+        curr.next = null;          // clear forward history
+
+        temp = new Node(url);
+        temp.prev = curr;
+        curr.next = temp;
+        curr = temp;
+    }
+    
+    public String back(int steps) {
+        while(curr.prev != null && steps > 0)
+        {
+            curr = curr.prev;
+            steps--;
+        }
+
+        return curr.data;
+    }
+    
+    public String forward(int steps) {
+        while(curr.next != null && steps > 0)
+        {
+            curr = curr.next;
+            steps--;
+        }
+
+        return curr.data;
+    }
+}
+
+//----------------------------------------------
+//----------------------------------------------
+
+// Approach-2 (ArrayList Approach)  (Better Runtime than DLL)
+// Time - O(N)
+// Space - O(N)
+//---------------------------------------------
+
+import java.util.*;
+class BrowserHistory {
+
+    int curr;
+    ArrayList<String> list = new ArrayList<>();
+
+    public BrowserHistory(String homepage) {
+        list.add(homepage);
+        curr=0;
+    }
+    
+    public void visit(String url) {
+        // Clear forward history
+        while (list.size() > curr + 1) {
+            list.remove(list.size() - 1);
+        }
+        list.add(url);
+        curr++;
+    }
+    
+    public String back(int steps) {
+        curr = Math.max(0, curr - steps);
+        return list.get(curr);
+    }
+    
+    public String forward(int steps) {
+        curr = Math.min(list.size()-1, curr + steps);
+        return list.get(curr);
+    }
+}
+
+//----------------------------------------------
+//----------------------------------------------
+
+// Approach-3 (Array Approach)  (Best/ Fastest Runtime than ArrayList)
+// Time - O(N)
+// Space - O(N)
+//---------------------------------------------
+class BrowserHistory {
+
+    String[] history;
+    int curr;
+    int last;
+
+    public BrowserHistory(String homepage) {
+        history = new String[5001]; // Since max number of calls is 5000
+        history[0] = homepage;
+        curr = 0;
+        last = 0;
+    }
+
+    public void visit(String url) {
+        curr++;
+        history[curr] = url;   // overwrite next ele
+        last = curr; // forward history is discarded
+    }
+
+    public String back(int steps) {
+        curr = Math.max(0, curr - steps);  // if back goes neg, return 1st ele
+        return history[curr];
+    }
+
+    public String forward(int steps) {
+        curr = Math.min(last, curr + steps);  // if forward goes beyond last ele as of now return last one
+        return history[curr];
+    }
+}
+
+
+/**
+ * Your BrowserHistory object will be instantiated and called as such:
+ * BrowserHistory obj = new BrowserHistory(homepage);
+ * obj.visit(url);
+ * String param_2 = obj.back(steps);
+ * String param_3 = obj.forward(steps);
+ */
