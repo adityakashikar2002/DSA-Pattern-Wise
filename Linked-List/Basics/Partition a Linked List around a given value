@@ -1,0 +1,89 @@
+// Use 3 Sentinel Nodes, Dummy Node to create 3 LinkedList, small, equal, greater
+// Time - O(N)
+// Space - O(1)
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+/*class Node
+{
+    int data;
+    Node next;
+    Node(int key)
+    {
+        data = key;
+        next = null;
+    }
+}
+
+*/
+
+class Solution {
+    public static Node partition(Node node, int x) {
+        // Your code here
+        if(node == null)
+            return node;
+        
+        Node smallX = new Node(0);
+        Node equalX = new Node(0);
+        Node greaterX = new Node(0);
+        
+        Node smallP = smallX;
+        Node equalP = equalX;
+        Node greaterP = greaterX;
+        
+        Node temp = node;
+        
+        while(temp != null)
+        {
+            if(temp.data < x)
+            {
+                if(smallP == smallX)
+                {
+                    smallX.next = temp;
+                    smallP = temp;
+                }
+                else
+                {
+                    smallP.next = temp;
+                    smallP = temp;
+                }
+            }
+            else if(temp.data > x)
+            {
+                if(greaterP == greaterX)
+                {
+                    greaterX.next = temp;
+                    greaterP = temp;
+                }
+                else
+                {
+                    greaterP.next = temp;
+                    greaterP = temp;
+                }
+            }
+            else
+            {
+                if(equalP == equalX)
+                {
+                    equalX.next = temp;
+                    equalP = temp;
+                }
+                else
+                {
+                    equalP.next = temp;
+                    equalP = temp;
+                }
+            }
+            
+            temp  = temp.next;
+            
+        }
+        
+        smallP.next = equalX.next;
+        equalP.next = greaterX.next;
+        greaterP.next = null;
+        
+        
+        return smallX.next;
+        
+    }
+}
