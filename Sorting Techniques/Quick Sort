@@ -3,9 +3,16 @@ Case	Time Complexity	Reason
 Best Case	O(n log n)	Balanced partitioning
 Average Case	O(n log n)	Random input
 Worst Case	O(n^2)	Unbalanced partitioning (e.g. sorted input with bad pivot choice)
+
+| Pivot Position             | Comparison Range                      | Why?                                |
+| -------------------------- | --------------------------------------| ----------------------------------- |
+| First Element (`arr[low]`) | `i <= high`, `j >= low`, `while(i<j)` | Pivot is out of the way at start    |
+| Last Element (`arr[high]`) | `i < j`, `j < high`, `while(i<=j)`    | Need to avoid pivot during scanning |
+
 -------------------------------------------------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------------------------------------------------
+// Approach 1 - SELECTING 1ST ELE AS PIVOT - EASY
 
 import java.util.* ;
 import java.io.*; 
@@ -68,4 +75,44 @@ public class Solution {
 -------------------------------------------------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------------------------------------------------
+// Approach 2 - SELECTING LAST ELE AS PIVOT - TRICKY
+
+class Solution {
+    public void quickSort(int[] arr, int low, int high) {
+        if (low < high) {
+            int pIndex = partition(arr, low, high);
+            quickSort(arr, low, pIndex - 1);
+            quickSort(arr, pIndex + 1, high);
+        }
+    }
+
+    private int partition(int[] arr, int low, int high) {
+        int pivot = arr[high];  // Pivot is the last element
+        int i = low;
+        int j = high - 1;
+
+        while (i <= j) {
+            while (i <= j && arr[i] <= pivot) {
+                i++;
+            }
+            while (i <= j && arr[j] > pivot) {
+                j--;
+            }
+
+            if (i < j) {
+                // Swap arr[i] and arr[j]
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+
+        // Finally, swap arr[i] with pivot to place pivot at correct position
+        int temp = arr[i];
+        arr[i] = arr[high];
+        arr[high] = temp;
+
+        return i;  // Return the pivot index
+    }
+}
 
