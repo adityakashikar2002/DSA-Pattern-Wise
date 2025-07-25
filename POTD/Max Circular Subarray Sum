@@ -1,3 +1,43 @@
+// Brute
+Time Complexity: O(N^2)
+
+Space Complexity: O(1)
+
+------------------------------
+class Solution {
+    public int maxCircularSum(int arr[]) {
+        // code here
+        int n = arr.length;
+        
+        int maxSum = Integer.MIN_VALUE;
+        for(int i = 0; i < n; i++)
+        {
+            int sum = 0;
+            
+            for(int j = i; j < n; j++)
+            {
+                sum = sum + arr[j];
+                maxSum = Math.max(sum, maxSum);
+            }
+            
+            for(int k = 0; k < i; k++)
+            {
+                sum = sum + arr[k];
+                maxSum = Math.max(sum, maxSum);
+            }
+        }
+        
+        return maxSum;
+    }
+}
+
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+// Optimized
+Time Complexity: O(N)
+
+Space Complexity: O(1)
+------------------------------------------------------------------------------------
 class Solution {
     public int maxCircularSum(int arr[]) {
         // code here
