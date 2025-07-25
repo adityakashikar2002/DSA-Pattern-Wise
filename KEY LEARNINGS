@@ -8,3 +8,7 @@
 
 4) Duplicates ? Set or HashSet
 
+5) When asked to find MAX_SUM in Circular Fashion, Remember, MAX_CIRCULAR_SUM (of some subarray) = TOTAL_SUM - MIN_SUM;  (Max Circular Subarray Sum)
+   Two cases Sum can be MAX_SUM Kadane's MAXSUM Algo or MAX_CIRCULAR_SUM
+   To handle all negative  if(MAX_SUM > 0) return MAX_CIRCULAR_SUM, else MAX_SUM;  
+
