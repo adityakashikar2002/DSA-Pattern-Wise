@@ -1,0 +1,10 @@
+1) When say Sorted Think of Two Pointers
+
+2) When say return Linked List ( a new one ) use Sentinel Pattern
+
+3) When asked to append to string or create a new resultant String go for StringBuilder beacuse, 
+  String concatenation (str = str + s.charAt(i)) creates a new string every time → O(n²) time.
+  StringBuilder modifies in-place → O(n) time.
+
+4) Duplicates ? Set or HashSet
+
