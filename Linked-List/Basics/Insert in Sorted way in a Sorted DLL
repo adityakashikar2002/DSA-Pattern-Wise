@@ -1,0 +1,60 @@
+/*class of the node of the DLL is as
+/*
+class Node {
+    int data;
+    Node prev, next;
+    Node(int data) {
+        this.data = data;
+        this.prev = this.next = null;
+    }
+}
+*/
+class Solution {
+    public Node sortedInsert(Node head, int x) {
+        // add your code here
+        Node newNode = new Node(x);
+        
+        if(head == null)
+            return newNode;
+        
+        Node curr = head;
+        
+        // If data is less than or equal to head data, insert at beginning
+        if(x <= head.data)
+        {
+            head.prev = newNode;
+            newNode.next = head;
+            head = newNode;
+            
+            return head;
+        }
+        
+        // Travserse to find exact position
+        
+        while(curr!= null)
+        {
+            if(curr.data >= x )
+            {
+                Node prevNode = curr.prev;
+                prevNode.next = newNode;
+                newNode.prev = prevNode;
+                newNode.next = curr;
+                curr.prev = newNode;
+                
+                return head;
+            }
+            
+            if(curr.next == null)
+                break;
+                
+            curr = curr.next;
+        }
+        
+        // if curr.next == null insert at last
+        
+        curr.next = newNode;
+        newNode.prev = curr;
+        
+        return head;
+    }
+}
