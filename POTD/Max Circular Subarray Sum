@@ -58,10 +58,10 @@ class Solution {
         
         int circularMaxSum = totalSum - minSum;
         
-        if(maxSum > 0)
-            return circularMaxSum;
-        
-        return maxSum;
+        if (maxSum < 0)  // all numbers are negative
+            return maxSum;
+
+        return Math.max(maxSum, circularMaxSum);
     }
     
     public static int kadaneMin(int arr[])
@@ -92,3 +92,4 @@ class Solution {
         return maxSum;
     }
 }
+
