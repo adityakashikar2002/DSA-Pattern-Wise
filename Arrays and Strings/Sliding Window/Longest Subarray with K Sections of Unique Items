@@ -1,0 +1,24 @@
+Longest Subarray with K Sections of Unique Items - Article
+// Time - O(N) and Space - O(1)
+
+public int longestSubarraySlidingWindow(int[] arr, int k) {
+    int n = arr.length;
+    int left = 0, right = 0, sections = 1, maxLen = 0;
+
+    for (right = 1; right < n; right++) {
+        if (arr[right] != arr[right - 1]) {
+            sections++;
+        }
+
+        while (sections > k) {
+            if (arr[left] != arr[left + 1]) {
+                sections--;
+            }
+            left++;
+        }
+
+        maxLen = Math.max(maxLen, right - left + 1);
+    }
+
+    return Math.max(maxLen, 1); // handle single-element array
+}
