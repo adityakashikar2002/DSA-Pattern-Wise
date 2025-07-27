@@ -1,0 +1,76 @@
+/*node class of the linked list
+class Node
+{
+    int data;
+    Node next;
+    Node(int key)
+    {
+        data = key;
+        next = null;
+    }
+
+}*/
+// you have to complete this function
+class GfG {
+    public static Node quickSort(Node node) {
+        if (node == null || node.next == null)
+            return node;
+
+        Node tail = getTail(node);
+        quickSortHelper(node, tail);
+        return node;
+    }
+
+    // Helper to find the last node (tail)
+    private static Node getTail(Node head) {
+        while (head != null && head.next != null) {
+            head = head.next;
+        }
+        return head;
+    }
+
+    private static void quickSortHelper(Node head, Node tail) {
+        if (head == null || tail == null || head == tail || head == tail.next)
+            return;
+
+        Node pivot = partition(head, tail);
+
+        quickSortHelper(head, getPrev(head, pivot));
+        quickSortHelper(pivot.next, tail);
+    }
+
+    private static Node getPrev(Node head, Node node) {
+        // Returns node just before the given node
+        if (head == null || head == node)
+            return null;
+        while (head.next != node && head.next != null) {
+            head = head.next;
+        }
+        return head;
+    }
+
+    private static Node partition(Node head, Node tail) {
+        int pivotVal = head.data;
+        Node prev = head;
+        Node curr = head.next;
+
+        while (curr != null && curr != tail.next) {
+            if (curr.data < pivotVal) {
+                prev = prev.next;
+
+                // swap prev.data and curr.data
+                int temp = prev.data;
+                prev.data = curr.data;
+                curr.data = temp;
+            }
+            curr = curr.next;
+        }
+
+        // Final pivot swap
+        int temp = prev.data;
+        prev.data = head.data;
+        head.data = temp;
+
+        return prev;
+    }
+}
