@@ -1,0 +1,102 @@
+Type	Complexity
+Time	     |  Space (Auxiliary)
+O(n log n) |	O(log n) (stack only)
+--------------------------------------------
+------------------------------------------
+/*
+class DLLNode {
+    int data;
+    DLLNode next;
+    DLLNode prev;
+
+    DLLNode(int val) {
+        data = val;
+        next = null;
+        prev = null;
+    }
+}
+*/
+class Solution {
+    // Function to sort the given doubly linked list using Merge Sort
+    public DLLNode sortDoubly(DLLNode node) {
+        // add your code here
+        
+        if(node == null || node.next == null)
+            return node;
+        
+        DLLNode middle = findMiddle(node);
+        
+        DLLNode left = node;
+        DLLNode right = middle.next;
+        right.prev = null;
+        middle.next  = null;
+        
+        
+        left = sortDoubly(left);
+        right = sortDoubly(right);
+        
+        DLLNode head = mergeDLL(left,right);
+        
+        return head;
+    }
+    
+    public static DLLNode findMiddle(DLLNode node)
+    {
+        DLLNode slow = node;
+        DLLNode fast = node;
+        
+        while(fast.next != null && fast.next.next != null)
+        {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        
+        return slow;
+    }
+    
+    public static DLLNode mergeDLL(DLLNode left, DLLNode right)
+    {
+        DLLNode dummy = new DLLNode(-1);
+        DLLNode temp = dummy;
+        
+        DLLNode i = left;
+        DLLNode j = right;
+        
+        while(i != null && j != null)
+        {
+            if(i.data <= j.data)
+            {
+                temp.next = i;
+                i.prev = temp;
+                temp = temp.next;
+                i = i.next;
+            }
+            else
+            {
+                temp.next = j;
+                j.prev = temp;
+                temp = temp.next;
+                j = j.next;
+            }
+        }
+        
+        if(i != null)
+        {
+            temp.next = i;
+            i.prev = temp;
+        }
+        
+        if(j != null)
+        {
+            temp.next = j;
+            j.prev = temp;
+        }
+        
+        DLLNode head = dummy.next;
+        head.prev = null;
+        
+        return head;
+    }
+}
+
+
