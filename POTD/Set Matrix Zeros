@@ -111,3 +111,70 @@ class Solution {
 
 ------------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------------
+
+// Approach 3: - for each zero mark the non-zero elements of the respective row and col as -1 row0 for column changes col0 for row changes as 00 ele overlaps make for col0 for 1st column 
+// Time - O(N x M) 
+// Space - O(1)
+---------------------------------------------------------------------------------
+class Solution {
+    public void setMatrixZeroes(int[][] mat) {
+        // code here
+        // col[m] = {0} if mat[0][..]
+        // row[n] = {0} if mat[..][0]
+        int n = mat.length;
+        int m = mat[0].length;
+        
+        int col0 = 1;
+        
+        // mark row and col as 0
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = 0; j < m; j++)
+            {
+                if(mat[i][j] == 0)
+                {
+                    mat[i][0] = 0;
+                    
+                    if(j != 0)
+                    {
+                        mat[0][j] = 0;
+                    }
+                    else
+                    {
+                        col0 = 0;
+                    }
+                }
+            }
+        }
+        
+        // first only change remaining elements 
+        for(int i = 1; i < n; i++)
+        {
+            for(int j = 1; j < m; j++)
+            {
+                if(mat[i][0] == 0 || mat[0][j] == 0)
+                {
+                    mat[i][j] = 0;
+                }
+            }
+        }
+        // then row elements
+        if(mat[0][0] == 0)
+        {
+            for(int j = 0; j < m; j++)
+            {
+                mat[0][j] = 0;
+            }
+        }
+        
+        // finally col elements
+        if(col0 == 0)
+        {
+            for(int i = 0; i < n; i++)
+            {
+                mat[i][0] = 0;
+            }
+        }
+    }
+    
+}
