@@ -1,0 +1,113 @@
+// Approach 1: - for each zero mark the non-zero elements of the respective row and col as -1
+// Time - O(NxM) + O(N) + O(M)
+// Space - O(1)
+------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    public void setMatrixZeroes(int[][] mat) {
+        // code here
+        int n = mat.length;
+        int m = mat[0].length;
+        
+        // find all elements that are zero, when a zero is there mark all the elements
+        // in the row and column as -1 if ele is non-zero
+        
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = 0; j < m; j++)
+            {
+                if(mat[i][j] == 0)
+                {
+                    markRow(i, mat, m);
+                    markCol(j, mat, n);
+                }
+            }
+        }
+        
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = 0; j < m; j++)
+            {
+                if(mat[i][j] == -1)
+                {
+                    mat[i][j] = 0;
+                }
+            }
+        }
+    }
+    
+    public static void markRow(int row, int[][] mat, int m)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            if(mat[row][j] != 0)
+            {
+                mat[row][j] = -1;
+            }
+        }
+    }
+    
+    public static void markCol(int col, int[][] mat, int n)
+    {
+        for(int i = 0; i < n; i++)
+        {
+            if(mat[i][col] != 0)
+            {
+                mat[i][col] = -1;
+            }
+        }
+    }
+    
+    
+    
+}
+
+------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------
+
+// Approach 2: - for each zero mark the non-zero elements of the respective row and col as -1 use extra array space for row and col
+// Time - O(N x M) 
+// Space - O(N + M)
+
+--------------------------------------------------------
+class Solution {
+    public void setMatrixZeroes(int[][] mat) {
+        // code here
+        int n = mat.length;
+        int m = mat[0].length;
+        
+        // find all elements that are zero, when a zero is there mark all the elements
+        // in the row and column as -1 if ele is non-zero
+        
+        int[] markRow = new int[n];
+        int[] markCol =  new int[m];
+        
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = 0; j < m; j++)
+            {
+                if(mat[i][j] == 0)
+                {
+                    markRow[i] = -1;
+                    markCol[j] = -1;
+                }
+            }
+        }
+        
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = 0; j < m; j++)
+            {
+                if(markRow[i] == -1 || markCol[j] == -1)
+                {
+                    mat[i][j] = 0;
+                }
+            }
+        }
+    }
+    
+}
+
+------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------
