@@ -1,0 +1,66 @@
+class Solution {
+
+    void mergeSort(int arr[], int l, int r) {
+        // code here
+        // find middle to split array
+        int mid = (l + r) / 2;
+        
+        if(l >= r)
+            return;
+        
+        mergeSort(arr, l , mid);  // will do till extreme left splitting till one ele is left
+        mergeSort(arr, mid + 1, r); // after left array returns we work on splitting right and do the same
+        merge(arr, l, mid, r); // used to merge two arrays
+    }
+    
+    void merge(int arr[], int l, int mid, int r)
+    {
+        int[] temp = new int[r - l + 1];
+        
+        int i = l;
+        int j = mid + 1;
+        int k = 0;
+        
+        while(i <= mid && j <= r)
+        {
+            if(arr[i] <= arr[j])
+            {
+                temp[k] = arr[i];
+                i++;
+            }
+            else
+            {
+                temp[k] = arr[j];
+                j++;
+            }
+            
+            k++;
+                
+        }
+        
+       // if 1st array is completely traversed put remaining elements of 2nd array as it is
+        while (j <= r)
+        {
+            temp[k] = arr[j];
+            j++;
+            k++;
+        }
+        
+        // if 2nd array is completely traversed put remaining elements of 1st array as it is
+        while(i <= mid)
+        {
+            temp[k] = arr[i];
+            i++;
+            k++;
+        }
+        
+        k=0;
+        
+        // update arr ; so that elements are sorted
+        for(i = l; i <= r; i++)
+        {
+            arr[i] = temp[k];
+            k++;
+        }
+    }
+}
