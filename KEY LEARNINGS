@@ -12,3 +12,5 @@
    Two cases Sum can be MAX_SUM Kadane's MAXSUM Algo or MAX_CIRCULAR_SUM
    To handle all negative  if(MAX_SUM > 0) return MAX_CIRCULAR_SUM, else MAX_SUM;  
 
+6) When asked to rotate a linked list the last node from left will be at len - k position 1 based indexing
+
