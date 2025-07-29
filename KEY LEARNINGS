@@ -14,3 +14,7 @@
 
 6) When asked to rotate a linked list the last node from left will be at len - k position 1 based indexing
 
+7) Longest Repeating Character concept 
+  currWinLen - maxF <= k
+
+  otherwise shrink window, HashMap, or Hash-Array needed
