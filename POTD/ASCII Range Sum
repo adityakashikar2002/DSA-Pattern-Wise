@@ -1,0 +1,49 @@
+class Solution {
+    public ArrayList<Integer> asciirange(String s) {
+        // code here
+        
+        ArrayList<Integer> list = new ArrayList<>();
+        
+        int n = s.length();
+        
+        int[] first = new int[26];
+        int[] last = new int[26];
+        
+        Arrays.fill(first, -1);
+        Arrays.fill(last, -1);
+        
+        for(int i = 0; i < n; i++)
+        {
+            char c = s.charAt(i);
+            last[c - 'a'] = i;
+        }
+        
+        
+        
+        for(int i = 0; i < n; i++)
+        {
+            char c = s.charAt(i);
+            if(first[c - 'a'] == -1)
+            {
+                first[c - 'a'] = i;
+            }
+            
+            if(i == last[c - 'a'] && first[c - 'a'] != last[c - 'a'])
+            {
+                int sum = 0;
+                
+                for(int k = first[c - 'a'] + 1; k < last[c - 'a'] ; k++)
+                {
+                    sum = sum + s.charAt(k);
+                }
+                
+                if(sum > 0)
+                {
+                    list.add(sum);
+                }
+            }
+        }
+        
+        return list;
+    }
+}
