@@ -1,0 +1,42 @@
+// User function Template for Java
+
+class Solution {
+    public List<Integer> sumClosest(int[] arr, int target) {
+        // first sort the array as we are going to apply 2 pointers
+        
+        Arrays.sort(arr);
+        List<Integer> list = new ArrayList<>();
+        
+        // apply two pointers concept
+        
+        int i = 0;
+        int j = arr.length - 1;
+        
+        int minDiff = Integer.MAX_VALUE;
+        
+        while(i < j)
+        {
+            int sum = arr[i] + arr[j];
+            
+            if(Math.abs(target - sum) < minDiff)
+            {
+                minDiff = Math.abs(target - sum);
+                  list = Arrays.asList(arr[i], arr[j]);
+            }
+
+            // If this pair has less sum, move to greater values
+            if (sum < target)
+                i++;
+
+            // If this pair has more sum, move to smaller values
+            else if (sum > target)
+                j--;
+
+            // If this pair has sum = target, return it
+            else
+                return list;
+        }
+        
+        return list; 
+    }
+}
