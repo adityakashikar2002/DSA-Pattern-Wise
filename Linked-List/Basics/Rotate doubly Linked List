@@ -1,0 +1,47 @@
+class Solution {
+    public Node rotateDLL(Node head, int p) {
+        // code here..
+        if(head == null || head.next == null || p ==0)
+            return head;
+            
+        Node tail = head;
+        // find len and tail
+        int len = 1;
+        while(tail.next != null)
+        {
+            tail = tail.next;
+            len++;
+        }
+        
+        // find rotations;
+        int rotations = p % len;
+        
+        if(rotations == 0)
+            return head;
+            
+        
+        // make DLL circular
+        tail.next = head;
+        head.prev = tail;
+        
+        // find newTail
+        Node newTail = head;
+        
+        // move by rotations positions like say 3 positions
+        
+        int c = 1;
+        
+        while(c != rotations)
+        {
+            newTail = newTail.next;
+            c++;
+        }
+        
+        head = newTail.next;
+        newTail.next = null;
+        head.prev = null;
+        
+        return head;
+        
+    }
+}
