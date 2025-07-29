@@ -1,0 +1,56 @@
+/* node of linked list:
+
+class Node{
+    int data;
+    Node next;
+    Node(int d){
+        data=d;
+        next=null;
+    }
+} */
+
+class Solution {
+    public Node rotate(Node head, int k) {
+        // add code here
+        
+        if(head == null)
+            return head;
+            
+        int len = 1;
+        Node tail = head;
+        
+        // find length of LL
+        while(tail.next != null)
+        {
+            tail = tail.next;
+            len++;
+        }
+        
+        // find no. of rotations
+        int rotations = k % len;
+        
+        if(rotations == 0)
+            return head;
+        
+        // make LL circular
+        tail.next = head;
+
+        // find a new tail 
+        Node newTail = head;
+        
+        // find new tail
+        int c = 1;
+        while(c != rotations)
+        {
+            newTail = newTail.next;
+            c++;
+        }
+        
+        // make new head and new tail
+        Node newHead = newTail.next;
+        newTail.next = null;
+        
+        return newHead;
+    }
+}
+
