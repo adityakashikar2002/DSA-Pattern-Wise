@@ -18,3 +18,5 @@
   currWinLen - maxF <= k
 
   otherwise shrink window, HashMap, or Hash-Array needed
+
+8) An Array is Faster than a HashMap, so where you think of HashMap, try converting to array
