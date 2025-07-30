@@ -1,0 +1,78 @@
+// User function Template for Java
+
+/*
+class Node{
+    int data;
+    Node next;
+
+    Node(int x){
+        data = x;
+        next = null;
+    }
+}
+*/
+
+class Solution {
+    Node divide(Node head) {
+        // code here
+        
+        if(head == null || head.next == null)
+            return head;
+            
+        Node tail = head;
+        Node evenHead = null, evenTail = null;
+        Node oddHead = null, oddTail = null;
+        Node newHead = null;
+        
+        while(tail != null)
+        {
+            if(tail.data % 2 == 0)
+            {
+                if(evenHead == null)
+                {
+                    evenHead = tail;
+                    evenTail = tail;
+                }
+                else
+                {
+                    evenTail.next = tail;
+                    evenTail = evenTail.next;
+                }
+            }
+            else
+            {
+                if(oddHead == null)
+                {
+                    oddHead = tail;
+                    oddTail = tail;
+                }
+                else
+                {
+                    oddTail.next = tail;
+                    oddTail = oddTail.next;
+                }
+            }
+            
+            tail = tail.next;
+        }
+        
+        if(evenHead == null)
+        {
+            newHead = oddHead;
+            oddTail.next = null;
+        }
+        else if(oddHead == null)
+        {
+            newHead = evenHead;
+            evenTail.next = null;
+        }
+        else
+        {
+            evenTail.next = oddHead;
+            oddTail.next = null;
+            newHead = evenHead;
+        }
+        
+        return newHead;
+    }
+}
