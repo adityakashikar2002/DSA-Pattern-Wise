@@ -20,3 +20,5 @@
   otherwise shrink window, HashMap, or Hash-Array needed
 
 8) An Array is Faster than a HashMap, so where you think of HashMap, try converting to array
+
+9) for sums that are affected by carry as 0/1 sum = x + y + carry, 
