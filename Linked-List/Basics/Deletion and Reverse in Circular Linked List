@@ -1,0 +1,96 @@
+/*class Node
+{
+    int data;
+    Node next;
+    Node(int d)
+    {
+        data=d;next=null;
+    }
+}*/
+
+class Solution {
+    // Function to reverse a circular linked list
+    Node reverse(Node head) {
+        // code here
+        
+        // if head null or head not null and head is only node , so we return head only no reverse needed
+        if(head == null || head.next == head)
+            return head;
+        
+        
+        Node curr = head.next;
+        Node prev = head;
+        Node next = null;
+        
+        Node oldHead = head;
+        
+        do
+        {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        while(curr != head);
+
+        oldHead.next = prev;
+        head = prev;
+        
+        return head;
+        
+    }
+
+    // Function to delete a node from the circular linked list
+    Node deleteNode(Node head, int key) {
+        
+        // code here
+        // if head null
+        if(head == null)
+            return null;
+        
+        // if only node
+        if (head.data == key && head.next == head)
+            return null;
+        
+        // if head node
+        if(head.data == key)
+        {
+            Node curr = head.next;
+            
+            while(curr.next != head)
+            {
+                curr = curr.next;
+            }
+            
+            head = head.next;
+            curr.next = head;
+            
+            return head;
+            
+        }
+            
+        
+        // for non-head nodes
+        
+        Node prev = head;
+        Node curr = head.next;
+        
+        do
+        {
+            if(curr.data == key)
+            {
+                prev.next = curr.next;
+                curr = null;
+                
+                break;
+            }
+            
+            prev = curr;
+            curr = curr.next;
+        }
+        while(curr != head);
+        
+        
+        return head;
+    }
+}
