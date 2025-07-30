@@ -21,4 +21,7 @@
 
 8) An Array is Faster than a HashMap, so where you think of HashMap, try converting to array
 
-9) for sums that are affected by carry as 0/1 sum = x + y + carry, 
+9) for sums that are affected by carry as 0/1 sum = x + y + carry.
+
+10) When asked to find subarray sum k remember
+    if prefix sum is x and there exists a (prefix_sum - k) sum , then the remaining is k sum, okay use HashMap
