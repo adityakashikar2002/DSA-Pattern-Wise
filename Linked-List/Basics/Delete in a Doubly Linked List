@@ -1,0 +1,52 @@
+/*
+
+Definition for doubly Link List Node
+class Node {
+    int data;
+    Node next;
+    Node prev;
+
+    Node(int val) {
+        data = val;
+        next = null;
+        prev = null;
+    }
+}
+*/
+class Solution {
+    public Node deleteNode(Node head, int x) {
+        // code here
+        
+        if(head == null || head.next == null && x == 1) // head edge cases 
+            return null;
+            
+        if(head.next != null && x == 1)
+        {
+            head = head.next;
+            head.prev = null;
+            return head;
+        }
+        
+        Node curr = head;
+        
+        int c = 1;
+        
+        while(curr != null && c < x) // if curr becomes null means pos > len of LL
+        {
+            curr = curr.next;
+            c++;
+        }
+        
+        if(curr == null)
+            return null;
+        
+        // Now, curr is the node to delete
+        if (curr.prev != null)
+            curr.prev.next = curr.next;
+
+        if (curr.next != null)
+            curr.next.prev = curr.prev;
+
+        return head;
+    }
+}
