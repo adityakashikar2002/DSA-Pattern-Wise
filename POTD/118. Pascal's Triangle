@@ -1,0 +1,35 @@
+// Time Complexity: O(numRows²)
+// Space Complexity: O(numRows²)
+--------------------------------------------------------
+class Solution {
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> res = new ArrayList<>();
+
+        for(int r = 1; r <= numRows; r++)
+        {
+            res.add(generateRow(r));
+        }
+
+        return res;
+    }
+
+    public static List<Integer> generateRow(int r)
+    {
+
+        List<Integer> list = new ArrayList<>();
+
+        list.add(1);
+
+        int ans = 1;
+
+        for(int c = 1; c < r ; c++)
+        {
+            ans = ans * (r - c);
+            ans = ans / c;
+
+            list.add(ans);
+        }
+
+        return list;
+    }
+}
