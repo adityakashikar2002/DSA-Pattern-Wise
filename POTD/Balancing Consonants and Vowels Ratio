@@ -1,0 +1,42 @@
+class Solution {
+    public int countBalanced(String[] arr) {
+        // code here
+        int n = arr.length;
+        
+        int ans = 0;
+        
+        HashMap<Integer, Integer> map = new HashMap<>();
+        
+        map.put(0 , 1);
+        
+        int sum = 0;
+        for(int i = 0; i < n; i++)
+        {
+            String curr = arr[i];
+            
+            for(int j = 0; j < curr.length(); j++)
+            {
+                char ch = curr.charAt(j);
+                
+                if(ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u')
+                    sum = sum + 1;
+                else
+                    sum = sum - 1;
+                
+            }
+            
+                
+            if(!map.containsKey(sum))
+            {
+                map.put(sum, 1);
+            }
+            else
+            {
+                ans = ans + map.get(sum);
+                map.put(sum, map.get(sum) + 1);
+            }
+        }
+        
+        return ans;
+    }
+}
