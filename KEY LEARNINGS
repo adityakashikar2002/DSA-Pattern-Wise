@@ -25,3 +25,10 @@
 
 10) When asked to find subarray sum k remember
     if prefix sum is x and there exists a (prefix_sum - k) sum , then the remaining is k sum, okay use HashMap
+
+11) When asked to return an element of pascal triangle at any row and col, the formula is (row - 1 C col - 1)
+    nCr = n! / (r! * (n-r)!)  go, till r positions only for optimization
+
+12) when asked to return row based on zero-based indexing of columns do 
+    ans = ans * (row - col)
+    ans = ans / col
