@@ -1,0 +1,91 @@
+Brute Force Approach (Not Efficient):
+If we try all possible rectangles, for an n x m matrix, there are O(n² * m²) possible submatrices. Calculating the sum for each would take O(n² * m²) time, which is way too slow for n, m = 300.
+
+Optimized Approach (Using Kadane’s Algorithm):
+Instead of checking every possible rectangle, we reduce the problem to a 1D problem (maximum subarray sum) by compressing rows between two columns.
+
+Key Intuition:
+Fix two columns (left and right).
+
+This defines a vertical strip of the matrix.
+
+Example: If left = 1 and right = 3, we consider all columns from 1 to 3.
+
+Sum the rows between these two columns.
+
+For each row, sum the elements from left to right.
+
+This gives us a 1D array where each element represents the sum of a row in that strip.
+
+Apply Kadane’s Algorithm to this 1D array.
+
+Kadane’s algorithm finds the maximum subarray sum in O(n) time.
+
+The result gives the best possible rectangle for this (left, right) pair.
+
+Repeat for all possible (left, right) pairs.
+
+The maximum sum encountered is our answer.
+
+Why Does This Work?
+By fixing left and right, we compress the problem into a 1D array where each element is the sum of a row in that strip.
+
+Kadane’s algorithm then finds the best consecutive rows (top and bottom boundaries) that maximize the sum.
+
+This effectively finds the best rectangle for that (left, right) pair.
+
+------------------------------------------------------------------------------------------------
+Time & Space Complexity:
+Time: O(m² * n) → For each (left, right) pair (O(m²)), we compute temp[] (O(n)) and apply Kadane (O(n)).
+
+Space: O(n) → For storing temp[].
+----------------------------------------------------------------------------------------------------------
+class Solution {
+    public int maxRectSum(int mat[][]) {
+        // no. of rows (n)
+        int n = mat.length;
+        // no. of cols (m)
+        int m = mat[0].length;
+        
+        int maxSum = Integer.MIN_VALUE;
+        
+        for(int left = 0; left < m; left++)
+        {
+            int kadane1DArray[] = new int[n];
+            
+            // go from left -> right
+            // when ends move left and again from left -> right
+            
+            for(int right = left; right < m; right++)
+            {
+                // row prefix sum
+                for(int i = 0; i < n; i++)
+                {
+                    kadane1DArray[i] = kadane1DArray[i] + mat[i][right];
+                }
+                
+                int currMax = kadane(kadane1DArray);
+                maxSum = Math.max(maxSum, currMax);  // maxSum so far
+                
+            }
+        }
+        
+        return maxSum;
+    }
+    
+    
+    public static int kadane(int[] arr)
+    {
+        int sum = 0;
+        int maxSum = Integer.MIN_VALUE;
+        
+        for(int i = 0; i < arr.length; i++)
+        {
+            sum = Math.max(arr[i], sum + arr[i]); // if adding new ele minimizes the sum,
+                                                  // adding we need to start over again so, else add next ele to sum
+            maxSum = Math.max(maxSum, sum);
+        }
+        
+        return maxSum;
+    }
+}
