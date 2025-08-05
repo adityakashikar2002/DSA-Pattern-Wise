@@ -32,3 +32,5 @@
 12) when asked to return row based on zero-based indexing of columns do 
     ans = ans * (row - col)
     ans = ans / col
+
+13) When need to check if any character is AlphaNumeric [^a-zA-Z0-9], use Character.isLetterOrDigit(s.charAt(i))
