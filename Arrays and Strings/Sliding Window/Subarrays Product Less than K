@@ -50,7 +50,7 @@ class Solution {
         {
             prod = prod * arr[j];
             
-            while(i < j && prod >= k)
+            while(i <= j && prod >= k)
             {
                 prod = prod / arr[i];
                 i++;
