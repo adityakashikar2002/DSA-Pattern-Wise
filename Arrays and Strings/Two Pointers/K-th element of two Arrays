@@ -1,0 +1,55 @@
+// Time: - O(k)
+// Space: - (1)
+----------------------------------------------------------------------------
+class Solution {
+    public int kthElement(int a[], int b[], int k) {
+        // code here
+        int a_len = a.length;
+        int b_len = b.length;
+        
+        int i = 0;
+        int j = 0;
+        int ele = -1;
+        int count = 0;
+        
+        while(count != k && i < a_len && j < b_len)
+        {
+            if(a[i] <= b[j])
+            {
+                ele = a[i];
+                i++;
+            }
+            else
+            {
+                ele = b[j];
+                j++;
+            }
+            
+            count++;
+        }
+        
+        if(count == k)
+            return ele;
+        
+        while(j < b_len && count != k)
+        {
+            ele = b[j];
+            j++;
+            count++;
+        }
+        
+        while(i < a_len && count != k)
+        {
+            ele = a[i];
+            i++;
+            count++;
+        }
+        
+        return ele;
+    }
+}
+
+----------------------------------------------------------------------------
+// Time: - O(log(min(n,m)
+// Space: - (1)
+----------------------------------------------------------------------------
