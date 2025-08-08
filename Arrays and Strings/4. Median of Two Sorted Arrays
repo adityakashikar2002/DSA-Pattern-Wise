@@ -1,0 +1,69 @@
+// Brute Force Solution
+Time Complexity: O(m + n) — for merging the two arrays
+Space Complexity: O(m + n) — for the res array
+
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int len1 = nums1.length;
+        int len2 = nums2.length;
+
+        if(len1 == 0 && len2 == 0)
+            return 0.0;
+        
+        int n = len1 + len2;
+
+        int[] res = new int[n];
+        int k = 0;
+
+        int count = 0;
+
+        int i = 0;
+        int j = 0;
+
+        while(i < len1 && j < len2)
+        {
+            if(nums1[i] <= nums2[j])
+            {
+                res[k++] = nums1[i];
+                i++;
+            }
+            else
+            {
+                res[k++] = nums2[j];
+                j++;
+            }
+        }
+
+        while(i < len1)
+        {
+            res[k++] = nums1[i++];
+        }
+
+        while(j < len2)
+        {
+            res[k++] = nums2[j++];
+        }
+
+        double n1 = -1.0;
+        double n2 = -1.0;
+
+        for(i = 0; i < n; i++)
+        {
+            if(i == n/2 - 1)
+                n1 = (double) res[i];
+            else if(i == n/2)
+                n2 = (double) res[i];
+        }
+
+        if(n % 2 == 1)
+            return n2;
+        
+        return (n1 + n2) / 2.0;
+    }
+}
+
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
