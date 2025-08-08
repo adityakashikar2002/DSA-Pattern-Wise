@@ -1,0 +1,25 @@
+// Brute Force
+
+class Solution {
+
+    public long countSubArrayProductLessThanK(long arr[], int n, long k)
+    {
+        long count = 0;
+        
+        for(int i = 0; i < n; i++)
+        {
+            long prod = 1;
+            
+            for(int j = i; j < n; j++)
+            {
+                prod = prod * arr[j];
+                if(prod < k)
+                    count++;
+                else
+                    break;
+            }
+        }
+        
+        return count;
+    }
+}
