@@ -1,5 +1,7 @@
 // Brute Force
-
+// Time: O(N^2)
+// Space: O(1)
+-------------------------------
 class Solution {
 
     public long countSubArrayProductLessThanK(long arr[], int n, long k)
@@ -18,6 +20,42 @@ class Solution {
                 else
                     break;
             }
+        }
+        
+        return count;
+    }
+}
+
+------------------------------
+// Optimal Solution
+// Time: O(N)
+// Space: O(1)
+-------------------------------
+// User function Template for Java
+
+class Solution {
+
+    public long countSubArrayProductLessThanK(long arr[], int n, long k)
+    {
+        long prod = 1;
+        long count = 0; // remember for any array starting at i , ending at j, no. of subarrays = j - i + 1
+        
+        int i = 0;
+        int j = 0;
+        
+        while(j < n)
+        {
+            prod = prod * arr[j];
+            
+            while(i < j && prod >= k)
+            {
+                prod = prod / arr[i];
+                i++;
+            }
+            
+            count += j - i + 1;
+            
+            j++;
         }
         
         return count;
