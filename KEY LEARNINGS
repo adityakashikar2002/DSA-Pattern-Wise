@@ -33,6 +33,13 @@
     ans = ans * (row - col)
     ans = ans / col
 
+13) When asked to check if a number is a power of 2 do
+    (n > 0) && ((n & (n - 1)) == 0 if true it is
+
+    8 & 7 → 1000 & 0111 = 0000  ✅
+    4 & 3 → 0100 & 0011 = 0000  ✅
+    6 & 5 → 0110 & 0101 = 0100 ≠ 0 ❌  (not power of two)
+
 13) When need to check if any character is AlphaNumeric [^a-zA-Z0-9], use Character.isLetterOrDigit(s.charAt(i))
 
 14) Roman to Integer Conversion (IMP)
