@@ -40,4 +40,68 @@ class Solution {
         return h * 3600 + m * 60 + s;
     }
 }
+----------------------------------------------------------------------
+// Optimal
+// Time: -  O(n)
+// Space: - O(1)
+// Approach:- use a boolean array of size 24*3600 as there are these many secs in a day, 24 hrs, use concept of two pointers, to find minDiff,
+   in this way we traverse on true indexes, and our problem of sorting is avoided, or solved and as we are using same array size of 86400 everytime the space also is constant
+----------------------------------------------------------------------
+class Solution {
+    public int minDifference(String[] arr) {
+        // code here
+        int n = arr.length;
+        
+        boolean[] time = new boolean[86400]; // as a day, 24hrs has 86400 secs, we are using constant space
+        
+        for(int i = 0; i < n; i++)
+        {
+            int secs = toSecs(arr[i]);
+            
+            if(time[secs]) // if time is already true, mindiff will be zero
+                return 0;
+            else
+                time[secs] = true; // for the time in array we mark it as seen
+        }
+        
+        int first = -1;
+        int last = -1; // lastSeen or prev to curr okay ?
+        
+        int minDiff = Integer.MAX_VALUE;
+        
+        for(int curr = 0; curr < time.length; curr++)
+        {
+            if(time[curr])
+            {
+                if(first == -1)
+                {
+                    first = curr;
+                    last = curr;
+                }
+                else
+                {
+                    minDiff = Math.min(minDiff, curr - last);
+                    last = curr;
+                }
+            }
+        }
+        
+        // now last must be pointing to last true right so check for circular
+        
+        minDiff = Math.min(minDiff, 24 * 3600 + first - last);
+        
+        return minDiff;
+        
+    }
+    
+    public static int toSecs(String time)
+    {
+        String[] parts = time.split(":");
+        int h = Integer.parseInt(parts[0]);
+        int m = Integer.parseInt(parts[1]);
+        int s = Integer.parseInt(parts[2]);
+        
+        return h * 3600 + m * 60 + s;
+    }
+}
 
