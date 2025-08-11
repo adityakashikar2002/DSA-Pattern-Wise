@@ -48,3 +48,6 @@
     In II, we have same values, so we add and get 1 + 1 = 2
     In case of more than 2 characters, we traverse from left to right and group only when we see a greater value character after a smaller value character. 
     For example MXVII is 1000 + 10 + 5 + 1 + 1 = 1017. And XLVII is (50 - 10) + 5 + 1 + 1 = 47. Note that L is larger and comes after X.
+
+15) When asked to split a string use:- split function
+    String[] parts = s.split(":"); here : is the delimiter or spliter
