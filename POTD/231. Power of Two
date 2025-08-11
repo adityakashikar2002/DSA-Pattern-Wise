@@ -1,0 +1,12 @@
+Time Complexity
+O(1) → Only a few bitwise operations and one comparison.
+
+Space Complexity
+O(1) → No extra memory is used.
+-------------------------------------------------------------
+class Solution {
+    public boolean isPowerOfTwo(int n) {
+        
+        return (n > 0) && ((n & (n - 1)) == 0);
+    }
+}
