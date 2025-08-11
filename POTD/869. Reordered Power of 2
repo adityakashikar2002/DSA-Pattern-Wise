@@ -1,0 +1,31 @@
+Complexity Analysis
+Time:
+
+Sorting digits: O(log n) for each number.
+
+Precomputation: 31 powers of two → O(31 × log n) ≈ constant.
+
+Lookup: O(1) using HashSet.
+
+Space: O(31) ≈ O(1) for storing sorted representations.
+-------------------------------------------------------
+class Solution {
+    public boolean reorderedPowerOf2(int n) {
+        // Precompute all sorted-digit representations of powers of two
+        HashSet<String> powerOfTwoDigits = new HashSet<>();
+        for (int i = 0; i < 31; i++) { // 2^0 to 2^30
+            int power = (int) Math.pow(2, i);
+            powerOfTwoDigits.add(sortDigits(power));
+        }
+
+        // Check if n's sorted digits match any power of two
+        return powerOfTwoDigits.contains(sortDigits(n));
+    }
+
+    // Helper to sort digits of a number
+    private String sortDigits(int num) {
+        char[] arr = String.valueOf(num).toCharArray();
+        Arrays.sort(arr);
+        return new String(arr);
+    }
+}
