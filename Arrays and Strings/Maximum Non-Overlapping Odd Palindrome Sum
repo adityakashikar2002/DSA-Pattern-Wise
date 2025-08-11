@@ -1,0 +1,51 @@
+// Brute Solution Only:-
+-----------------------------------------------------
+class Solution {
+    public int maxSum(String s) {
+        int n = s.length();
+        int maxSum = 0;
+
+        // Left palindrome
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                if (isPalindrome(s, i, j) && ((j - i + 1) % 2 == 1)) {
+                    int leftLen = j - i + 1;
+
+                    // Right palindrome
+                    for (int k = j + 1; k < n; k++) {
+                        for (int l = k; l < n; l++) {
+                            if (isPalindrome(s, k, l) && ((l - k + 1) % 2 == 1)) {
+                                int rightLen = l - k + 1;
+                                maxSum = Math.max(maxSum, leftLen + rightLen);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return maxSum;
+    }
+
+    // Helper to check palindrome
+    private boolean isPalindrome(String s, int start, int end) {
+        while (start < end) {
+            if (s.charAt(start) != s.charAt(end)) return false;
+            start++;
+            end--;
+        }
+        return true;
+    }
+}
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+Complexity
+Time:
+
+Outer loops: O(n²) for left palindromes
+
+Inner loops: O(n²) for right palindromes
+
+Palindrome check: O(n)
+→ Total: O(n⁵) (super slow, will die for n > 30 😅)
+
+Space: O(1) (no extra storage)
