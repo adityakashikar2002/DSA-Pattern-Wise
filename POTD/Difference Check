@@ -1,0 +1,43 @@
+// Brute
+// Time: -  O(nlog(n))
+// Space: - O(n)
+----------------------------------------------------------------------
+class Solution {
+    public int minDifference(String[] arr) {
+        // code here
+        int[] time = new int[arr.length];
+        
+        for(int i = 0; i < time.length; i++)
+        {
+            time[i] = parts(arr[i]);
+        }
+        
+        Arrays.sort(time);
+        
+        int mindiff = Integer.MAX_VALUE;
+        
+        for(int i = 1; i < time.length; i++)
+        {
+            mindiff = Math.min(mindiff, time[i] - time[i - 1]);
+        }
+        
+        // check for circular that is 12:00 O clock 24hrs
+        
+        mindiff = Math.min(mindiff, time[0] + 24 * 3600 - time[time.length - 1]);
+        
+        return mindiff;
+    }
+    
+    public static int parts(String times)
+    {
+        String[] parts = times.split(":");
+        
+        int h = Integer.parseInt(parts[0]);
+        int m = Integer.parseInt(parts[1]);
+        int s = Integer.parseInt(parts[2]);
+        
+        
+        return h * 3600 + m * 60 + s;
+    }
+}
+
