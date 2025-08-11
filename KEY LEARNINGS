@@ -57,3 +57,6 @@
         if this condn is TRUE means BIT IS SET/ 1
 
     for integers run loop from 0 to 32 as, integer's size is 32 bits, 0 - 31
+
+17) When asked to convert a num to char array , use: 
+    char[] arr = String.valueOf(num).toCharArray();
