@@ -1,0 +1,118 @@
+// Brute Force
+Time Complexity: O(n²) // Each Array Building takes n² time
+Space Complexity: O(n²)  // Also we are storing double the number of characters in each array so n²
+------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    int getLPSLength(String s) {
+        // code here
+        int n = s.length();
+        
+        String[] prefix = new String[n - 1];
+        String[] suffix = new String[n - 1];
+        
+        StringBuilder pref_str = new StringBuilder("");
+        
+        for(int i = 0; i < n - 1; i++)
+        {
+            prefix[i] = pref_str.append(s.charAt(i)).toString();
+        }
+        
+        StringBuilder suff_str = new StringBuilder("");
+        
+        for(int i = n - 1, idx = 0; i > 0; i--, idx++)
+        {
+            suffix[idx] = suff_str.insert(0, s.charAt(i)).toString();
+        }
+        
+        int maxLen = Integer.MIN_VALUE;
+        
+        for(int i = 0; i < n - 1; i++)
+        {
+            if(prefix[i].equals(suffix[i]))
+                maxLen = Math.max(maxLen, i + 1);
+        }
+        
+        return maxLen;
+    }
+}
+
+------------------------------------------------------------------------------------------------------------------------------------
+// Better Solution
+Time Complexity: O(n²) // for each single prefix formed can go up to n-1
+Space Complexity: O(1) 
+------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    int getLPSLength(String s) {
+        // code here
+        int n = s.length();
+        if(n == 0)
+            return 0;
+        
+        int maxLen = 0;
+        
+        boolean flag = true;
+        
+        for(int len = 1; len < n; len++)
+        {
+            flag = true;
+            
+            for(int i = 0; i < len; i++)
+            {
+                if(s.charAt(i) != s.charAt(n - len + i)) // smartly compares the prefix and suffix of respective len
+                {
+                    flag = false;
+                    break;
+                }
+            }
+            
+            if(flag)
+                maxLen = len;
+        }
+        
+        return maxLen;
+    }
+}
+
+------------------------------------------------------------------------------------------------------------------------------------
+// Optimal Solution
+Time Complexity: O(n)
+Space Complexity: O(n) 
+------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    int getLPSLength(String s) {
+        // code here
+        int n = s.length();
+        
+        int[] lps = new int[n];
+        
+        int prefix = 0;
+        int suffix = 1;
+        
+        while(suffix < n)
+        {
+            if(s.charAt(prefix) == s.charAt(suffix))
+            {
+                lps[suffix] = prefix + 1;
+                prefix++;
+                suffix++;
+            }
+            else
+            {
+                if(prefix == 0)
+                {
+                    lps[suffix] = 0;
+                    suffix++;
+                }
+                else
+                {
+                    prefix = lps[prefix - 1];
+                }
+            }
+        }
+        
+        return lps[n-1];
+    }
+}
