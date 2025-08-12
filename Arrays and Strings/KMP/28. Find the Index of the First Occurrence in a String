@@ -1,0 +1,42 @@
+// Brute Force
+Time: O(h × n)
+Space: O(1)
+------------------------------------------------------------------------------------------
+
+class Solution {
+    public int strStr(String haystack, String needle) {
+
+        int h = haystack.length();
+        int n = needle.length();
+
+        for(int i = 0; i <= h - n; i++)
+        {
+            int j = 0;
+            int k = i;
+            while(k < haystack.length() && j < needle.length())
+            {
+                if(haystack.charAt(k) == needle.charAt(j))
+                {
+                    k++;
+                    j++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            if(j == n)
+                return i;
+        }
+
+
+        return -1;
+    }
+}
+
+------------------------------------------------------------------------------------------
+// Optimal Solution
+Time: O()
+Space: O()
+------------------------------------------------------------------------------------------
