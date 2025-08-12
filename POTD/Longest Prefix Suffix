@@ -78,5 +78,41 @@ class Solution {
 ------------------------------------------------------------------------------------------------------------------------------------
 // Optimal Solution
 Time Complexity: O(n)
-Space Complexity: O(1) 
+Space Complexity: O(n) 
 ------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    int getLPSLength(String s) {
+        // code here
+        int n = s.length();
+        
+        int[] lps = new int[n];
+        
+        int prefix = 0;
+        int suffix = 1;
+        
+        while(suffix < n)
+        {
+            if(s.charAt(prefix) == s.charAt(suffix))
+            {
+                lps[suffix] = prefix + 1;
+                prefix++;
+                suffix++;
+            }
+            else
+            {
+                if(prefix == 0)
+                {
+                    lps[suffix] = 0;
+                    suffix++;
+                }
+                else
+                {
+                    prefix = lps[prefix - 1];
+                }
+            }
+        }
+        
+        return lps[n-1];
+    }
+}
