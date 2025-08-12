@@ -1,0 +1,37 @@
+// Brute Force
+Time Complexity: O(n²) // Each Array Building takes n² time
+Space Complexity: O(n²)  // Also we are storing double the number of characters in each array so n²
+------------------------------------------------------------------------------------------------------------------------------------
+class Solution {
+    int getLPSLength(String s) {
+        // code here
+        int n = s.length();
+        
+        String[] prefix = new String[n - 1];
+        String[] suffix = new String[n - 1];
+        
+        StringBuilder pref_str = new StringBuilder("");
+        
+        for(int i = 0; i < n - 1; i++)
+        {
+            prefix[i] = pref_str.append(s.charAt(i)).toString();
+        }
+        
+        StringBuilder suff_str = new StringBuilder("");
+        
+        for(int i = n - 1, idx = 0; i > 0; i--, idx++)
+        {
+            suffix[idx] = suff_str.insert(0, s.charAt(i)).toString();
+        }
+        
+        int maxLen = Integer.MIN_VALUE;
+        
+        for(int i = 0; i < n - 1; i++)
+        {
+            if(prefix[i].equals(suffix[i]))
+                maxLen = Math.max(maxLen, i + 1);
+        }
+        
+        return maxLen;
+    }
+}
