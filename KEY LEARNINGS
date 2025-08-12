@@ -68,7 +68,7 @@
 17) When asked to convert a num to char array , use: 
     char[] arr = String.valueOf(num).toCharArray();
 
-18) LPS Prefix-Suffix Algorithm
+18) LPS Prefix-Suffix Algorithmm (https://youtu.be/sODA1BzFvsE?si=WGyw4utPrCS7ajE1)
     Goal: Find the longest prefix of a string which is also a suffix.
     
     Algorithm (in your terms)
