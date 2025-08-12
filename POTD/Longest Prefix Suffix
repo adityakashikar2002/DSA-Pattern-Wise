@@ -38,5 +38,45 @@ class Solution {
 }
 
 ------------------------------------------------------------------------------------------------------------------------------------
+// Better Solution
+Time Complexity: O(n²) // for each single prefix formed can go up to n-1
+Space Complexity: O(1) 
+------------------------------------------------------------------------------------------------------------------------------------
 
+class Solution {
+    int getLPSLength(String s) {
+        // code here
+        int n = s.length();
+        if(n == 0)
+            return 0;
+        
+        int maxLen = 0;
+        
+        boolean flag = true;
+        
+        for(int len = 1; len < n; len++)
+        {
+            flag = true;
+            
+            for(int i = 0; i < len; i++)
+            {
+                if(s.charAt(i) != s.charAt(n - len + i)) // smartly compares the prefix and suffix of respective len
+                {
+                    flag = false;
+                    break;
+                }
+            }
+            
+            if(flag)
+                maxLen = len;
+        }
+        
+        return maxLen;
+    }
+}
+
+------------------------------------------------------------------------------------------------------------------------------------
+// Optimal Solution
+Time Complexity: O(n)
+Space Complexity: O(1) 
 ------------------------------------------------------------------------------------------------------------------------------------
