@@ -103,3 +103,39 @@
     
     "When match → grow both prefix & suffix.
     When mismatch → shrink prefix, keep suffix."
+
+19) KMP Search Algorithm (Needle in Haystack)
+    Variables:
+    
+    first → pointer in haystack
+    
+    second → pointer in needle
+    
+    lps[] → longest prefix-suffix array for needle
+    
+    Algorithm
+    1)Preprocess:
+      Build lps[] for the needle using the LPS algorithm.
+    
+    2) Search:
+      While first < haystack.length && second < needle.length:
+    
+          a] If characters match:
+                Move both first and second forward.
+    
+          b] If mismatch & second > 0:
+                Move second back to lps[second - 1].
+    
+          c] If mismatch & second == 0:
+                Move first forward.
+    
+          d] Match found:
+              If second == needle.length, return first - second (start index).
+
+      loop ends
+
+      e] No match:
+          Return -1.
+    
+    1-line mnemonic
+    "Match = go forward, mismatch = jump using LPS, never rewind haystack."
