@@ -67,3 +67,39 @@
 
 17) When asked to convert a num to char array , use: 
     char[] arr = String.valueOf(num).toCharArray();
+
+18) LPS Prefix-Suffix Algorithm
+    Goal: Find the longest prefix of a string which is also a suffix.
+    
+    Algorithm (in your terms)
+    1) Start
+    
+        a] Let lps be an array to store the lengths.
+        
+        b] prefix = 0 (length of matched prefix)
+        
+        c] suffix = 1 (current character index we are checking)
+        
+    2) While suffix is in range:
+    
+        a]  If characters match →
+            prefix++, set lps[suffix] = prefix, move suffix++
+        
+        b] If characters don't match →
+        
+              i] If prefix > 0 → jump back: prefix = lps[prefix - 1]
+    
+              ii] Else → lps[suffix] = 0, move suffix++
+    
+    3) End → lps[n-1] is your answer.
+    
+    Why This is O(n) and not O(n²)
+    You never re-check characters unnecessarily.
+    
+    On mismatch, instead of starting from scratch, you reuse previous lps values to skip checks.
+    
+    💡 Memory Trick
+    Just say to yourself:
+    
+    "When match → grow both prefix & suffix.
+    When mismatch → shrink prefix, keep suffix."
