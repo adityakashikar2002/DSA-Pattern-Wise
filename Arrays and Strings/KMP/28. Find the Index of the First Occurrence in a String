@@ -37,6 +37,92 @@ class Solution {
 
 ------------------------------------------------------------------------------------------
 // Optimal Solution
-Time: O()
-Space: O()
+Time: O(h + n)
+Space: O(n)
+
+1. Time Complexity:
+
+    Building LPS array: O(n) — where n is the length of needle.
+    
+    Searching phase: O(h) — where h is the length of haystack.
+    
+    Overall: O(h + n) (linear time in total length of both strings).
+
+2. Space Complexity:
+
+    LPS array: O(n) — stores an integer for each index of needle.
+    
+    Other variables: Constant extra space → O(1).
+    
+    Overall: O(n) space.
 ------------------------------------------------------------------------------------------
+
+class Solution {
+    public int strStr(String haystack, String needle) {
+        int h = haystack.length();
+        int n = needle.length();
+
+        int[] lpsArr = lps(needle, n);
+
+        int first = 0;
+        int second = 0;
+
+        while(first < h && second < n)
+        {
+            if(haystack.charAt(first) == needle.charAt(second))
+            {
+                first++;
+                second++;
+            }
+            else
+            {
+                if(second == 0)
+                {
+                    first++;
+                }
+                else
+                {
+                    second = lpsArr[second - 1];
+                }
+            }
+        }
+
+        if(second == n)
+            return first - second;
+        
+        return -1;
+
+    }
+
+    public static int[] lps(String str, int n)
+    {
+        int[] lpsArr = new int[n];
+        int p = 0;
+        int s = 1;
+
+        while(s < n)
+        {
+            if(str.charAt(p) == str.charAt(s))
+            {
+                lpsArr[s] = p + 1;
+                p++;
+                s++;
+            }
+            else
+            {
+                if(p == 0)
+                {
+                    lpsArr[s] = 0;
+                    s++;
+                }
+                else
+                {
+                    p = lpsArr[p - 1];
+                }
+                
+            }
+        }
+
+        return lpsArr;
+    }
+}
