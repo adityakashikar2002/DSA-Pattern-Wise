@@ -1,0 +1,29 @@
+// Time: O(n^2)
+// Space: O(1)
+--------------------------------------------------------------------
+class Solution {
+
+    public int countSubstrings(String s) {
+        int n = s.length();
+        int count = 0;
+
+        for(int k = 0; k < n; k++) {
+            count += checkPalindrome(s, k, k, n);     // odd-length
+            count += checkPalindrome(s, k, k + 1, n); // even-length
+        }
+
+        return count;
+    }
+
+    public int checkPalindrome(String s, int i, int j, int n) {
+        int localCount = 0;
+
+        while(i >= 0 && j < n && s.charAt(i) == s.charAt(j)) {
+            localCount++;
+            i--;
+            j++;
+        }
+
+        return localCount;
+    }
+}
