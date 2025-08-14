@@ -1,0 +1,33 @@
+class Solution {
+    public String largestGoodInteger(String num) {
+        int n = num.length();
+        if(n < 3)
+            return "";
+
+        int i = 0;
+        int j = i + 1;
+        int k = j + 1;
+
+        
+        String maxStr = "";
+
+        while(k < n)
+        {   
+            
+
+            if(num.charAt(i) == num.charAt(j) && num.charAt(j) == num.charAt(k))
+            {
+                String curr = num.substring(i, k + 1);
+                if (maxStr.isEmpty() || curr.compareTo(maxStr) > 0) {
+                    maxStr = curr;
+                }
+            }
+
+            i++;
+            j++;
+            k++;
+        }
+
+        return maxStr;
+    }
+}
