@@ -1,3 +1,8 @@
+---------------------------------------------------------------------------------------------
+// Approach 1 (Faster)
+// Time: O(N)
+// Space: O(1)
+---------------------------------------------------------------------------------------------
 class Solution {
     public String largestGoodInteger(String num) {
         int n = num.length();
@@ -29,5 +34,43 @@ class Solution {
         }
 
         return maxStr;
+    }
+}
+
+---------------------------------------------------------------------------------------------
+// Approach 2
+// Time: O(N)
+// Space: O(1)
+---------------------------------------------------------------------------------------------
+
+class Solution {
+    public String largestGoodInteger(String num) {
+        int n = num.length();
+        if(n < 3)
+            return "";
+
+        int i = 0;
+        int j = i + 1;
+        int k = j + 1;
+
+        
+        char maxChar = 0;  // null
+
+        while(k < n)
+        {   
+            
+
+            if(num.charAt(i) == num.charAt(j) && num.charAt(j) == num.charAt(k))
+            {
+                if(num.charAt(i) > maxChar)
+                    maxChar = num.charAt(i);
+            }
+
+            i++;
+            j++;
+            k++;
+        }
+
+        return maxChar == 0 ? "" : "" + maxChar + maxChar + maxChar;
     }
 }
