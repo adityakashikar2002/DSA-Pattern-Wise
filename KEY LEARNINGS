@@ -139,3 +139,7 @@
     
     1-line mnemonic
     "Match = go forward, mismatch = jump using LPS, never rewind haystack."
+
+20) s.substring(i, j+1) returns the substring of a string from i - j
+
+21) s1.compareTo(s2) returns int value based on comparing strings lexicographically
