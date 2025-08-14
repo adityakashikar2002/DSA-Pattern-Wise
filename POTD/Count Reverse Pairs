@@ -1,0 +1,27 @@
+// Brute Force
+// Time: O(n²)
+// Space: O(1)
+---------------------------------------------------------------
+class Solution {
+    public int countRevPairs(int[] arr) {
+        // code here
+        int n = arr.length;
+        int count = 0;
+        
+        for(int i = 0; i < n - 1; i++)
+        {
+            for(int j = i + 1; j < n; j++)
+            {
+                if(arr[i] > 2 * arr[j])
+                    count++;
+            }
+        }
+        
+        return count;
+    }
+}
+---------------------------------------------------------------
+// Optimized Approach
+// Time: O(n)
+// Space: O(1)
+---------------------------------------------------------------
