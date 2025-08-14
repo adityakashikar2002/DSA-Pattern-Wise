@@ -20,8 +20,114 @@ class Solution {
         return count;
     }
 }
----------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Think of Two sorted arrays, and we find if there exists an element in array2 that is smaller than the curr_ele of array1 when multiplied by two
+if so, as arrays are sorted, we can say, the ele of array2 is smaller than all elements of array1 till that index
+
+example: 
+array1 [3, 5]
+array2 [1, 2]
+3 - 1*2
+5 - 1*2, 2*2
+
+we can see that as 1*2 was smaller for 3 it would be smaller for remaining eles of array1 too
+in simple for i and j for that i all the elements multiplied by 2 from (mid + 1) to j - 1 will be less than element at i
+so think of merge sort just some twist count pairs before merging
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Optimized Approach
-// Time: O(n)
-// Space: O(1)
+// Time: O(nlogn)
+// Space: O(n)
 ---------------------------------------------------------------
+class Solution {
+    
+    static int countPairs(int[] a, int low, int mid, int high)
+    {
+        int i = low;
+        int j = mid + 1;
+        int count = 0;
+        
+        for(i = low; i <= mid; i++)
+        {
+            while(j <= high && (long) a[i] > 2L * a[j])
+            {
+                j++;
+            }
+            count += (j - (mid + 1)); 
+        }
+        
+        return count;
+    }
+    
+    static int mergeSort(int[] a, int low, int high)
+    {
+        int count = 0;
+        
+        if(low < high)
+        {
+            int mid = (low + high) / 2;
+            
+            count += mergeSort(a, low, mid);
+            count += mergeSort(a, mid + 1, high);
+            count += countPairs(a, low, mid, high);
+            merge(a, low, mid, high);
+        }
+        
+        return count;
+        
+    }
+    
+    static void merge(int[] a, int low, int mid, int high)
+    {
+        
+        int[] temp = new int[high - low + 1];
+        
+        int i = low;
+        int j = mid + 1;
+        int k = 0;
+        
+        while(i <= mid && j <= high)
+        {
+            if(a[i] <= a[j])
+            {
+                temp[k] = a[i];
+                i++;
+                k++;
+            }
+            else
+            {
+                temp[k] = a[j];
+                j++;
+                k++;
+            }
+        }
+        
+        while(i <= mid)
+        {
+            temp[k++] = a[i++];
+        }
+        
+        while(j <= high)
+        {
+            temp[k++] = a[j++];
+        }
+        
+        
+        for (k = 0; k < temp.length; k++)
+        {
+            a[low + k] = temp[k];
+        }
+        
+    }
+    
+    public int countRevPairs(int[] arr) {
+        // code here
+        int low = 0;
+        int high = arr.length - 1;
+        
+        int count = 0;
+        
+        count = mergeSort(arr, low, high);
+        
+        return count;
+    }
+}
