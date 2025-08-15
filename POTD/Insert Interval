@@ -1,0 +1,74 @@
+Algorithm: Insert Interval
+
+Input:
+
+intervals — a list of non-overlapping intervals sorted by start time.
+
+newInterval — the new interval to insert.
+
+Steps:
+
+Initialize an empty result list res and index i = 0.
+
+Add all intervals before newInterval:
+
+While intervals[i].end < newInterval.start, add intervals[i] to res and move i forward.
+
+Merge overlapping intervals with newInterval:
+
+While intervals[i].start <= newInterval.end, update:
+
+newInterval.start = min(newInterval.start, intervals[i].start)
+newInterval.end = max(newInterval.end, intervals[i].end)
+
+
+and move i forward.
+
+Add merged newInterval to res.
+
+Add remaining intervals after newInterval:
+
+While i < n, add intervals[i] to res and move i forward.
+
+Return res as the updated list of intervals.
+
+----------------------------------------------------------------------------------------------------------
+Time Complexity: O(n)
+Space Complexity: O(n) (for result storage)
+----------------------------------------------------------------------------------------------------------
+class Solution {
+    public ArrayList<int[]> insertInterval(int[][] intervals, int[] newInterval) {
+        // code here
+        ArrayList<int[]> res = new ArrayList<>();
+        int n = intervals.length;
+        
+        int i = 0;
+        
+        while(i < n && intervals[i][1] < newInterval[0])
+        {
+            res.add(intervals[i]);
+            i++;
+        }
+        
+        // overlapping handle
+        
+        while(i < n && intervals[i][0] <= newInterval[1])
+        {
+            newInterval[0] = Math.min(newInterval[0], intervals[i][0]);
+            newInterval[1] = Math.max(newInterval[1], intervals[i][1]);
+            i++;
+        }
+        
+        res.add(newInterval);
+        
+        // remaining add
+        
+        while(i < n)
+        {
+            res.add(intervals[i]);
+            i++;
+        }
+        
+        return res;
+    }
+}
