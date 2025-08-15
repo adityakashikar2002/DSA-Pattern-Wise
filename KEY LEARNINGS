@@ -40,9 +40,9 @@
     4 & 3 → 0100 & 0011 = 0000  ✅
     6 & 5 → 0110 & 0101 = 0100 ≠ 0 ❌  (not power of two)
 
-13) When need to check if any character is AlphaNumeric [^a-zA-Z0-9], use Character.isLetterOrDigit(s.charAt(i))
+14) When need to check if any character is AlphaNumeric [^a-zA-Z0-9], use Character.isLetterOrDigit(s.charAt(i))
 
-14) Roman to Integer Conversion (IMP)
+15) Roman to Integer Conversion (IMP)
     Given a string s representing a Roman numeral, find it's corresponding integer value.
     Roman numerals are formed using the following symbols: I = 1, V = 5, X = 10, L = 50, C = 100, D = 500, and M = 1000.
     Numbers are typically formed by combining these symbols from left to right, adding or subtracting their values based on specific rules.
@@ -56,19 +56,19 @@
     In case of more than 2 characters, we traverse from left to right and group only when we see a greater value character after a smaller value character. 
     For example MXVII is 1000 + 10 + 5 + 1 + 1 = 1017. And XLVII is (50 - 10) + 5 + 1 + 1 = 47. Note that L is larger and comes after X.
 
-15) When asked to split a string use:- split function
+16) When asked to split a string use:- split function
     String[] parts = s.split(":"); here : is the delimiter or spliter
 
-16) When needed to see if the ith Bit of a binary conversion of (n) is set (1) or not use
+17) When needed to see if the ith Bit of a binary conversion of (n) is set (1) or not use
     if((n & (1 << i)) != 0)
         if this condn is TRUE means BIT IS SET/ 1
 
     for integers run loop from 0 to 32 as, integer's size is 32 bits, 0 - 31
 
-17) When asked to convert a num to char array , use: 
+18) When asked to convert a num to char array , use: 
     char[] arr = String.valueOf(num).toCharArray();
 
-18) LPS Prefix-Suffix Algorithmm (https://youtu.be/sODA1BzFvsE?si=WGyw4utPrCS7ajE1)
+19) LPS Prefix-Suffix Algorithmm (https://youtu.be/sODA1BzFvsE?si=WGyw4utPrCS7ajE1)
     Goal: Find the longest prefix of a string which is also a suffix.
     
     Algorithm (in your terms)
@@ -104,7 +104,7 @@
     "When match → grow both prefix & suffix.
     When mismatch → shrink prefix, keep suffix."
 
-19) KMP Search Algorithm (Needle in Haystack)
+20) KMP Search Algorithm (Needle in Haystack)
     Variables:
     
     first → pointer in haystack
@@ -140,6 +140,8 @@
     1-line mnemonic
     "Match = go forward, mismatch = jump using LPS, never rewind haystack."
 
-20) s.substring(i, j+1) returns the substring of a string from i - j
+21) s.substring(i, j+1) returns the substring of a string from i - j
 
-21) s1.compareTo(s2) returns int value based on comparing strings lexicographically
+22) s1.compareTo(s2) returns int value based on comparing strings lexicographically
+
+23) (1 << i) creates a binary number
