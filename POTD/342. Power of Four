@@ -1,0 +1,63 @@
+// Approach 1 Brute Force
+// Time: O(log n)
+// Space: O(1)
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+class Solution {
+    public boolean isPowerOfFour(int n) {
+        if(n < 1)
+            return false;
+        
+        while(n % 4 == 0)
+        {
+            n = n / 4;
+        }
+
+        if(n == 1)
+            return true;
+        
+        return false;
+    }
+}
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Approach 2 Optimal Solution
+The Idea Is :
+As we need to Find The Num is Power Of 4 or Not
+We Can Solve It by doing Bit Manipulation
+[if Any Num is valid Power_Of_4 then It should Be valid Power_Of_2 as well] <= Use This Property
+
+Let's Suppose if They Are Asking For Finding is The Num_is_Power_Of 2 or Not Then What should We do :::
+We Just Trying To Find Is That Num Have only One Set Bit Or Not
+If there is only One Set Bit exist Then We Can blindly Say That It's A valid Power Of 2
+So,The Same Idea We Need here also But need to check One More Condition
+
+What Is The 2nd Condition Would Be, Let's Find Out By analysing Few Example
+
+1 2 4 8 16 32 64 128 256 592 1084 ...... -> This All Are Power Of Two [ Mean Having Only One Set Bit ]
+1 4 16 64 256 1084......-> This All Are Power Of Four , Now We can Greedly Observe
+That Between two power_of_4 there Was One Invaild Power_Of_2  like for 1 and 4 we had 2 which is not power_of_4
+So we need To check that Condition Too
+
+So Conditions Are :
+
+    1. No of Set Bit Always Be Only ONE 
+    2. That SetBit Possition Should Be always In odd Place [ starting from Left ] 
+
+// Time: O(1) max 16 operations constant
+// Space: O(1)
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    public boolean isPowerOfFour(int n) {
+        for(int i = 0; i < 32; i += 2)
+        {
+            if(n == 1 << i)
+                return true;
+        }
+
+        return false;
+    }
+}
+------------------------------------------------------------------------------------------------------------------------------------------------------
