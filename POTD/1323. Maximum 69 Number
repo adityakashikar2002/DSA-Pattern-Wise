@@ -39,8 +39,38 @@ class Solution {
 }
 
 ----------------------------------------------------------------------------------
-// Brute Approach, Make Array of Digits and Convert the 1st 6 (six)
+// Better Approach, Extract each digit and add value of 3 * 10 to some power that is last index of 6 from back traverse
+996999
++ 3000
+-------
+999999
+
+find that index of 6 and just add value 3 * 10^indexToChange
+---------------------------------------------------------------------------------
 // Time: O(d)
-// Space: O(d)
+// Space: O(1)
 d - no. of digits
 ----------------------------------------------------------------------------------
+
+class Solution {
+    public int maximum69Number (int num) {
+        int x = num;
+        int idxTo9 = -1;
+        int counter = 0;
+        while(x > 0)
+        {
+            if(x % 10 == 6)
+                idxTo9 = counter;
+            
+            counter++;
+            x = x / 10;
+        }
+
+        if(idxTo9 == -1)
+            return num;
+        
+        num += 3 * (int) Math.pow(10, idxTo9);
+
+        return num;
+    }
+}
