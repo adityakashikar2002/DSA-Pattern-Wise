@@ -145,3 +145,5 @@
 22) s1.compareTo(s2) returns int value based on comparing strings lexicographically
 
 23) (1 << i) creates a binary number
+
+24) Comparators, Lamba Expressions
