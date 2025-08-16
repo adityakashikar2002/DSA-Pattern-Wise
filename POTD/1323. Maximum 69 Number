@@ -1,0 +1,46 @@
+// Brute Approach, Make Array of Digits and Convert the 1st 6 (six)
+// Time: O(d)
+// Space: O(d)
+d - no. of digits
+----------------------------------------------------------------------------------
+
+class Solution {
+    public int maximum69Number (int num) {
+        
+        ArrayList<Integer> digits = new ArrayList<>();
+
+        int i = 0;
+
+        int x = num;
+        while(x > 0)
+        {
+            digits.add(x % 10);
+            x = x / 10;
+            i++;
+        }
+
+        int res = 0;
+        boolean flag = false;
+
+        for(i = digits.size() - 1; i >=0; i--)
+        {
+            if(digits.get(i) == 6 && (!flag))
+            {
+                digits.set(i, 9);
+                flag = true;   
+            }
+
+            res = res * 10 + digits.get(i);
+
+        }
+
+        return res;
+    }
+}
+
+----------------------------------------------------------------------------------
+// Brute Approach, Make Array of Digits and Convert the 1st 6 (six)
+// Time: O(d)
+// Space: O(d)
+d - no. of digits
+----------------------------------------------------------------------------------
