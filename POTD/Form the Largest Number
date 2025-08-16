@@ -1,0 +1,74 @@
+// Time: O(nlogn)
+// Space: O(n)
+
+What Arrays.sort(nums, (a, b) -> (b + a).compareTo(a + b)) does
+
+nums is an array of strings like ["3","30","34","5","9"].
+
+Java sorts objects using a comparator: it calls the lambda many times with different pairs (a, b) and orders them based on the return value.
+
+The comparator itself
+
+It forms two concatenations:
+
+a + b → put a before b
+
+b + a → put b before a
+
+Then it compares them lexicographically with compareTo.
+
+We return (b + a).compareTo(a + b) (note the order is b+a vs a+b, not the other way).
+
+Why reversed?
+
+If (b+a) > (a+b), we want b to come before a in the final sorted array.
+
+Returning a positive value means “a is greater than b”, so a should come after b → exactly what we want. Hence b+a on the left.
+
+Why compare strings instead of numbers?
+
+We care about the final concatenated string’s value, not the numeric value of each item.
+
+Comparing a+b vs b+a answers: “Which order gives a bigger overall number?”
+
+Bonus: a+b and b+a are equal length, so lexicographic comparison lines up with numeric comparison perfectly (no leading-zero weirdness here).
+
+Tiny examples
+
+a="9", b="34"
+
+a+b = "934", b+a = "349" → "934" > "349"
+
+Comparator returns negative (since (b+a).compareTo(a+b) < 0) → a before b. Good: 9 should precede 34.
+
+a="3", b="30"
+
+a+b = "330", b+a = "303" → "330" > "303"
+
+Comparator returns negative → 3 before 30. Correct.
+---------------------------------------------------------------
+import java.util.*;
+
+class Solution {
+    public String findLargest(int[] arr) {
+        String[] nums = new String[arr.length];
+        
+        for (int i = 0; i < arr.length; i++) {
+            nums[i] = String.valueOf(arr[i]);
+        }
+        
+        Arrays.sort(nums, (a, b) -> (b + a).compareTo(a + b));
+        
+        // Edge case: if the largest number is "0"
+        if (nums[0].equals("0")) {
+            return "0";
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        for (String num : nums) {
+            sb.append(num);
+        }
+        
+        return sb.toString();
+    }
+}
