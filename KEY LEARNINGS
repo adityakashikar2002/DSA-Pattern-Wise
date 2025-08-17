@@ -146,4 +146,4 @@
 
 23) (1 << i) creates a binary number
 
-24) Comparators, Lamba Expressions
+24) Comparators, Lamba Expressions need to make Integer[] temp = new Integer[n]; as Comparator works on Integer Objects and not Primitive data-types
