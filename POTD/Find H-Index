@@ -78,3 +78,32 @@ So basically:
 👉 Return that as the H-index.
 
 It’s like saying: “How many strong papers do you have? Let’s test from the maximum possible strength down until the condition is satisfied.”
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+class Solution {
+    public int hIndex(int[] citations) {
+        // code here
+        int n = citations.length;
+        
+        int[] freq = new int[n + 1];
+        
+        for(int i = 0; i < n; i++)
+        {   
+            if(citations[i] >= n)
+                freq[n]++;
+            else
+                freq[citations[i]]++;
+        }
+        
+        int c = 0;
+        
+        for(int i = n; i >= 0; i--)
+        {
+            c = c + freq[i];
+            
+            if(c >= i)
+                return i;
+        }
+        
+        return 0;
+    }
+}
