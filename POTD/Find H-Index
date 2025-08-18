@@ -1,0 +1,80 @@
+Brute Approach
+----------------------------------------------------
+// Time: O(n²) (nested loop after sorting O(n log n), overall dominated by O(n²))
+// Space: O(1) (ignoring sorting space)
+----------------------------------------------------
+
+class Solution {
+    public int hIndex(int[] citations) {
+        // code here
+        
+        int n = citations.length;
+        
+        Arrays.sort(citations);
+        int ans = 0;
+        
+        for(int i = n - 1; i >=0; i--)
+        {
+            int curr = citations[i];
+            int count = 0;
+            
+            for(int j = 0; j < n; j++)
+            {
+                if(citations[j] >= curr)
+                    count++;
+            }
+            
+            if(count >= curr)
+                ans = ans = Math.max(ans, curr);
+        }
+        
+        return ans;
+    }
+}
+
+----------------------------------------------------------------------
+Better Approach
+----------------------------------------------------
+// Time: O(n log n) (sorting)
+// Space: O(1)
+----------------------------------------------------
+class Solution {
+    public int hIndex(int[] citations) {
+        // code here
+        
+        int n = citations.length;
+        
+        Arrays.sort(citations);
+        int ans = 0;
+        
+        for(int i = 0; i < n; i++)
+        {
+            if(citations[i]  >= n - i)
+            {
+                ans = Math.max(ans, citations[i]); 
+                break;
+            }
+                
+        }
+        
+        return ans;
+    }
+}
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Optimal Approach
+----------------------------------------------------
+// Time: O(n) (counting + single pass)
+// Space: O(n) (bucket array)
+----------------------------------------------------
+Imagine you’re checking how many papers a researcher has that are “good enough” to give them a certain H-index. The H-index means: "You have at least h papers with at least h citations each."
+
+Now instead of sorting the whole list (which takes extra time), we use a frequency counter (freq) where we just count how many papers have exactly 0 citations, how many have 1, how many have 2, and so on. But if a paper has a very high number of citations (say bigger than the total number of papers), it doesn’t really matter how much higher—it can only help up to n (the total number of papers). So we just dump all those “super high citation” papers into the bucket freq[n].
+
+After this, we go backwards from the largest possible h (which is n) down to 0. While going, we keep adding up how many papers have at least that many citations. The moment we find that the number of papers is greater than or equal to the citation count we’re testing, that’s the H-index.
+
+So basically:
+👉 Count papers by citation buckets.
+👉 Start from the top and see the largest h for which at least h papers exist.
+👉 Return that as the H-index.
+
+It’s like saying: “How many strong papers do you have? Let’s test from the maximum possible strength down until the condition is satisfied.”
