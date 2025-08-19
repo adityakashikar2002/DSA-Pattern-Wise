@@ -1,0 +1,77 @@
+// Brute Approach
+Time Complexity: O(N²)
+Space Complexity: O(1)
+-----------------------------------------------------------------------------
+class Solution {
+    public long zeroFilledSubarray(int[] nums) {
+        long count = 0;
+
+        for(int i = 0; i < nums.length; i++)
+        {
+            for(int j = i; j < nums.length; j++)
+            {
+                if(nums[j] == 0)
+                    count++;
+                else
+                    break;
+            }
+        }
+
+        return count;
+    }
+}
+-------------------------------------------------------------------------------
+// Optimal-1 Approach
+Time Complexity: O(N)
+Space Complexity: O(1)
+-----------------------------------------------------------------------------
+class Solution {
+    public long zeroFilledSubarray(int[] nums) {
+        long total = 0;
+        long count = 0;
+
+        for(int i = 0; i < nums.length; i++)
+        {
+            if(nums[i] == 0)
+            {
+                count++;
+                total += count;
+            }
+            else
+            {
+                count = 0;
+            }
+            
+                
+        }
+
+        return total;
+    }
+}
+-------------------------------------------------------------------------------
+// Optimal-2 Approach
+Time Complexity: O(N)
+Space Complexity: O(1)
+-----------------------------------------------------------------------------
+class Solution {
+    public long zeroFilledSubarray(int[] nums) {
+        long len = 0;
+        long count = 0;
+
+        for(int i = 0; i < nums.length; i++)
+        {
+            len = 0;
+
+            while(i < nums.length && nums[i] == 0)
+            {
+                len++;
+                i++;
+            }
+        
+            count += len * (len + 1) / 2;
+        }
+
+        return count;
+    }
+}
+-------------------------------------------------------------------------------
