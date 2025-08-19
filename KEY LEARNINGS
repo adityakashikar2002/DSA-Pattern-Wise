@@ -148,5 +148,5 @@
 
 24) Comparators, Lamba Expressions need to make Integer[] temp = new Integer[n]; as Comparator works on Integer Objects and not Primitive data-types
 
-25) if there is an array of length (n), then no. of subarrays of that array are [ (n * (n + 1)) / 2 ]
+25) If there is an array of length (n), then no. of subarrays of that array are [ (n * (n + 1)) / 2 ]
 
