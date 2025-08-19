@@ -378,3 +378,88 @@ public class StackDynamic<T> {
         System.out.println("Peek: " + strStack.peek());
     }
 }
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+// Java's Own Stack Class
+import java.util.Stack;
+
+public class BuiltInStackDemo {
+    public static void main(String[] args) {
+        // Create a stack of Integers
+        Stack<Integer> stack = new Stack<>();
+
+        // -----------------
+        // 1. push(E item) → Pushes an item on top of the stack
+        stack.push(10);
+        stack.push(20);
+        stack.push(30);
+        stack.push(40);
+        System.out.println("Stack after pushes: " + stack);
+
+        // -----------------
+        // 2. pop() → Removes and returns the top element
+        int popped = stack.pop();
+        System.out.println("Popped element: " + popped);
+        System.out.println("Stack after pop: " + stack);
+
+        // -----------------
+        // 3. peek() → Returns top element without removing
+        int top = stack.peek();
+        System.out.println("Top element (peek): " + top);
+
+        // -----------------
+        // 4. search(Object o) → Returns 1-based position from the top
+        int pos = stack.search(20);
+        System.out.println("Position of 20 from top: " + pos);
+
+        // -----------------
+        // 5. isEmpty() → Checks if stack is empty
+        System.out.println("Is stack empty? " + stack.isEmpty());
+
+        // -----------------
+        // 6. size() → Returns number of elements
+        System.out.println("Stack size: " + stack.size());
+
+        // -----------------
+        // 7. iteration (since Stack extends Vector)
+        System.out.print("Iterating over stack: ");
+        for (Integer val : stack) {
+            System.out.print(val + " ");
+        }
+        System.out.println();
+
+        // -----------------
+        // 8. clear() → Removes all elements
+        stack.clear();
+        System.out.println("Stack after clear: " + stack);
+    }
+}
+
+push(E item) → Add element to top.
+
+pop() → Remove and return top element.
+
+peek() → Return top element without removing.
+
+search(Object o) → Find position from top (1-based).
+
+isEmpty() → Check if empty.
+
+size() → Current size of stack.
+
+clear() (inherited from Vector) → Remove all elements.
+
+Iteration (since it extends Vector, you can use enhanced for-loop or iterators).
+
+// Output
+Stack after pushes: [10, 20, 30, 40]
+Popped element: 40
+Stack after pop: [10, 20, 30]
+Top element (peek): 30
+Position of 20 from top: 2
+Is stack empty? false
+Stack size: 3
+Iterating over stack: 10 20 30 
+Stack after clear: []
+
