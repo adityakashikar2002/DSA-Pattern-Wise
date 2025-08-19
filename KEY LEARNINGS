@@ -150,3 +150,9 @@
 
 25) If there is an array of length (n), then no. of subarrays of that array are [ (n * (n + 1)) / 2 ]
 
+26) To run a Java WhiteBoard file, Go to that file's location then if FileName is Hello.java and Class Name is also Hello then
+
+    javac Hello.java -> compiles
+    java Hello       -> runs
+
+    
