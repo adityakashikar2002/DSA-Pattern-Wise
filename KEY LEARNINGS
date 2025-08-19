@@ -71,7 +71,7 @@
 19) LPS Prefix-Suffix Algorithmm (https://youtu.be/sODA1BzFvsE?si=WGyw4utPrCS7ajE1)
     Goal: Find the longest prefix of a string which is also a suffix.
     
-    Algorithm (in your terms)
+    Algorithm :- 
     1) Start
     
         a] Let lps be an array to store the lengths.
