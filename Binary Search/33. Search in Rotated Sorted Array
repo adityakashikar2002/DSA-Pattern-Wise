@@ -1,0 +1,56 @@
+// Time: O(logn)
+// Space: O(1)
+--------------------------------------------------------------------
+class Solution {
+    public int search(int[] nums, int target) {
+        int n = nums.length;
+
+        int low = 0;
+        int high = n - 1;
+
+        while(low <= high)
+        {
+            int mid = (low + high) / 2;
+
+            if(nums[mid] == target) // agar same raha return kr do
+            {
+                return mid;
+            }
+
+            // idea ye hai ki konsa part sorted hai usko
+            // pahchanna hai
+
+            if(nums[low] <= nums[mid]) // kya low se mid tak ka sorted hai ? if yes badiya
+            {
+                if(target >= nums[low] && target < nums[mid]) // agar hai to kya target is range me ho skhta hai kya
+                {
+                    if(target == nums[low])
+                        return low;
+
+                    high = mid - 1; // agar ho skhta to shrink kro
+                }
+                else
+                {
+                    low = mid + 1;  // agar nhi hai to durse half me check kro 
+                }
+            }
+            else  // mid se high tak ka sorted hai !! badiya
+            {
+                if(target > nums[mid] && target <= nums[high]) // kya target is range me ho skhta ??
+                {
+                    if(target == nums[high])
+                        return high;
+
+                    low = mid + 1;    // agar ha to dhoodho is part me 
+                }
+                else
+                {
+                    high = mid - 1;  // nhi to durse part me dhoondo
+                }
+            }
+        }
+
+        return - 1; // thenga mila to -1 😂
+
+    }
+}
