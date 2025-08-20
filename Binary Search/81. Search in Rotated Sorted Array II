@@ -1,0 +1,71 @@
+// Time Complexity: O(log n) average, O(n) worst case (due to duplicates).
+// Space Complexity: O(1)
+
+[1, 0, 1, 1, 1, 1]
+In such cases, the algorithm cannot confidently halve the search space, and you may end up shrinking only one element at a time.
+So:
+Best / Average Case: O(log n) (when duplicates don’t block progress).
+Worst Case: O(n) (when many duplicates exist and you can’t discard half).
+
+✅ Time Complexity: O(log n) on average, O(n) in worst case.
+-------------------------------------------------------------------------------------------------------------------------------------------
+class Solution {
+    public boolean search(int[] nums, int target) {
+        int n = nums.length;
+
+        int low = 0;
+        int high = n - 1;
+
+        while(low <= high)
+        {
+            int mid = (low + high) / 2;
+
+            if(nums[mid] == target) // agar same raha return kr do
+            {
+                return true;
+            }
+
+            // idea ye hai ki konsa part sorted hai usko
+            // pahchanna hai
+
+            // ye 👇 vali condition check krna jarrori hai kyuki agar nhi ki to algo ho jaega
+            
+            if(nums[low] == nums[mid] && nums[mid] == nums[high]) // agar sab same hai 🤔 to shrink kro both sides
+            {
+                low++;
+                high--;
+            }
+            else if(nums[low] <= nums[mid]) // kya low se mid tak ka sorted hai ? if yes badiya
+            {
+                if(target >= nums[low] && target < nums[mid]) // agar hai to kya target is range me ho skhta hai kya
+                {
+                    if(target == nums[low])
+                        return true;
+
+                    high = mid - 1; // agar ho skhta to shrink kro
+                }
+                else
+                {
+                    low = mid + 1;  // agar nhi hai to durse half me check kro 
+                }
+            }
+            else  // mid se high tak ka sorted hai !! badiya
+            {
+                if(target > nums[mid] && target <= nums[high]) // kya target is range me ho skhta ??
+                {
+                    if(target == nums[high])
+                        return true;
+
+                    low = mid + 1;    // agar ha to dhoodho is part me 
+                }
+                else
+                {
+                    high = mid - 1;  // nhi to durse part me dhoondo
+                }
+            }
+        }
+
+        return false; // thenga mila to -1 😂
+
+    }
+}
