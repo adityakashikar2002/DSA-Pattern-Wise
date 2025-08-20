@@ -65,7 +65,7 @@ class Solution {
             }
         }
 
-        return false; // thenga mila to -1 😂
+        return false; // thenga mila to false 😂
 
     }
 }
