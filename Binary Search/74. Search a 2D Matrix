@@ -1,0 +1,45 @@
+// Brute Approach: Time:- O(m x n)
+---------------------------------------------------------------------------------------------------------------------
+// Better Approach 
+// Time: O(m + log n)
+// Space: O(1)
+---------------------------------------------------------------------------------------------------------------------
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+
+        for(int i = 0; i < m; i++)
+        {
+            if(target >= matrix[i][0] && target <= matrix[i][n - 1]) // find where the target fits in range of matrix
+            {
+                int low = 0;
+                int high = n - 1;
+                // apply binary search on that row of matrix as its sorted
+                while(low <= high)
+                {
+                    int mid = (low + high) / 2;
+
+                    if(matrix[i][mid] == target)
+                        return true;
+                    
+                    if(target < matrix[i][mid])
+                    {
+                        high = mid - 1;
+                    }
+                    else
+                    {
+                        low = mid + 1;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+}
+---------------------------------------------------------------------------------------------------------------------
+// Optimal Approach 
+// Time: O(log(m x n))
+// Space: O(1)
+---------------------------------------------------------------------------------------------------------------------
