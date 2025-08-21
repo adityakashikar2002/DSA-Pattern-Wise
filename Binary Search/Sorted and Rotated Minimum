@@ -19,3 +19,45 @@ class Solution {
     }
 }
 ------------------------------------------------------------------------------
+
+// Time: O(log n)
+// Space: O(1)
+------------------------------------------------------------------------------
+
+class Solution {
+    public int findMin(int[] arr) {
+        // complete the function here
+        int n = arr.length;
+        
+        int minEle = Integer.MAX_VALUE;
+        
+        int low = 0;
+        int high = n - 1;
+        
+        while(low <= high)
+        {
+            int mid = (low + high) / 2;
+            
+            // if array already sorted hoga to min to arr[low] hoga 😁
+            if(arr[low] <= arr[high])
+            {
+                minEle = Math.min(minEle, arr[low]);
+                break;
+            }
+            
+            // agar left part sorted hai to shayad usme minEle ho skhta to minEle uthao aur unsorted me dhoondho
+            if(arr[low] <= arr[mid])
+            {
+                minEle = Math.min(minEle, arr[low]);
+                low = mid + 1;
+            }
+            else                                      // agar ulta hua to durse me dhoondo
+            {
+                minEle = Math.min(minEle, arr[mid]);
+                high = mid - 1;
+            }
+        }
+        
+        return minEle;
+    }
+}
