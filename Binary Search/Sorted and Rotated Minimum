@@ -1,0 +1,21 @@
+// Brute Approach
+// Time: O(n)
+// Space: O(1)
+------------------------------------------------------------------------------
+
+class Solution {
+    public int findMin(int[] arr) {
+        // complete the function here
+        int n = arr.length;
+        
+        int minEle = Integer.MAX_VALUE;
+        
+        for(int i = 0; i < n; i++)
+        {
+            minEle = Math.min(minEle, arr[i]);
+        }
+        
+        return minEle;
+    }
+}
+------------------------------------------------------------------------------
