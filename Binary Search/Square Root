@@ -1,0 +1,70 @@
+// Time:- O(sqrt(n))
+// Space:- O(1)
+--------------------------------------------------------------------------------------------------------------------------------------------------
+class Solution {
+    int floorSqrt(int n) {
+        // code here
+        // sabse simple tarika hai ki 1 se leke sabhi numbers k squares nikalo aur agar vo (n) se
+        // jyda jata to jo aakhri number jiska square (n) se kam ata vo uska squareroot hoga (floor value)
+        
+        int res = 1;
+        
+        while(res * res <= n)
+        {
+            res++;
+        }
+        
+        return res - 1;
+    }
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Time:- O(log(n))
+// Space:- O(1)
+--------------------------------------------------------------------------------------------------------------------------------------------------
+class Solution {
+    int floorSqrt(int n) {
+        // code here
+        
+        // ek aur tarika hai ki 1 se (n) tak k numbers pe binary search laga do;
+        // same concept agar mid ka square (mid * mid) < n
+        // matlab ki squarerroot n mid ki curr value se jyada ho skhta to hum doosre part me dhoodenge
+        // low = mid + 1
+        
+        // agar upar vale se ulta hua matlab agar mid ka square exceed kr gaya matlab
+        // 😅 jyada aage nikal gaye bhai peeche aao
+        // high = mid - 1
+        
+        int low = 1;
+        int high = n;
+        int sRoot = 1;
+        
+        while(low <= high)
+        {
+            int mid = (low + high) / 2;
+            
+            if(mid * mid == n)
+                return mid;
+                
+            if(mid * mid < n)
+            {
+                sRoot = mid;
+                low = mid + 1;
+            }
+            else
+                high = mid - 1;
+        }
+        
+        return sRoot;
+    }
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+// Time:- O(1)
+// Space:- O(1)
+--------------------------------------------------------------------------------------------------------------------------------------------------
+class Solution {
+    int floorSqrt(int n) {
+        return (int) Math.sqrt(n);
+    }
+}
