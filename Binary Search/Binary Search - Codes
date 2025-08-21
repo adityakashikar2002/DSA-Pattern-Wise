@@ -1,0 +1,67 @@
+// Time: O(logn)
+// Space: O(1)
+---------------------------------------------------------------------
+public class binarySearch {
+	
+	public static boolean binary_search(int num, int[] arr)
+	{
+		int n = arr.length;
+		
+		int low = 0;
+		int high = n - 1;
+		
+		while(low <= high)
+		{
+			int mid = (low + high) / 2;
+			
+			if(num == arr[mid])
+				return true;
+			
+			if(num < arr[mid])
+				high = mid - 1;
+			else
+				low = mid + 1;
+		}
+		
+		return false;
+	}
+	
+	public static void main(String args[])
+	{
+		int[] arr = {1, 2, 5, 7, 9, 40};
+		
+		System.out.println(binary_search(0, arr));
+	}
+}
+
+---------------------------------------------------------------------
+Binary Search Using Recursion
+// Time: O(logn)
+// Space: O(logn) --> Each recursive call adds a frame to the call stack.
+---------------------------------------------------------------------
+public class binarySearchRecursion {
+	
+	public static boolean binary_search(int low, int high, int[] arr, int target)
+	{
+		if(low <= high)
+		{
+			int mid = (low + high) / 2;
+			
+			if(target == arr[mid])
+				return true;
+			
+			if(target < arr[mid])
+				binary_search(low, mid - 1, arr, target);
+			else
+				binary_search(mid + 1, high, arr, target);
+		}
+		
+		return false;
+	}
+	public static void main(String args[])
+	{
+		int[] arr = {1, 2, 5, 7, 9, 40};
+		
+		System.out.println(binary_search(0, arr.length - 1, arr, 78));
+	}
+}
