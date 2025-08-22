@@ -1,0 +1,149 @@
+// Brute Approach
+Time Complexity: O(n * m) + O((n * m)log(n * m)) = O((n * m)log(n * m))
+Space Complexity: O(n * m) (for the flattened array)
+--------------------------------------------------------------------------------------------
+
+class Solution {
+    public int median(int[][] mat) {
+        // code here
+        int n = mat.length; // rows
+        int m = mat[0].length; // cols
+        
+        int[] arr = new int[n * m];
+        int k = 0;
+        for(int i = 0; i < n; i ++)
+        {
+            for(int j = 0; j < m; j++)
+            {
+                arr[k++] = mat[i][j];
+            }
+        }
+        
+        Arrays.sort(arr);
+        
+        return arr[(n * m) / 2];
+    }
+}
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Optimal Appraoch
+// Time;- O(n + ((n * logm) * log(maxVal - minVal))), n --> low and high cal, nlogm ---> for each row calculating upperbound thing, log(maxVal - minVal) ----> binary search
+// and for each step in OG binary step we can upperbound so n⋅logm⋅log(maxVal - minVal)
+
+// Time: O((n * logm) * log(maxVal - minVal)) // n -> rows, m -> cols
+// Space: O(1)
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    
+    public static int upperBound(int mid, int r, int c, int[][] mat)
+    {
+        int count  = 0;
+        
+        for(int i = 0; i < r; i++) // calculate upperbound for mid in each row, that will tell count of eles
+        {                          // less than equal to mid in each row
+            
+            int low = 0;
+            int high = c - 1;
+            
+            int ans = c;           // just in case no upperbound means all were less than equal to mid
+            while(low <= high)
+            {
+                int midCol = (low + high) / 2;
+                
+                if(mat[i][midCol] > mid)
+                {
+                    ans = midCol; 
+                    high = midCol - 1;
+                }
+                else
+                {
+                    low = midCol + 1;
+                }
+                
+            }
+            count += ans;
+        }
+        
+        return count;
+    }
+    
+    public static int countOfEle(int rows, int cols, int mid, int[][] mat)
+    {
+        int count = upperBound(mid, rows, cols, mat); // we need upperbound that will help us find how many ele
+                                                      // are less than equal to mid so 
+        
+        return count;
+    }
+    
+    
+    public int median(int[][] mat) {
+        // code here
+        int n = mat.length; // rows
+        int m = mat[0].length; // cols
+        
+        // HARD question hai 🥵 🥵  
+        
+        // koi bhi element agar median hai matlab beech me ata ---> 🙃 <-----
+        // bich me ata matlab vo uske left portion me hone vale sabhi elements se jyda hai
+        
+        // simple terms me , agar (n) size ka list hai to median n / 2 left vale sabhi elements se jyada hoga
+        // to in simple, 
+        //
+        // for a number to be median, the count of elements less than it should be exactly half of the elements
+        // example [1 4 5 5 6 6 8 9 10]
+        // index   [0 1 2 3 4 5 6 7 8]
+        // median 4th index vala matlab (6)
+        
+        // half = 4;
+        
+        // no. of elements <= 6 ka count (count 6 hai [1 4 5 5 6 6]) > (bada hai) half se (4)
+        
+        // therefore for a number to be median, the count of elements less than that number
+        // should be greater than or equal half the elements present in that list, arr, matrix
+        
+        // so aise number ko dhoondha to vishay khatm
+        
+        int low = Integer.MAX_VALUE;
+        int high = Integer.MIN_VALUE;
+        
+        // poore matrix me se lowest aur highest element nikalo uspe binary search krna hai 😉
+        
+        for(int i = 0; i < n; i++)  
+        {
+            low = Math.min(low, mat[i][0]);
+            high = Math.max(high, mat[i][m - 1]);
+        }
+        
+        int countForMedian = (n * m) / 2;
+        
+        while(low <= high)
+        {
+            int mid = (low + high) / 2;
+            
+            int count = countOfEle(n, m, mid, mat);
+            
+            if(count <= countForMedian) // agar kam hai matlab ye median nhi ho skhta , isse bada hoga kuch so
+            {
+                low = mid + 1;
+            }
+            else                        // bada hogaya, lekin shayd actual median se bhi bada number hoga so,
+            {                           //  yee ans ho skhta lekin iske pahle bhi check krte 😗
+                high = mid - 1;
+            }
+        }
+        
+        // When the loop ends, low is the smallest number for which count ≥ desired.
+        // That’s exactly the definition of the median in a sorted matrix (smallest number such that at least half the elements are ≤ it).
+        
+        // So when low > high, the binary search has “crossed over” and the invariant guarantees:
+        
+        // high is last value that was too small (not enough elements ≤ it).
+        
+        // low is the first value that worked (enough elements ≤ it).
+        
+        // 👉 Therefore, low is the answer.
+        
+        return low; // jaha cross krega vohi ans 😁
+    }
+}
