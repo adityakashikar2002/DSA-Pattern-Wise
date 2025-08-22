@@ -1,0 +1,27 @@
+// Brute Approach
+Time Complexity: O(n * m) + O((n * m)log(n * m)) = O((n * m)log(n * m))
+Space Complexity: O(n * m) (for the flattened array)
+--------------------------------------------------------------------------------------------
+
+class Solution {
+    public int median(int[][] mat) {
+        // code here
+        int n = mat.length; // rows
+        int m = mat[0].length; // cols
+        
+        int[] arr = new int[n * m];
+        int k = 0;
+        for(int i = 0; i < n; i ++)
+        {
+            for(int j = 0; j < m; j++)
+            {
+                arr[k++] = mat[i][j];
+            }
+        }
+        
+        Arrays.sort(arr);
+        
+        return arr[(n * m) / 2];
+    }
+}
+--------------------------------------------------------------------------------------------
