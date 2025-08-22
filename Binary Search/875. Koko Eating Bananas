@@ -48,7 +48,69 @@ class Solution {
 ----------------------------------------------------------------------------------------------------------------
 
 // Optimal Approach
-// Time: O()
+// Time: O(n * log(maRate))
 // Space: O(1)
 ----------------------------------------------------------------------------------------------------------------
 
+class Solution {
+
+    public static int calMinHrs(int num, int[] arr)
+    {
+        int minHours = 0;
+
+        for(int i = 0; i < arr.length; i++)
+        {
+            minHours += Math.ceil((double) arr[i] / num);
+        }
+
+        return minHours;
+    }
+
+    public int minEatingSpeed(int[] piles, int h) {
+        int n = piles.length;
+
+        int maxRate = Integer.MIN_VALUE;
+
+        // koko k khane ka rate hamesha maximum pile of bananas raega
+        // kyuki uske uppar bhi increase kiya to bhi 🔔🔔 to utne hi lagege 😂😂
+
+        //example:  
+        // [3,6,7,11]
+        // 11 ka rate raha to bhi 4 hrs, aur 100 ka raha to bhi 4 hrs kyuki vo utne hi 🍌 khata hai 
+
+        // isliye maxEle dhoondo
+
+        for(int i = 0; i < n; i++)
+        {
+            maxRate = Math.max(maxRate, piles[i]); // finds max
+        }
+
+        // now we have our maxRate so our answer lies in [1, maxRate]
+        // abhi hame har ek number pe jaake check krne ki garaj nhi
+        // hum ispe binary search krk bhi pata laga skhte hai 
+
+        int low = 1;
+        int high = maxRate;
+
+        int ans = -1;
+
+        while(low <= high)
+        {
+            int mid = (low + high) / 2;
+
+            int hours = calMinHrs(mid, piles); 
+
+            if(hours <= h) // if it takes less hours to eat 🍌 than (h) given it is our possible candidate
+            {
+                ans = mid;
+                high = mid - 1;
+            }
+            else            // durse isme dekhna padega
+            {
+                low = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+}
