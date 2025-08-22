@@ -1,0 +1,32 @@
+// Time: O(rows x cols)
+// Space: O(1)
+------------------------------------------------------------------------
+class Solution {
+    public int minimumArea(int[][] grid) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        int maxRow = -1; // find the bottom-most row having 1
+        int minRow = 2000; // find the very 1st row having 1
+
+        int maxCol = -1;  // find the right-most col having 1
+        int minCol = 2000; // find the left-most col having 1
+
+        for(int i = 0; i < rows; i++)
+        {
+            for(int j = 0; j < cols; j++)
+            {
+                if(grid[i][j] == 1)
+                {
+                    maxRow = Math.max(maxRow, i);
+                    minRow = Math.min(minRow, i);
+
+                    maxCol = Math.max(maxCol, j);
+                    minCol = Math.min(minCol, j);
+                }
+            }
+        }
+
+        return (maxRow - minRow + 1) * (maxCol - minCol + 1);
+    }
+}
