@@ -1,0 +1,54 @@
+// Brute Approach
+// Time: O(maxRate * n)
+// Space: O(1)
+----------------------------------------------------------------------------------------------------------------
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        int n = piles.length;
+
+        int maxRate = Integer.MIN_VALUE;
+
+        // koko k khane ka rate hamesha maximum pile of bananas raega
+        // kyuki uske uppar bhi increase kiya to bhi 🔔🔔 to utne hi lagege 😂😂
+
+        //example:  
+        // [3,6,7,11]
+        // 11 ka rate raha to bhi 4 hrs, aur 100 ka raha to bhi 4 hrs kyuki vo utne hi 🍌 khata hai 
+
+        // isliye maxEle dhoondo
+
+        for(int i = 0; i < n; i++)
+        {
+            maxRate = Math.max(maxRate, piles[i]);
+        }
+
+        // now we have our maxRate so our answer lies in [1, maxRate]
+        // hit and try
+        int hours = 0;
+
+        for(int i = 1; i <= maxRate; i++)
+        {
+            hours = 0;
+
+            for(int k = 0; k < n; k++)
+            {
+                if(piles[k] <= i)
+                    hours++;
+                else
+                    hours += Math.ceil((double) piles[k] / i);
+            }
+
+            if(hours <= h)
+                return i;
+        }
+
+        return -1;
+    }
+}
+----------------------------------------------------------------------------------------------------------------
+
+// Optimal Approach
+// Time: O()
+// Space: O(1)
+----------------------------------------------------------------------------------------------------------------
+
