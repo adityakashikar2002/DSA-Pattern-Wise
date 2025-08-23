@@ -1,0 +1,143 @@
+// Brute Approach
+// Time Complexity:  2 * O(r² * c² + r³ * c) + O(r * c) 2 * for gridSpiltting and once for rotation
+
+// Time: ≈ O(r² * c² + r³ * c) 
+// Space: Space = O(r * c)   (for rotatedGrid)
+---------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+
+    public static int Area(int sR, int eR, int sC, int eC, int[][] grid) // calculates minArea that covers all 1's
+    {
+        int minR = Integer.MAX_VALUE, maxR = -1;
+        int minC = Integer.MAX_VALUE, maxC = -1;
+
+        for (int i = sR; i < eR; i++) {
+            for (int j = sC; j < eC; j++) {
+                if (grid[i][j] == 1) {
+                    minR = Math.min(minR, i);
+                    maxR = Math.max(maxR, i);
+                    minC = Math.min(minC, j);
+                    maxC = Math.max(maxC, j);
+                }
+            }
+        }
+
+        // if no 1s → area = 0
+        if (maxR == -1)
+            return 0;
+
+        return (maxR - minR + 1) * (maxC - minC + 1);
+    }
+
+    public static int splitGrid(int r, int c, int[][] grid) // main splitting fn
+    {
+        int result = Integer.MAX_VALUE;
+
+        // Case 1 & 2
+        for(int rowSplit = 1 ; rowSplit < r; rowSplit++)
+        {
+            for(int colSplit = 1; colSplit < c; colSplit++)
+            {
+                // Case 1
+                int top = Area(0, rowSplit, 0, c, grid);
+                int leftBottom = Area(rowSplit, r, 0, colSplit, grid);
+                int rightBottom = Area(rowSplit, r, colSplit, c, grid);
+
+                result = Math.min(result, top + leftBottom + rightBottom);
+
+                // Case 2
+                int topLeft = Area(0, rowSplit, 0, colSplit, grid);
+                int topRight = Area(0, rowSplit, colSplit, c, grid);
+                int bottom = Area(rowSplit, r, 0, c, grid);
+
+                result = Math.min(result, topLeft + topRight + bottom);
+            }
+        }
+
+        // Case 3
+        for(int rowSplit1 = 1; rowSplit1 < r - 1; rowSplit1++)
+        {
+            for(int rowSplit2 = rowSplit1 + 1; rowSplit2 < r; rowSplit2++)
+            {
+                int top = Area(0, rowSplit1, 0, c, grid);
+                int middle = Area(rowSplit1, rowSplit2, 0, c, grid);
+                int bottom = Area(rowSplit2, r, 0, c, grid);
+
+                result = Math.min(result, top + middle + bottom);
+            }
+        }
+
+        return result;
+    }
+
+    public static int[][] rotateGrid(int rows, int cols, int[][] grid) // right rotation 
+    {
+        int[][] rotatedGrid = new int[cols][rows];
+
+        for(int i = 0; i < rows; i++)
+        {
+            for(int j = 0; j < cols; j++)
+            {
+                rotatedGrid[j][rows - i - 1] = grid[i][j];
+            }
+        }
+
+        return rotatedGrid;
+    }
+
+    public int minimumSum(int[][] grid) {
+        // HARD Question hai mere bhai 🥵 🥵
+
+        // idea ye hai ki sare possible rectangles ko dhoondh nikalo aur sabka area nikalo 😐
+        // socho matrix ko 3 rectangles me split krne k liye kya kr skhte
+
+        // lines kheecho horizontally and vertically, 
+        // 0 1 1
+        // 1 0 0
+        // 0 1 0
+
+        // ---------- = ROWSPLIT
+        // |          = COLSPLIT
+
+        // Case 1: TOP, LEFTBOTTOM, RIGHTBOTTOM FOR ALL POSSIBLE SPLITS
+
+        // 0   1  1               // 0   1  1              // 0   1  1              //     top
+        //----------  ====>       //----------  ====>      // 1   0  0   ====>      // left |   right 
+        // 1 | 0 0                // 1 0 | 0               //----------
+        // 0 | 1 0                // 0 1 | 0               // 0 | 1  0
+
+        // Case 2: LEFT, RIGHT, BOTTOM FOR ALL POSSIBLE SPLITS
+        
+        // 0  | 1  1               // 0 1 | 1              // 0 |  1  1              //     top
+        //----------  ====>        //----------  ====>     // 1 |  0  0   ====>      // left |   right 
+        // 1    0  0               // 1 0  0               //----------
+        // 0    1  0               // 0 1  0               // 0  1  0
+
+        // Case 3: TOP, MIDDLE, BOTTOM FOR ALL POSSIBLE SPLITS
+        
+        // 0  1  1                     // top
+        //----------  ====>            // middle 
+        // 1  0  0                     // bottom
+        //----------
+        // 0  1  0               
+
+        // Case 4, Case 5 and Case 6 Rotate the matrix and apply Case 1, 2, 3 
+
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        int res = splitGrid(rows, cols, grid); 
+
+        // Now Rotate Matrix
+        // we will do right rotation
+        int[][] rotatedGrid = rotateGrid(rows, cols, grid); 
+
+        int resRotated = splitGrid(cols, rows, rotatedGrid); // naya grid ulta ho jaega row -> col, col -> row so, cols, rows, rotatedGrid
+
+        
+        int result = Math.min(res, resRotated); // dono me se jo minimum vo answer
+
+        return result;
+    }
+}
