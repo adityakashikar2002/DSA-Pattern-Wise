@@ -1,0 +1,86 @@
+// Brute Approach
+// Time: O(n) + O(n * (maxPages−lowerBound)) ===> O(n * (maxPages−lowerBound))
+// Space; O(1)
+---------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    
+    public static int calStudents(int val, int[] arr)
+    {
+        int students = 1;   // socho ki yee 1st student hai
+        int pagesOfStudent = 0; // iske paas 0 pages, matlab ek bhi book nhi hai
+        
+        for(int i = 0; i < arr.length; i++)
+        {
+            if(pagesOfStudent + arr[i] <= val) // suppose kro val= 90 hai, to yee bachha min 90 pages vali book 
+            {                                  // le skhta hai
+                pagesOfStudent += arr[i];      // 12 aur 34 yee book le skhta lekin 67 vali nhi , 
+            }                                  // kyuki pages > 90 hote so, durse bacche ko dena padega
+            else
+            {                       
+                students++;                    // 1+1 = 2, to durse bache ko thama do 67 vali book;
+                pagesOfStudent = arr[i];
+            }
+        }
+        
+        return students;                        // agar bacche k (given) se jyada hue matlab hame 
+    }                                           // aur bade val ki jarrorat hai, kyuki bachhe kam hai to capacity badao
+    
+    public int findPages(int[] arr, int k) {
+        // code here
+        
+        // HARD Question hai 🥵 🥵
+        
+        // idea ye hai ki har ek bachhe ko kitne minimum pages de skhte yee socho aur maximum kitne de skhte
+        // example ki, agar min pages 1 hai
+        // [12 34 67 90]
+        // okay to kya yee books dena bachho ko possible hai nhi kyuki 12 > 1 to ek bhi book dena possible nhi
+        // okay kya phir pages = 12 minimum val possible hai ??
+        // nope kyuki vo book bss ek bacche ko milegi baki to phir shayad bache hue books le bhi skhte
+        // to minimum kya hai ?? socho
+        // ans is maxVal 90
+        // kyuki har bachha kam se kam itne pages ki book ya isse kam ki to le hi skhta hai (lower bound set ho gaya)
+        // maximum kitne tak le skhta sari books le skhta matlab sum of all pages in arr, (higher bound bhi mil gaya)
+        // 😘 badiya kaam ho gaya to bss abhi dekhte
+        
+        int n = arr.length;
+        
+        if(k > arr.length)
+            return - 1;
+        
+        int maxPages = 0;
+        int lowerBound = Integer.MIN_VALUE;
+        
+        for(int i = 0; i < n; i++)
+        {
+            lowerBound = Math.max(lowerBound, arr[i]);
+            maxPages += arr[i];
+        }
+        
+        int ans = -1;
+        // now we have a range for our ans [lowerBound, maxPages]
+        // so hit and try 
+        
+        for(int i = lowerBound; i <= maxPages; i++)
+        {
+            int students = calStudents(i, arr);
+            
+            if(students == k) // agar distribution fit baithta hai to maza hi maza 😎 😎 mil gaya minPossible Answer
+            {
+                ans = i;
+                break;
+            }
+            
+        }
+        
+        return ans;
+    
+    }
+}
+---------------------------------------------------------------------------------------------------------------------------------------
+
+// Optimal Approach
+// Time: O(n) + O(n * log(maxPages−lowerBound)) ===> O(n * log(maxPages−lowerBound))
+// Space; O(1)
+---------------------------------------------------------------------------------------------------------------------------------------
+
