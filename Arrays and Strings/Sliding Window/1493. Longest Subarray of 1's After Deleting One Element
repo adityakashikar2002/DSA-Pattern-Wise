@@ -65,3 +65,47 @@ class Solution {
 // Time: O(n + n) ~ O(n)
 // Space: O(1)
 ------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    public int longestSubarray(int[] nums) {
+
+        int n = nums.length;
+
+        int countZero = 0;
+        int maxOnes = 0;
+
+        int i = 0;
+        int j = 0;
+
+        while(j < n)
+        {
+            if(nums[j] == 0)  
+            {
+                countZero++;  // if Element is 0 , we increment countZero
+
+                while(countZero > 1)  // if it goes beyond 1 we need to shrink the window
+                {
+                    if(nums[i] == 0)
+                    {
+                        countZero--;
+                    }
+                    i++;
+                    
+                }
+            }
+
+            maxOnes = Math.max(maxOnes, j - i); // always check first then increment j
+
+            j++;
+        }
+
+        return maxOnes;
+    }
+}
+
+------------------------------------------------------------------------------------------------------------------------------------
+// Optimal Approach - Sliding Window
+// Time: O(n)
+// Space: O(1)
+------------------------------------------------------------------------------------------------------------------------------------
+
