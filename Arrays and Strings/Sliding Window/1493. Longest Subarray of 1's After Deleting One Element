@@ -109,3 +109,38 @@ class Solution {
 // Space: O(1)
 ------------------------------------------------------------------------------------------------------------------------------------
 
+class Solution {
+    public int longestSubarray(int[] nums) {
+
+        int n = nums.length;
+
+        int countZero = 0;
+        int maxOnes = 0;
+
+        int lastZeroIndex = -1; // track kro last index ko jaha zero aya tha 😎
+
+        int i = 0;
+        int j = 0;
+
+        while(j < n)
+        {
+            if(nums[j] == 0)  
+            {
+                countZero++;  // if Element is 0 , we increment countZero
+
+                if(countZero > 1)  // if it goes beyond 1 we need to shrink the window 😎😎 smart shrink
+                {
+                    i = lastZeroIndex + 1;   
+                }
+
+                lastZeroIndex = j;
+            }
+
+            maxOnes = Math.max(maxOnes, j - i); // always check first then increment j
+
+            j++;
+        }
+
+        return maxOnes;
+    }
+}
