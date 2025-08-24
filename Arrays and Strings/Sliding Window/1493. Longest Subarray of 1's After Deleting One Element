@@ -1,0 +1,67 @@
+// Brute Force
+// Time: O(n²)
+// Space: O(1)
+------------------------------------------------------------------------------------------------------------------------------------
+class Solution {
+
+    public static int countMaxOnes(int[] arr, int skip)
+    {
+        int maxOnes = 0;
+        int countOnes = 0;
+
+        for(int i = 0; i < arr.length; i++)
+        {   
+            if(i == skip)
+                continue;
+            
+            if(arr[i] == 1)
+            {
+                countOnes++;
+            }
+            else
+            {
+                countOnes = 0;
+            }
+
+            maxOnes = Math.max(maxOnes, countOnes);
+        }
+
+        return maxOnes;
+    }
+
+    public int longestSubarray(int[] nums) {
+        // MEDIUM HAI 🤨
+
+        // idea ye hai ki jyada se jyada ek ko delete marna hi hai so
+        // har ek index pakdo aur usko traverse krte vakht skip maro
+        // aur maxNumber of 1's ko count kro
+
+        int n = nums.length;
+        int maxOnes = 0;
+
+        boolean zeroFlag = true;
+
+        for(int i = 0; i < n; i++)
+        {
+            if(nums[i] == 0) // agar zero raha to skip marna hai 
+            {
+                zeroFlag = false;
+
+                int countOnes = countMaxOnes(nums, i); // skip marna iss index ko aur array me se maxOnes vala subarray dena
+
+                maxOnes = Math.max(maxOnes, countOnes);
+            }
+        }
+
+        if(zeroFlag)
+            return n - 1;
+
+        return maxOnes;
+    }
+}
+
+------------------------------------------------------------------------------------------------------------------------------------
+// Better Approach - Sliding Window
+// Time: O(n + n) ~ O(n)
+// Space: O(1)
+------------------------------------------------------------------------------------------------------------------------------------
