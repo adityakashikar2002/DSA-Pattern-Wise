@@ -1,0 +1,168 @@
+// Brute Force
+// Time: O(n + n * (maxDay−minDay)) = O(n * (maxDay−minDay))
+// Space: O(1)
+---------------------------------------------------------------------------------------------------------------------------
+class Solution {
+    
+    public static boolean checkPossible(int k, int m, int val, int[] arr)
+    {
+        int n = arr.length;
+        
+        int bouquets = 0;
+        int count = 0;
+        
+        
+        for(int i = 0; i < n; i++)
+        {
+            if(arr[i] <= val) // agar val se kam , ya barabar hai to count badao
+                count++;
+            else
+            {
+                bouquets += count / k; // agar nhi hai to ab tak , jitne phool uge, usme kitne bouquets ban skhte ??
+                count = 0;             // count reset maro
+            }
+        }
+        
+        bouquets += count / k; // akhri case ko handle krne k liye jaha count se aur bouquet ban skhte so...
+        
+        return bouquets >= m; // agar barabar ya usse jyada ban skhte to badiya
+    }
+    
+    public int minDaysBloom(int[] arr, int k, int m) {
+        // code here
+        
+        // idea ye hai ki, dekho konse day pr kitne phool khil rahe
+        // aur jitne khil rahe adjacent me to kya unka bouquet bana skhte kya (count / k)
+        // count / k => bataega kitne bouquets ban skhte
+        
+        // example: [3, 4, 2, 7, 13, 8, 5]
+        // dekho 2 possible hai kya
+        // [3, 4, 2, 7, 13, 8, 5]
+        // [N, N, Y, N, N,  N, N]
+        // bas ek phool khil skhta
+        
+        // 2 -> 13 tak chalo kyuki min 2 hai aur max 13 ko to sare phool khil jaenge
+        
+        // hamne dekha 12 k liye min possible hai
+        // [3, 4, 2, 7, 13, 8, 5]
+        // [Y, Y, Y, Y, N,  Y, Y]  4 / k = 2; 2 / k = 1 total m = 3 possible hai 😉
+        
+        int n = arr.length;
+        
+        if(n < (k * m))   // agar arr me kam elements hai to -1
+            return -1;
+            
+        int minDay = Integer.MAX_VALUE;
+        int maxDay = Integer.MIN_VALUE;
+        
+        for(int i = 0; i < n; i++)
+        {
+            minDay = Math.min(minDay, arr[i]);
+            maxDay = Math.max(maxDay, arr[i]);
+        }
+        
+        int low = minDay;
+        int high = maxDay;
+        
+        for(int i = low; i <= high; i++)
+        {
+            boolean possibleBouquets = checkPossible(k, m, i, arr); // har ek to try maro
+            
+            if(possibleBouquets) // jo bhi pahla possible rahega return kr do...
+                return i;
+        }
+        
+        return - 1;
+    }
+}
+
+---------------------------------------------------------------------------------------------------------------------------
+
+// Optimal Solution
+// Time: O(n + n * log(maxDay−minDay)) = O(n * log(maxDay−minDay))
+// Space: O(1)
+---------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    
+    public static boolean checkPossible(int k, int m, int val, int[] arr)
+    {
+        int n = arr.length;
+        
+        int bouquets = 0;
+        int count = 0;
+        
+        
+        for(int i = 0; i < n; i++)
+        {
+            if(arr[i] <= val) // agar val se kam , ya barabar hai to count badao
+                count++;
+            else
+            {
+                bouquets += count / k; // agar nhi hai to ab tak , jitne phool uge, usme kitne bouquets ban skhte ??
+                count = 0;             // count reset maro
+            }
+        }
+        
+        bouquets += count / k; // akhri case ko handle krne k liye jaha count se aur bouquet ban skhte so...
+        
+        return bouquets >= m; // agar barabar ya usse jyada ban skhte to badiya
+    }
+    
+    public int minDaysBloom(int[] arr, int k, int m) {
+        // code here
+        
+        // idea ye hai ki, dekho konse day pr kitne phool khil rahe
+        // aur jitne khil rahe adjacent me to kya unka bouquet bana skhte kya (count / k)
+        // count / k => bataega kitne bouquets ban skhte
+        
+        // example: [3, 4, 2, 7, 13, 8, 5]
+        // dekho 2 possible hai kya
+        // [3, 4, 2, 7, 13, 8, 5]
+        // [N, N, Y, N, N,  N, N]
+        // bas ek phool khil skhta
+        
+        // 2 -> 13 tak chalo kyuki min 2 hai aur max 13 ko to sare phool khil jaenge
+        
+        // hamne dekha 12 k liye min possible hai
+        // [3, 4, 2, 7, 13, 8, 5]
+        // [Y, Y, Y, Y, N,  Y, Y]  4 / k = 2; 2 / k = 1 total m = 3 possible hai 😉
+        
+        int n = arr.length;
+        
+        if(n < (k * m))   // agar arr me kam elements hai to -1
+            return -1;
+            
+        int minDay = Integer.MAX_VALUE;
+        int maxDay = Integer.MIN_VALUE;
+        
+        for(int i = 0; i < n; i++)
+        {
+            minDay = Math.min(minDay, arr[i]);
+            maxDay = Math.max(maxDay, arr[i]);
+        }
+        
+        int low = minDay;
+        int high = maxDay;
+        int ans = -1;
+        
+        while(low <= high)
+        {
+            int mid = (low + high) / 2;
+            
+            boolean possibleBouquets = checkPossible(k, m, mid, arr); // har ek to try maro
+            
+            if(possibleBouquets) // agar true matlab ban skhte, but apn ko aisa minimum val hona
+            {
+                ans = mid;
+                high = mid - 1; // so left vale me minimum dhoodho
+            }
+            else
+            {
+                low = mid + 1;
+            }
+        }
+        
+        return ans;
+    }
+}
