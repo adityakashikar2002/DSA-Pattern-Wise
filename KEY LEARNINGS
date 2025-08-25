@@ -156,3 +156,6 @@
     java Hello       -> runs
 
 27) For a matrix of size (m x n) there are m + n - 1 diagonals
+
+28) Arraylist addAll -> this will add all the elements of list 2 in list 1,
+    if you want index specific like l1.addAll(index, l2);
