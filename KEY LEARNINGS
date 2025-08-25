@@ -155,4 +155,4 @@
     javac Hello.java -> compiles
     java Hello       -> runs
 
-    
+27) For a matrix of size (m x n) there are m + n - 1 diagonals
