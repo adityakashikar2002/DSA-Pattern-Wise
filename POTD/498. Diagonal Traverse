@@ -81,3 +81,88 @@ class Solution {
 // Time complexity: O(m * n)
 // Space complexity: O(1)
 -----------------------------------------------------------------------------------------------------------
+
+class Solution {
+    public int[] findDiagonalOrder(int[][] mat) {
+        // idea kuch aisa hai 
+        // jab bhi matrix diagonally traverse krne ki baat ati to do cases bante
+
+        // Case 1
+        // from bottom left to top right (i + j)
+
+        // Case 2
+        // from top left to bottom right (i - j)
+
+        // to idea yee hai har diagonal vale ka conditions k hisab se same rahega
+
+        //  like i + j
+        //-----------------------------------------------------------------------------
+
+        // pichle approach me apn ne hashmap use kiya uski garaj nhi
+
+        // niche se uppar jana hai
+        // to starting point dekhna hai
+        // (n) colms hai i+j agar n se jyada gaya matlab last column se suru hua aur lsat row se, n - 1 column se aur d - n + 1 row se
+        // aur row++, col-- krk travse rkna hai
+        // m x n , k matrix me m + n - 1 diagonals rahte so
+
+        //Idea:
+
+        // There are m + n - 1 diagonals.
+
+        // For diagonal d:
+
+        // If d < n, it starts at (0, d) (first row).
+
+        // If d >= n, it starts at (d - n + 1, n - 1) (last column).
+
+        // From that starting point, keep moving down-left (row+1, col-1) until out of bounds.
+
+        // For even diagonals, we append in reverse order. For odd diagonals, we append in natural order.
+
+        int m = mat.length;  // rows
+        int n = mat[0].length; // cols
+
+        int[] ans = new int[m * n];
+        int k = 0;
+
+        for(int d = 0; d < m + n - 1; d++)
+        {
+            int row = -1;
+            int col = -1;
+
+            if(d < n)
+            {
+                row = 0;
+                col = d;
+            }
+            else
+            {
+                row = d - n + 1;
+                col = n - 1;
+            }
+
+            ArrayList<Integer> temp = new ArrayList<>();
+
+            while(row < m && col >= 0)
+            {
+                temp.add(mat[row][col]);
+                row++;
+                col--;
+            }
+
+            // reverse if even diagonal
+            if (d % 2 == 0) {
+                Collections.reverse(temp);
+            }
+
+            // add to result
+            for (int val : temp) {
+                ans[k++] = val;
+            }
+
+        }
+
+        return ans;
+    }   
+}
