@@ -1,0 +1,83 @@
+// Brute Force
+----------------------------------------------------------------------------------------------------------
+// Time complexity:
+
+Filling the map: O(m * n)
+
+Reversing some diagonals: Each element is reversed once at most → still O(m * n)
+
+Final merge: O(m * n)
+
+✅ Total = O(m * n)
+
+// Space complexity:
+
+map stores all elements before creating the final array → O(m * n) extra space.
+-----------------------------------------------------------------------------------------------------------
+
+class Solution {
+    public int[] findDiagonalOrder(int[][] mat) {
+        // idea kuch aisa hai 
+        // jab bhi matrix diagonally traverse krne ki baat ati to do cases bante
+
+        // Case 1
+        // from bottom left to top right (i + j)
+
+        // Case 2
+        // from top left to bottom right (i - j)
+
+        // to idea yee hai har diagonal vale ka conditions k hisab se same rahega
+
+        //  like i + j
+
+        // ek HashMap lagega, jisme i, j key rahegi aur ek list value;
+
+        HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
+
+        int m = mat.length; // rows
+        int n = mat[0].length; // cols 
+
+        for(int i = 0; i < m; i++)
+        {
+            for(int j = 0; j < n; j++)
+            {
+                if(map.containsKey(i + j))
+                {
+                    map.get(i + j).add(mat[i][j]);
+                }
+                else
+                {
+                    map.put(i + j, new ArrayList<>());
+                    map.get(i + j).add(mat[i][j]);
+                }
+            }
+        }
+
+        ArrayList<Integer> result = new ArrayList<>();
+
+        for(int d = 0; d < m + n - 1; d++)
+        {
+            ArrayList<Integer> list = map.get(d);
+
+            if(d % 2 == 0)
+                Collections.reverse(list);
+
+            result.addAll(list);
+        }
+
+        int[] ans = new int[result.size()];
+        for (int i = 0; i < result.size(); i++) {
+            ans[i] = result.get(i);
+        }
+
+        return ans;
+
+    }   
+}
+-----------------------------------------------------------------------------------------------------------
+
+// Optimal Approach
+-----------------------------------------------------------------------------------------------------------
+// Time complexity: O(m * n)
+// Space complexity: O(1)
+-----------------------------------------------------------------------------------------------------------
