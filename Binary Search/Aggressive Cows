@@ -1,0 +1,48 @@
+// Time: Time: O(n * logn + n * log(max-min))
+// Space: O(1)
+----------------------------------------------------------------------------
+
+import java.util.Arrays;
+
+class Solution {
+    
+    // Function to check if we can place k cows with at least distance d
+    public static boolean possibleToPlace(int d, int[] arr, int k) {
+        int lastPlaced = arr[0];  // place first cow at first stall
+        k--;  // one cow placed
+        
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i] - lastPlaced >= d) {
+                lastPlaced = arr[i];
+                k--;
+                if (k == 0) return true; // all cows placed
+            }
+        }
+        
+        return false; // not possible to place all cows
+    }
+    
+    public int aggressiveCows(int[] stalls, int k) {
+        // Step 1: Sort stalls
+        Arrays.sort(stalls);
+        
+        int n = stalls.length;
+        int low = 1; // min possible distance
+        int high = stalls[n - 1] - stalls[0]; // max possible distance
+        int ans = 0;
+        
+        // Step 2: Binary search on answer
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            
+            if (possibleToPlace(mid, stalls, k)) {
+                ans = mid;      // mid is possible, store it
+                low = mid + 1;  // try for bigger distance
+            } else {
+                high = mid - 1; // too big, try smaller distance
+            }
+        }
+        
+        return ans; // maximum possible minimum distance
+    }
+}
