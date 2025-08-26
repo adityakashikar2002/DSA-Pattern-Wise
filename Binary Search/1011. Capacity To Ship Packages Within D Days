@@ -1,0 +1,79 @@
+// Time: O(n + n * log(maxWeight - minWeight)) ~ O(n * log(maxWeight - minWeight))
+// Space: O(1)
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+class Solution {
+
+    public static int daysToShip(int val, int[] arr)
+    {
+        int days = 1;
+        int capacity = 0;
+
+        for(int i = 0; i < arr.length; i++)
+        {
+            if(capacity + arr[i] <= val)
+            {
+                capacity += arr[i]; // agar maal bhar skhte to bharo , kyuki uss din ko jyada se jyada maal ship krna hai
+            }
+            else
+            {
+                capacity = arr[i]; // agar limit exceed ho gayi to agle din krna padega so days++ aur capacity reset marne load krna padega
+                days++;
+            }
+        }
+
+        return days;
+    }
+
+    public int shipWithinDays(int[] weights, int days) {
+        // similar question solve kr chuke hai
+        // idea ye hai ki ship ki capacity define kro pahle aur socho ki vo kya ho skhti hai
+        // to example dekho 
+        // weights = [1,2,3,4,5,6,7,8,9,10], days = 5
+        // agar ship ki capacity 1 hogi to vo roj 1 ya ek se kam weight vale saman ko ship kr skhega right ??
+        // lekin apn to 5 din me pura saman ship krna hai pura in order
+        // to kya rakh skhte hai apn ship ki minimum capacity to vo hogi arr ki maxValue
+        // matlab 10, kam se kam har roj vo 10 ya usse kam vala saman to le hi ja skhta
+        // okay lowerBound mil gaya , lekin max kitna leke jaega
+        // to agar usko ye pura saman 1 day me ship krna hota to maxCapacity = sum of arr hoti
+        // kyuki sab kuchh ship krna hai, deliver krna hai
+
+        // to lag jao kaam pr 10 se max(sum(arr)) ki range me dekho minimum kitna capacity hona chaiye taki sare weights vale 
+        // saman deliver ho jaye
+        // agar jyada din lage to capacity badao
+
+        int n = weights.length;
+        
+        int minWeight = Integer.MIN_VALUE;
+        int maxWeight = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            minWeight = Math.max(minWeight, weights[i]);
+            maxWeight += weights[i]; 
+        }
+
+        int low = minWeight;
+        int high = maxWeight;
+
+        int ans = -1;
+
+        while(low <= high)
+        {
+            int mid = (low + high) / 2;
+
+            int daysTaken = daysToShip(mid, weights);
+
+            if(daysTaken <= days)
+            {
+                ans = mid;
+                high = mid - 1;
+            }
+            else
+            {
+                low = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+}
