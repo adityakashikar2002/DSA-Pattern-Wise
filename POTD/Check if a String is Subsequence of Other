@@ -1,0 +1,34 @@
+// Time: O(n1) (s1.length())
+// Space: O(1)
+---------------------------------------------------------------------------------------------------------------
+class Solution {
+    public boolean isSubSeq(String s1, String s2) {
+        // code here
+        int n1 = s1.length();
+        int n2 = s2.length();
+        
+        int i = 0;
+        int j = 0;
+        
+        while(i < n1 && j < n2)
+        {
+            char ch1 = s1.charAt(i);
+            char ch2 = s2.charAt(j);
+            
+            if(ch1 == ch2) // agar dono same honge to dono pointers aage badao
+            {
+                i++;
+                j++;
+            }
+            else           // varna sirf 2nd string ka pointer badao
+            {
+                j++;
+            }
+        }
+        
+        if(i == n1)     // agar i, n1 k barobar ho gaya matlab pura s1, s2 me mila as a subsequence so true
+            return true;
+        
+        return false;    // bich me atak gaya matlab false
+    }
+}
