@@ -1,0 +1,155 @@
+// Brute Approach
+// Time: O(n + n * (maxCandies - minCandies)) ~ O(n * (maxCandies - minCandies))
+// Space: O(1)
+----------------------------------------------------------------------------------------------------------------
+class Solution {
+
+    public static boolean allocateToChildren(int[] arr, int chocolates, long children)
+    {
+        long child = 0;
+        
+        for(int i = 0; i < arr.length; i++)
+        {
+            child += arr[i] / chocolates; // itne bachho me candies equally matab choclates (say 2) brobar 2 candies har bache ko mil skhti
+        }
+
+        return child >= children; // agar candies equally distribue krk bhi aur jyada bachho me ya barobar bachho me distribute ho skhti to yee answer ho skhta apna
+    }
+
+    public int maximumCandies(int[] candies, long k) {
+        // achha question hai yee
+
+        // idea hai ki sare bachho ko barabar candies milni chaiye, chahe phir candies waste bhi kyu n jaye
+        // all are equal 😂 okay
+
+        // to sabse pahle to yee sochte hai ki har ek bachhe ko minimum aur maximum kitni candies mil skhti ??
+
+        // like candies = [3], k = 3
+        // pile 1 hi hai lekin usko 3 one's me divide krk sabhi bachho ko de skhte
+        // matlab minimum har bachhe ko 1 candy to mil hi skhti 😅 (bichara bachha)
+
+        // lekin phir maximum kitni mil skhti ?? to maximum jis pile me maximum candies hogi vo milegi
+        // like candies = [5,8,6], k = 1, ek ki baccha hai to usko 6 milegi max
+        // kyuki sari nhi le skhta we cannot merge piles and add them right ??
+
+        // to badiya apn ko lower bound and upperbound conditions to mil gayi
+
+        // to hum kya krenge har ek no. of candies k liye check krenge like
+        // like candies = [5,8,6], k = 3, so, 1, 2, 3, 4, 5, 6
+        // check kaise krenge divide krk simple
+        // agar quotient milta hai matlab utne bacho ko mil skhte hai candies so apn ko add krne padega har ek element k quotient ko
+        // agar akhir me jyada bachho ko de skhte matlab vo ek candidate ban skhta answer ka
+
+        // code
+        
+        int n = candies.length;
+
+        int minCandies = Integer.MAX_VALUE;
+        int maxCandies = Integer.MIN_VALUE;
+
+        for(int i = 0; i < n; i++)
+        {
+            minCandies = Math.min(minCandies, candies[i]);
+            maxCandies = Math.max(maxCandies, candies[i]);
+        }
+
+        int ans = 0;
+
+        int low = minCandies;
+        int high = maxCandies;
+
+        for(int i = low; i <= high; i++)
+        {
+            boolean allocate = allocateToChildren(candies, i, k);
+
+            if(allocate)
+                ans = i;
+        }
+
+        return ans;
+    }
+}
+----------------------------------------------------------------------------------------------------------------
+
+// Optimal Approach
+// Time: O(n + n * log(maxCandies - minCandies)) ~ O(n * log(maxCandies - minCandies))
+// Space: O(1)
+----------------------------------------------------------------------------------------------------------------
+
+class Solution {
+
+    public static boolean allocateToChildren(int[] arr, int chocolates, long children)
+    {
+        long child = 0;
+        
+        for(int i = 0; i < arr.length; i++)
+        {
+            child += arr[i] / chocolates; // itne bachho me candies equally matab choclates (say 2) brobar 2 candies har bache ko mil skhti
+        }
+
+        return child >= children; // agar candies equally distribue krk bhi aur jyada bachho me ya barobar bachho me distribute ho skhti to yee answer ho skhta apna
+    }
+
+    public int maximumCandies(int[] candies, long k) {
+        // achha question hai yee
+
+        // idea hai ki sare bachho ko barabar candies milni chaiye, chahe phir candies waste bhi kyu n jaye
+        // all are equal 😂 okay
+
+        // to sabse pahle to yee sochte hai ki har ek bachhe ko minimum aur maximum kitni candies mil skhti ??
+
+        // like candies = [3], k = 3
+        // pile 1 hi hai lekin usko 3 one's me divide krk sabhi bachho ko de skhte
+        // matlab minimum har bachhe ko 1 candy to mil hi skhti 😅 (bichara bachha)
+
+        // lekin phir maximum kitni mil skhti ?? to maximum jis pile me maximum candies hogi vo milegi
+        // like candies = [5,8,6], k = 1, ek ki baccha hai to usko 6 milegi max
+        // kyuki sari nhi le skhta we cannot merge piles and add them right ??
+
+        // to badiya apn ko lower bound and upperbound conditions to mil gayi
+
+        // to hum kya krenge har ek no. of candies k liye check krenge like
+        // like candies = [5,8,6], k = 3, so, 1, 2, 3, 4, 5, 6
+        // check kaise krenge divide krk simple
+        // agar quotient milta hai matlab utne bacho ko mil skhte hai candies so apn ko add krne padega har ek element k quotient ko
+        // agar akhir me jyada bachho ko de skhte matlab vo ek candidate ban skhta answer ka
+
+        // code
+        
+        int n = candies.length;
+
+        int minCandies = Integer.MAX_VALUE;
+        int maxCandies = Integer.MIN_VALUE;
+
+        for(int i = 0; i < n; i++)
+        {
+            minCandies = Math.min(minCandies, candies[i]);
+            maxCandies = Math.max(maxCandies, candies[i]);
+        }
+
+        int ans = 0;
+
+        int low = minCandies;
+        int high = maxCandies;
+
+        while(low <= high)
+        {
+            int mid = (low + high) / 2;
+            
+            boolean allocate = allocateToChildren(candies, mid, k);
+
+            if(allocate)
+            {
+                ans = mid;
+                low = mid + 1;
+            }
+            else
+            {
+                high = mid - 1;
+            }
+                
+        }
+
+        return ans;
+    }
+}
