@@ -1,3 +1,9 @@
+// Brute Approach same rahega bss binary search nhi lagaenge pura range chaan marenge
+// Time: O(n + n * (maxWeight - minWeight)) ~ O(n * (maxWeight - minWeight))
+// Space: O(1)
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Optimal Solution - Binary Search
 // Time: O(n + n * log(maxWeight - minWeight)) ~ O(n * log(maxWeight - minWeight))
 // Space: O(1)
 -----------------------------------------------------------------------------------------------------------------------------------------------------
