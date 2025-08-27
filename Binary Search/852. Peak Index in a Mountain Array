@@ -31,3 +31,57 @@ class Solution {
 // Space: O(1)
 ------------------------------------------------------------------------------
 
+class Solution {
+    public int peakIndexInMountainArray(int[] arr) {
+        // Since the array is a mountain array 
+        // (strictly increasing to a peak and then strictly decreasing), 
+        // the maximum element is always the peak.
+
+        // yee to brute force hoga, kyuki sirf ek peak element apn 
+        // moutain vala logic laga skhte
+
+        //        /\
+        //       /  \
+        //      /    \
+        //     /      \
+        //    /        \
+        //   /          \
+        //  /            \
+        // /              \
+
+        // for one peak dekhte hai
+        // agar low aur high lekar nikala , to mid ki vale m < m + 1 matlab increasing height me hai, so peak right ko hai low ko badao
+        // agar m > m + 1 hua matlab decrease height me hua , to high to reduce krenge kyuki peak left me hai
+
+        int n = arr.length;
+
+        if(arr[0] > arr[1])
+            return 0;
+        
+        if(arr[n - 1] > arr[n - 2])
+            return n - 1;
+        
+        int low = 1;
+        int high = n - 2;
+
+        while(low <= high)
+        {
+            int mid = (low + high) / 2;
+
+            if(arr[mid] > arr[mid + 1] && arr[mid] > arr[mid - 1])
+            {
+                return mid;
+            }
+            else if(arr[mid] < arr[mid + 1])
+            {
+                low = mid + 1;
+            }
+            else
+            {
+                high = mid - 1;
+            }
+        }
+
+        return -1;
+    }
+}
