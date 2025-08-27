@@ -1,0 +1,35 @@
+// Brute Approach
+// Time: O(nlogn + n³) ~ O(n³)
+// Space: O(1)
+-----------------------------------------------------------------------------------------------
+class Solution {
+    public int countTriangles(int arr[]) {
+        // code here
+        Arrays.sort(arr);// sort kr lo taki sirf ek condition bhi check kr li to theek hai
+        
+        int n = arr.length;
+        
+        int countT = 0;
+        
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = i + 1; j < n; j++)
+            {
+                for(int k = j + 1; k < n; k++)
+                {
+                    if(arr[i] + arr[j] > arr[k])
+                        countT++;
+                }
+            }
+        }
+        
+        return countT;
+    }
+}
+
+---------------------------------------------------------------------------------------------------
+
+// Optimal Approach
+// Time: O(nlogn + n²) ~ O(n²)
+// Space: O(1)
+---------------------------------------------------------------------------------------------------
