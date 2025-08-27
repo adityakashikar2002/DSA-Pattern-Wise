@@ -1,0 +1,33 @@
+// Brute Approach
+// Time: O(n)
+// Space: O(1)
+------------------------------------------------------------------------------
+class Solution {
+    public int peakIndexInMountainArray(int[] arr) {
+        // Since the array is a mountain array 
+        // (strictly increasing to a peak and then strictly decreasing), 
+        // the maximum element is always the peak.
+        
+        int n = arr.length;
+        int peak = Integer.MIN_VALUE;
+        int ans = -1;
+
+        for(int i = 0; i < n; i++)
+        {
+            if(peak <= arr[i])
+            {
+                peak = arr[i];
+                ans = i;
+            }
+        }
+
+        return ans;
+    }
+}
+
+------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O(log n)
+// Space: O(1)
+------------------------------------------------------------------------------
+
