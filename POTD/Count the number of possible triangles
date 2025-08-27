@@ -33,3 +33,42 @@ class Solution {
 // Time: O(nlogn + n²) ~ O(n²)
 // Space: O(1)
 ---------------------------------------------------------------------------------------------------
+
+class Solution {
+    public int countTriangles(int arr[]) {
+        // code here
+        Arrays.sort(arr);// sort kr lo taki sirf ek condition bhi check kr li to theek hai
+        
+        int n = arr.length;
+        
+        int countT = 0;
+        
+        // idea ye hai ki array sorted hai
+        // so ek large side fix kr lo
+        // aur pahle side se uss side tak ki range k elements ka sum krk dekho agar largest side se bada aya matlab 
+        // triangle form ho skhta uss range me i se j tak, sare elements present k liye so count me j - i add kro for 
+        // 1st side as i , second side range iTOj aur third k okay !!
+        // aise har ek side ko set krk kro aur kitne triangles ban skhte dekho aur,
+        // yee krne k baad chote value ki taraf jaenge agar sum chota raha matlab nhi ban skhta
+        // so aage badho
+        
+        for(int k = n - 1; k >= 2; k--)
+        {   
+            int i = 0;
+            int j = k - 1;
+            
+            while(i < j)
+            {
+                if(arr[i] + arr[j] > arr[k])
+                {
+                    countT += (j - i);
+                    j--;
+                }
+                else
+                    i++;
+            }
+        }
+        
+        return countT;
+    }
+}
