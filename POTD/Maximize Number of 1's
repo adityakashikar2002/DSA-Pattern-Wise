@@ -1,5 +1,5 @@
 // Brute Approach - Find maxConsecutive Ones in all subarrays possible
-// Time: O(n^2)
+// Time: O(n²)
 // Space: O(1)
 ---------------------------------------------------------------------------------------------
 class Solution {
@@ -33,7 +33,85 @@ class Solution {
 
 ---------------------------------------------------------------------------------------------
 
-// OPtimal Approach -
-// Time: O(n^2)
+// Better Approach - Sliding Window
+// Time: O(2n) ~ O(n)
 // Space: O(1)
 ---------------------------------------------------------------------------------------------
+
+class Solution {
+    public int maxOnes(int arr[], int k) {
+        // code here
+        int n = arr.length;
+        
+        int maxConsecutiveOnes = -1;
+        
+        int countZero = 0;
+        
+        int i = 0;
+        int j = 0;
+        
+        while(j < n)
+        {
+            if(arr[j] == 0)
+            {
+                countZero++;
+            }
+            
+            while(countZero > k)
+            {
+                if(arr[i] == 0)
+                    countZero--;
+                
+                i++;
+            }
+            
+            maxConsecutiveOnes = Math.max(maxConsecutiveOnes, j - i + 1);
+            
+            j++;
+        }
+        
+        return maxConsecutiveOnes;
+    }
+}
+
+---------------------------------------------------------------------------------------------
+// Optimal Approach - Sliding Window (Without Inner While Loop)
+// Time: O(n)
+// Space: O(1)
+---------------------------------------------------------------------------------------------
+
+class Solution {
+    public int maxOnes(int arr[], int k) {
+        // code here
+        int n = arr.length;
+        
+        int maxConsecutiveOnes = -1;
+        
+        int countZero = 0;
+        
+        int i = 0;
+        int j = 0;
+        
+        while(j < n)
+        {
+            if(arr[j] == 0)
+            {
+                countZero++;
+            }
+            
+            if(countZero > k)
+            {
+                if(arr[i] == 0)
+                    countZero--;
+
+                i++;            // just move one step forward in order to maintain the maximum consectutive ones' length so far, we in simple are looking for a better answer 
+            }
+            
+            maxConsecutiveOnes = Math.max(maxConsecutiveOnes, j - i + 1);
+            
+            j++;
+        }
+        
+        return maxConsecutiveOnes;
+    }
+}
