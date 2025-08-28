@@ -1,0 +1,39 @@
+// Brute Approach - Find maxConsecutive Ones in all subarrays possible
+// Time: O(n^2)
+// Space: O(1)
+---------------------------------------------------------------------------------------------
+class Solution {
+    public int maxOnes(int arr[], int k) {
+        // code here
+        
+        int n = arr.length;
+        int maxOnes = -1;
+        
+        for(int i = 0; i < n; i++)
+        {
+            int x = k;
+            
+            for(int j = i; j < n; j++)
+            {
+                if(arr[j] == 0) // when zero is there we flip so decrement x
+                {
+                    if(x == 0) // if its already zero we can't flip so break
+                        break;
+                    else
+                        x--;
+                }
+                
+                maxOnes = Math.max(maxOnes, j - i + 1); // always keeps track of maxConsecutive ones
+            }
+        }
+        
+        return maxOnes;
+    }
+}
+
+---------------------------------------------------------------------------------------------
+
+// OPtimal Approach -
+// Time: O(n^2)
+// Space: O(1)
+---------------------------------------------------------------------------------------------
