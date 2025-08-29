@@ -1,0 +1,34 @@
+// Brute Force
+// Time: O(n x m)
+// Space: O(1)
+----------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    public long flowerGame(int n, int m) {
+        // simple idea hai
+        // agar total no. of flowers odd hai to Alice wins !!, because vo last flower pluck krega
+        // agar yee even rahe to Bob jitega
+
+        // so hame har ek possible pair k liye check krna padega
+
+        long pairs = 0;
+
+        for(int i = 1; i <= n; i++)
+        {
+            for(int j = 1; j <= m; j++)
+            {
+                if((i + j) % 2 == 1) // agar totalFlowers odd hai to Alice Wins !!
+                    pairs++;
+            }
+        }
+
+        return pairs;
+    }
+}
+
+----------------------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O(n + m)
+// Space: O(1)
+
+----------------------------------------------------------------------------------------------------------------
