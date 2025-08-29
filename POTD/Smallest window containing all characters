@@ -1,12 +1,12 @@
 // Brute Approach
 // Time: O(n² + n x m) ~ O(n²)
-// Space: O(m)
+// Space: O(m) ~ O(1) as characters will always be in [a-z] constant (26)
 -----------------------------------------------------------------------------------------------------------------------------------
 class Solution {
     public static String smallestWindow(String s, String p) {
         // code here
-        int sLen = s.length();
-        int pLen = p.length();
+        int sLen = s.length(); // n
+        int pLen = p.length(); // m
         
         // agar p ki length jyda hai no substring so return ""
         if(pLen > sLen)
@@ -74,6 +74,97 @@ class Solution {
 
 -----------------------------------------------------------------------------------------------------------------------------------
 // Optimal Approach
-// Time: 
-// Space: 
+// Time: O(n)
+// Space: O(m) ~ O(1) as characters will always be in [a-z] constant (26)
 -----------------------------------------------------------------------------------------------------------------------------------
+class Solution {
+    public static String smallestWindow(String s, String p) {
+        // code here
+        int sLen = s.length(); // n
+        int pLen = p.length(); // m
+        
+        // agar p ki length jyda hai no substring so return ""
+        if(pLen > sLen)
+            return "";
+        // optimal solution hoga ki ek window rahko agar usme sare characters aaye to substring ans ho skhta,
+        // aur phir shrink kro chote answer k liye
+        // socho ki hame kitne characters chaiye uss answer me 
+        // like s = "zotoyetoyyeouyue", p = "zooe"
+        // isme z, o, e yee 3 distinct characters chaiye aur minimum itne baar to ana hi chaiye,
+        // z - 1, o - 2, e - 1
+        // to kya hum current window se check kr skhte ki kya yee character p_map me utne baar aa raha ki nhi ?
+        // agar aa raha matlab hame ek character mil gaya
+        //
+        
+        // ek dry run krte
+        // 0 pe z mila, p_map me z hai , s_map (z - 1 kro), ab dono ka count 1-1 s_map(z) >= p_map(z), hai so 1 character mila
+        // 1 pe o mila p_map me o hai so same update kro , lekin o 2-baar aane hona so ab tak pura nhi hua abhi bhi
+        // 1 hi character mila hai , jo ki hai z
+        // phir t k baad o mila ab count brobar ho gaya , matlab 2 characters pure hue
+        // at last phir e mil gaya sare pure, ab store kro length, aur string, aur shrink kro
+        // shrink krte raho jab tak window invalid nhi hoti, jab invalid hogi tab aage badho
+        
+        
+        HashMap<Character, Integer> p_map = new HashMap<>(); // p k sare characters aur unke occurences check krne k liye
+        
+        for(int i = 0; i < pLen; i++)
+        {
+            char ch = p.charAt(i);
+            
+            if(p_map.containsKey(ch))
+            {
+                p_map.put(ch, p_map.get(ch) + 1);
+            }
+            else
+            {
+                p_map.put(ch, 1);
+            }
+        }
+        
+        HashMap<Character, Integer> window = new HashMap<>();
+        
+        int minLen = Integer.MAX_VALUE; // minimum vali substring ka track rakhne k liye
+        String ans = "";                // yee answer hoga
+        
+        int needed = p_map.size();
+        
+        int i = 0;
+        int j = 0;
+        
+        int formed = 0;
+        
+        while(j < sLen)
+        {
+            char ch = s.charAt(j);
+            
+            window.put(ch, window.getOrDefault(ch, 0) + 1); // first add that character in the window map
+            
+            if(p_map.containsKey(ch) && (window.get(ch).intValue() == p_map.get(ch).intValue())) 
+            {
+                formed++; // if that character is present and satisfies the count we say we got a character complete
+            }
+            
+            while(i <= j && formed == needed) // when all characters are fulfilled we shrink
+            {
+                if (j - i + 1 < minLen)
+                {
+                    minLen = j - i + 1;
+                    ans = s.substring(i, j + 1); // store current minimum
+                }
+        
+                char leftChar = s.charAt(i);  // shrink from left
+                
+                window.put(leftChar, window.get(leftChar) - 1); 
+                
+                if(p_map.containsKey(leftChar) && (window.get(leftChar).intValue() < p_map.get(leftChar).intValue()))
+                    formed--; // if left character is a character of string p then the formed may decrease
+                
+                i++;
+            }
+            
+            j++;
+        }
+        
+        return ans;  // jo smallest bachega vo apna answer rahega
+    }
+}
