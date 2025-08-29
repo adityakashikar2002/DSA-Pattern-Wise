@@ -159,3 +159,6 @@
 
 28) Arraylist addAll -> this will add all the elements of list 2 in list 1,
     if you want index specific like l1.addAll(index, l2);
+
+29) for Integer to int 
+    use Integer.intValue()
