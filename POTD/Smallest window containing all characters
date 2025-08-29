@@ -1,0 +1,79 @@
+// Brute Approach
+// Time: O(n² + n x m) ~ O(n²)
+// Space: O(m)
+-----------------------------------------------------------------------------------------------------------------------------------
+class Solution {
+    public static String smallestWindow(String s, String p) {
+        // code here
+        int sLen = s.length();
+        int pLen = p.length();
+        
+        // agar p ki length jyda hai no substring so return ""
+        if(pLen > sLen)
+            return "";
+        // brute force hoga ki sare substring dekho banake
+        // pahle p me sare characters k occurence ko store kr dete
+        // phir har ek substring k liye dekho ki vo characters usme aa rahe ki nhi
+        // agar aa rahe to ruk jo vo answer ko skhta
+        // lekin apn ko aisa minimum substring chaiye so length wise bhi check krna padega
+        
+        HashMap<Character, Integer> map = new HashMap<>(); // p k sare characters aur unke occurences check krne k liye
+        
+        for(int i = 0; i < pLen; i++)
+        {
+            char ch = p.charAt(i);
+            
+            if(map.containsKey(ch))
+            {
+                map.put(ch, map.get(ch) + 1);
+            }
+            else
+            {
+                map.put(ch, 1);
+            }
+        }
+        
+        int minLen = Integer.MAX_VALUE; // minimum vali substring ka track rakhne k liye
+        String ans = "";                // yee answer hoga
+        
+        for(int i = 0; i < sLen; i++)
+        {
+            HashMap<Character, Integer> temp = new HashMap<>(map); // hamesha ek copy rakhni padegi
+            
+            for(int j = i; j < sLen; j++)
+            {
+                char ch = s.charAt(j);
+                
+                if(temp.containsKey(ch) && temp.get(ch) != 0) // agar match krta aur occurence 0 nhi ha to ghatao
+                {
+                    temp.put(ch, temp.get(ch) - 1);
+                    
+                    if(temp.get(ch) == 0)   // ghatane k baad agar pura count kahtam ho gaya to map se remove kr do
+                        temp.remove(ch);
+                    
+                }
+                
+                if(temp.size() == 0)   // jab p k sare characters mil jaenge s me uski length nikalo
+                {                      // aur check kro ki vo minimum substring hai kya aur ans store krk break kr do
+                    if(j - i + 1 < minLen)
+                    {
+                        minLen = j - i + 1;
+                        
+                        ans = s.substring(i, j + 1);
+                    }
+                    
+                    break;
+                }
+        
+            }
+        }
+        
+        return ans;  // jo smallest bachega vo apna answer rahega
+    }
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: 
+// Space: 
+-----------------------------------------------------------------------------------------------------------------------------------
