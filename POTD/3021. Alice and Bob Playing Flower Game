@@ -27,8 +27,84 @@ class Solution {
 }
 
 ----------------------------------------------------------------------------------------------------------------
-// Optimal Approach
-// Time: O(n + m)
+// Better Approach
+// Time: O(1)
 // Space: O(1)
 
 ----------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    public long flowerGame(int n, int m) {
+        // simple idea hai
+        // agar total no. of flowers odd hai to Alice wins !!, because vo last flower pluck krega
+        // agar yee even rahe to Bob jitega
+
+        // so hame har ek possible pair k liye check krna padega
+        // vo to brute force ho gaya usse fast kaise krenge
+        // kyuki Alice jitna chaiye matlab sum odd hona chaiye right ??
+
+        // to kya hum aisa kr skhte hai ki agar hame malum hai
+        // ki X Lane me kitne Odd flowers hai aur Y me kitne Even flowers hai to Odd flowers * Even flowers
+        // hamesha odd sum vale pairs ko represent krega, similarly phir 
+        // X Lane me kitne even flowers hai aur Y me kitne odd hai unka multiplication aur
+        // last me dono ka addition hamara pairs k answer hoga
+
+        long pairs = 0;
+
+        long evenXLane = 0, oddXLane = 0;
+        long evenYLane = 0, oddYLane = 0;
+
+        if(n % 2 == 0) // agar X Lane me even number of flowers hai
+        {
+            evenXLane = n / 2; // even flowers 
+            oddXLane = n / 2;  // odd flowers dono ka count same hoga
+        }
+        else
+        {
+            evenXLane = n / 2; // nhi to itne even flowers ho skhte
+            oddXLane = n - n / 2; // itne odd 
+        }
+
+        if(m % 2 == 0)   // same logic for Y Lane
+        {
+            evenYLane = m / 2;
+            oddYLane = m / 2;
+        }
+        else
+        {
+            evenYLane = m / 2;
+            oddYLane = m - m / 2;
+        }
+
+        pairs = evenXLane * oddYLane + evenYLane * oddXLane;   // result answer
+
+        
+
+        return pairs;
+    }
+}
+
+----------------------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O(1)
+// Space: O(1)
+
+----------------------------------------------------------------------------------------------------------------
+class Solution {
+    public long flowerGame(int n, int m) {
+        // Count of odd and even numbers in range [1..n]
+        long oddX = (n + 1) / 2;   // formula: (n+1)/2 gives odd count
+        long evenX = n / 2;        // formula: n/2 gives even count
+
+        // Count of odd and even numbers in range [1..m]
+        long oddY = (m + 1) / 2;   // same logic for Y lane
+        long evenY = m / 2;
+
+        // Alice wins when sum (x+y) is odd:
+        // Case 1: oddX with evenY
+        // Case 2: evenX with oddY
+        long pairs = oddX * evenY + evenX * oddY;
+
+        return pairs; // total pairs where Alice wins
+    }
+}
