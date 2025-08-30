@@ -135,7 +135,152 @@ class Solution {
 }
 
 ----------------------------------------------------------------------------------------------------------------
-// Optimal Approach
-// Time:
-// Space: 
+// Better Approach
 ----------------------------------------------------------------------------------------------------------------
+🔹 Time Complexity
+
+We loop through each cell in the 9×9 board:
+
+for (int r = 0; r < 9; r++) {
+    for (int c = 0; c < 9; c++) {
+        ...
+    }
+}
+
+
+That’s 81 iterations.
+
+Inside the loop we do constant-time operations: string creation, set lookup, and set insertion → each O(1) on average for a HashSet.
+
+So total work:
+
+O(81 × 1) = O(81) ≈ O(1)
+
+
+👉 Constant time because Sudoku board size is fixed.
+If this were a general N×N Sudoku, it would be:
+
+O(N^2)
+
+🔹 Space Complexity
+
+You use a HashSet<String> to store constraints.
+
+Each cell (at most 81 non-empty ones) can generate 3 strings (row, col, box).
+
+So worst case: 81 × 3 = 243 strings in the set.
+
+That’s O(243) ≈ O(1) extra space.
+(For general N×N Sudoku → O(N^2).)
+
+✅ Final Answer
+
+Time Complexity: O(1) (constant, since board is always 9×9)
+
+Space Complexity: O(1) (constant, at most 243 strings in the set)
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+
+        HashSet<String> set = new HashSet<>();
+
+        for(int r = 0; r < 9; r++)
+        {
+            for(int c = 0; c < 9; c++)
+            {
+                char ch = board[r][c];
+
+                if(ch == '.')
+                    continue;
+                
+                int row = r / 3;
+                int col = c / 3;
+
+                String rows = ch + " is at row " + r;
+                String cols = ch + " is at col " + c;
+                String pos = ch + " is at " + row + " - " + col;
+
+                if(set.contains(rows) || set.contains(cols) || set.contains(pos))
+                    return false;
+
+                set.add(rows);
+                set.add(cols);
+                set.add(pos);
+            }
+        }
+
+        return true;
+    }
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+// Optimal Approach
+---------------------------------------------------------------------------------------------------------------------------------------------------
+rows[r][num] → "Has this number appeared in this row?"
+
+cols[c][num] → "Has this number appeared in this column?"
+
+boxes[boxIndex][num] → "Has this number appeared in this 3×3 box?"
+
+Now, given a cell (r, c):
+
+(r / 3) → tells us which row of boxes we are in (0,1,2).
+
+(c / 3) → tells us which col of boxes we are in (0,1,2).
+
+So we combine them:
+
+boxIndex = (r / 3) * 3 + (c / 3)
+
+
+👉 Example:
+
+Cell (0,0) → (0/3)*3 + (0/3) = 0 → top-left box.
+
+Cell (4,7) → (4/3)*3 + (7/3) = 1*3 + 2 = 5 → middle row, right box.
+
+Cell (8,8) → (8/3)*3 + (8/3) = 2*3 + 2 = 8 → bottom-right box.
+
+So each cell is correctly mapped to one of the 9 boxes.
+
+If any is already true → duplicate found → invalid Sudoku.
+
+Time Complexity:
+We scan each cell once → 81 iterations → O(1) (constant).
+For a generalized N×N Sudoku → O(N^2).
+
+Space Complexity:
+rows[9][9], cols[9][9], boxes[9][9] = 3 × 81 = 243 booleans → O(1) (constant).
+For generalized N×N → O(N^2).
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+
+        boolean[][] rows = new boolean[9][9];
+        boolean[][] cols = new boolean[9][9];
+        boolean[][] boxes = new boolean[9][9];
+
+        for (int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
+                char ch = board[r][c];
+
+                if (ch == '.') continue; // skip empty cells
+
+                int num = ch - '1'; // convert '1'..'9' → 0..8
+                int boxIndex = (r / 3) * 3 + (c / 3);
+
+                if (rows[r][num] || cols[c][num] || boxes[boxIndex][num]) {
+                    return false; // duplicate found
+                }
+
+                rows[r][num] = true;
+                cols[c][num] = true;
+                boxes[boxIndex][num] = true;
+            }
+        }
+
+        return true;
+    }
+}
