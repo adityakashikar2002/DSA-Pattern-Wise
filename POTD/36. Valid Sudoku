@@ -1,0 +1,141 @@
+// Brute Approach
+----------------------------------------------------------------------------------------------------------------
+Time Complexity
+
+We are checking:
+
+Every row →
+
+    There are 9 rows, and for each row we scan 9 cells → O(9 × 9) = O(81)
+
+Every column →
+
+    There are 9 columns, and for each column we scan 9 cells → O(81)
+
+Every 3×3 box →
+
+    There are 9 boxes, and for each box we scan 9 cells → O(81)
+
+So total work:
+
+    O(81 + 81 + 81) = O(243) ≈ O(1)
+
+
+👉 Why O(1)?
+Because the Sudoku board is always fixed at 9×9. Even though we wrote loops, they only ever run for a constant number of iterations (≤ 243). So it’s constant time.
+
+🔹 Space Complexity
+
+We use a HashSet<Character> for each row, each column, and each box.
+
+The maximum size of a set is 9 (since only digits 1–9 go in).
+
+We don’t store all sets together; we reuse them in loops.
+
+So extra space:
+
+O(9) = O(1)
+
+
+👉 Constant space too, since it does not grow with input size.
+
+✅ Final Answer
+----------------------------------------------------------------------------------------------------------------
+Time Complexity: O(1) (since board size is fixed 9×9, otherwise O(N^2) for an N×N Sudoku)
+Space Complexity: O(1)
+----------------------------------------------------------------------------------------------------------------
+class Solution {
+    public static boolean checkBox(int sr, int er, int sc, int ec, char[][] box)
+    {
+        HashSet<Character> set = new HashSet<>();
+
+        for(int row = sr; row <= er; row++)
+        {
+            for(int col = sc; col <= ec; col++)
+            {
+                char ch = box[row][col];
+
+                if(ch == '.')
+                    continue;
+                
+                if(set.contains(ch))
+                    return false;
+                
+                set.add(ch);
+            }
+        }
+
+        return true;
+    }
+
+    public boolean isValidSudoku(char[][] board) {
+        // brute force idea hoga ki har row, har column, aur ha 3 x 3 box me check kro Set leke 
+
+        HashSet<Character> set;
+
+        // checking every row
+        for(int row = 0; row < 9; row++)
+        {
+            set = new HashSet<>();
+
+            for(int col = 0; col < 9; col++)
+            {
+                char ch = board[row][col];
+
+                if(ch == '.')
+                    continue;
+                
+                if(set.contains(ch))
+                    return false;
+
+                set.add(ch);
+        
+            }
+        }
+
+        // checking every col
+        for(int col = 0; col < 9; col++)
+        {
+            set = new HashSet<>();
+
+            for(int row = 0; row < 9; row++)
+            {
+                char ch = board[row][col];
+
+                if(ch == '.')
+                    continue;
+                
+                if(set.contains(ch))
+                    return false;
+                
+                set.add(ch);
+        
+            }
+        }
+
+        // checking every 3 x 3 box
+
+        for(int sr = 0; sr <= 6; sr += 3)
+        {
+            int er = sr + 2; // ending row
+
+            for(int sc = 0; sc <= 6; sc += 3)
+            {
+                int ec = sc + 2; // ending column
+
+                boolean valid = checkBox(sr, er, sc, ec, board); // agar traverse kiya aur false mila matlab invalid
+
+                if(!valid)
+                    return false;
+            }
+        }
+
+        return true;
+    }
+}
+
+----------------------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time:
+// Space: 
+----------------------------------------------------------------------------------------------------------------
