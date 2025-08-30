@@ -1,0 +1,92 @@
+// Brute Force
+// Time: O(n² + n²) ~ O(n²) // for row check and col check
+// Space: O(1)
+----------------------------------------------------------------------------------------------------------------------------------
+class Solution {
+    public int celebrity(int mat[][]) {
+        // code here
+        // [[1, 1, 0],
+        // [0, 1, 0],
+        // [0, 1, 1]]
+        
+        // simple idea hai sab khud ko pahchante like 0th person 0th person ko janta so 1 hoga obvious
+        // agar ith row ka person jth row k person ko janta to i, j vala 1 hoga
+        // to task simple hai celebrity ko sab jante
+        // aisa row dhoondo jaha sare elements zero ho matlab jo kisi ko nhi janta sivay khud k
+        // aur aisa column jaha sare elements one ho matlab sab celebrity ko jante, yaha col apna celebrity hoga
+        
+        int n = mat.length;
+        
+        if(n == 1) // agar akela gaya party me to vohi celebrity hai 0th person
+            return 0;
+        
+        int celebrityA = -1;
+        int celebrityB = -1;
+        
+        boolean celeb = true;
+        
+        int r = 0;
+        int c = 0;
+        
+        for(r = 0; r < n; r++)
+        {   
+            celeb = true;
+            
+            for(c = 0; c < n; c++)
+            {
+                if(r == c)     // khud ko sab pahchante so skip kro
+                    continue;
+                
+                if(mat[r][c] == 1) // agar durse ko pahchante to phir vo celeb nhi hai, fan hai bol skhte
+                {
+                    celeb = false;
+                    break;
+                }
+            }
+            
+            if(celeb)
+            {
+                // agar kisi ko nhi pahchanta to celebrity ho skhta
+                celebrityA = r;
+                break;
+            }
+        }
+        
+        for(c = 0; c < n; c++)
+        {   
+            celeb = true;
+            
+            for(r = 0; r < n; r++)
+            {
+                if(r == c)     // khud ko sab pahchante so skip kro
+                    continue;
+                
+                if(mat[r][c] == 0) // agar iss band ko koi ek bhi nhi pahchanta matlab yee celebrity nhi
+                {
+                    celeb = false;
+                    break;
+                }
+            }
+            
+            if(celeb)
+            {
+                // agar sab pahchante to celeb hai
+                celebrityB = c;
+                break;
+            }
+
+        }
+        
+        if(celebrityA == celebrityB) // agar hamara candidate hi celebrity nikala to vohi celebrity hai
+            return celebrityA;
+        
+        return -1; // agar nhi nikla to dursa hoga
+        
+    }
+}
+
+----------------------------------------------------------------------------------------------------------------------------------
+// Optimal Solution
+// Time:
+// Space:
+----------------------------------------------------------------------------------------------------------------------------------
