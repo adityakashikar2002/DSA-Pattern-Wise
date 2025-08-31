@@ -1,0 +1,35 @@
+// Brute Force
+// Time: O(n²)
+// Space: O(1)
+------------------------------------------------------------------------------------------------------------
+class Solution {
+    public int maxWater(int arr[]) {
+        // Code Here
+        // simple idea hai area of rectangle nikalana hai
+        
+        // to har ek possible container jo ban skhta hai uska area nikal k dekho
+        // gap * beech ka distance = area / maxWater
+        
+        int n = arr.length;
+        
+        int maxAmountWater = 0;
+        
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = i + 1; j < n; j++)
+            {
+                int water = Math.min(arr[i], arr[j]) * (j - i);
+                
+                maxAmountWater = Math.max(maxAmountWater, water);
+            }
+        }
+        
+        return maxAmountWater;
+    }
+}
+
+------------------------------------------------------------------------------------------------------------
+// Optimal Solution - Two Pointers
+// Time: O(n)
+// Space: O(1)
+------------------------------------------------------------------------------------------------------------
