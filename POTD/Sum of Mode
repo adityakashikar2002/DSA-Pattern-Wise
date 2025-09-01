@@ -1,0 +1,63 @@
+// Brute Force
+// Time: (n x k)
+// Space: O(n)
+------------------------------------------------------------------------------------------------------
+class Solution {
+    public int sumOfModes(int[] arr, int k) {
+        // code here
+        int n = arr.length;
+        
+        ArrayList<Integer> mode = new ArrayList<>();
+        
+        for(int i = 0; i <= n - k; i++)
+        {
+            int j = i;
+            
+            HashMap<Integer, Integer> map = new HashMap<>();
+            
+            for(int a = 0; a < k; a++)
+            {
+                map.put(arr[j], map.getOrDefault(arr[j], 0) + 1);
+                j++;
+            }
+            
+            int minKey = Integer.MAX_VALUE;
+            int maxF = 0;
+            
+            for (Map.Entry<Integer,Integer> ele : map.entrySet()) 
+            {
+                if(ele.getValue() > maxF)
+                {
+                    maxF =  ele.getValue();
+                    minKey = ele.getKey();
+                    
+                }
+                else if(ele.getValue() == maxF)
+                {
+                    if(ele.getKey() < minKey)
+                    {
+                        minKey = ele.getKey();
+                    }
+                }
+            }
+            
+            mode.add(minKey);
+        }
+        
+        int sum = 0;
+        
+        for(int i = 0; i < mode.size(); i++)
+        {
+            sum += mode.get(i);
+        }
+        
+        return sum;
+    }
+}
+
+------------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: (n x k)
+// Space: O(n)
+------------------------------------------------------------------------------------------------------
+
