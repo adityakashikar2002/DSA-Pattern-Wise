@@ -162,3 +162,8 @@
 
 29) for Integer to int 
     use Integer.intValue()
+
+30) When asked to iterate over a HashMap
+    use: 
+    for (Map.Entry<Integer,Integer> ele : map.entrySet()) map is the name of HashMap
+    for keys: ele.getKey(), for values: ele.getValue()
