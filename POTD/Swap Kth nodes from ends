@@ -1,0 +1,127 @@
+// Approach 1 - 
+// Time: O(n)
+// Space: O(1)
+-------------------------------------------------------------------------------------------------------
+/*
+class Node {
+    int data;
+    Node next;
+
+    Node(int x) {
+        data = x;
+        next = null;
+    }
+}
+*/
+class Solution {
+    public Node swapKth(Node head, int k) {
+        // code here
+        // simple idea hai
+        
+        // do pointers to lagne hi hai, brobar, to yee socho ki ek pointer rakhne k baad
+        // durse pointer ko starting position se kitne ddor rakhna hai
+        
+        int len = 0;
+        
+        Node temp = head;
+        
+        while(temp != null)
+        {
+            temp = temp.next;
+            len++;
+        }
+        
+        if(k > len) // agar len se k bada raha to swap invalid hoga
+            return head;
+        
+        Node i = head;
+        Node j = head;
+        
+        for(int a = 1; a < k; a++) // pahle pointer ko kth index pr rakhte
+        {
+            i = i.next;
+        }
+        
+        for(int a = 1; a < len - k + 1; a++) // dusre ko (len - k + 1)th index pe
+        {
+            j = j.next;
+        }
+        
+        // aur bss swap maro
+        int swap = i.data;
+        i.data = j.data;
+        j.data = swap;
+        
+        return head;
+    }
+}
+
+-------------------------------------------------------------------------------------------------------
+// Approach 2 - 
+// Time: O(n)
+// Space: O(1)
+-------------------------------------------------------------------------------------------------------
+/*
+class Node {
+    int data;
+    Node next;
+
+    Node(int x) {
+        data = x;
+        next = null;
+    }
+}
+*/
+class Solution {
+    public Node swapKth(Node head, int k) {
+        // code here
+        // simple idea hai
+        
+        // do pointers to lagne hi hai, brobar, to yee socho ki ek pointer rakhne k baad
+        // durse pointer ko starting position se kitne ddor rakhna hai
+        
+        int len = 0;
+        
+        Node temp = head;
+        
+        while(temp != null)
+        {
+            temp = temp.next;
+            len++;
+        }
+        
+        if(k > len) // agar len se k bada raha to swap invalid hoga
+            return head;
+        
+        temp = head;
+        
+        
+        Node i = null;
+        Node j = null;
+        
+        // aisa kr skhte ki hum pahle vale ko set krte, phir curr/ temp pointer ko null tak le jaenge 
+        // aur sirf second pointer simultaneously badaenge, isse vo gap bhar jaega
+        while(temp != null)
+        {
+            if(j != null)
+                j = j.next;
+            
+            k--;
+            
+            if(k == 0)
+            {
+                i = temp;
+                j = head;
+            }
+            
+            temp = temp.next;
+        }
+        
+        // aur bss swap maro
+        int swap = i.data;
+        i.data = j.data;
+        j.data = swap;
+        
+        return head;
+    }
+}
