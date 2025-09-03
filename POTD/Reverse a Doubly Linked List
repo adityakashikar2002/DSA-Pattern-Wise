@@ -1,0 +1,38 @@
+// Time: O(n)
+// Space: O(1)
+---------------------------------------------------------------------------------------------------------
+/*
+class Node {
+    int data;
+    Node next;
+    Node prev;
+
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+        this.prev = null;
+    }
+}
+*/
+class Solution {
+    public Node reverse(Node head) {
+        // code here
+        if(head == null)
+            return null;
+        
+        Node prev = null; // curr k prev vala
+        Node curr = head; // curr
+        Node next = null; // curr k aage vala
+        
+        while(curr != null)
+        {
+            next = curr.next;    // pahle next vale ko point kro
+            curr.prev = curr.next; // reverse kr rahe so, curr k prev ko next ko point krna padega
+            curr.next = prev; // aur curr ka next uske, pichle vale ko point krega
+            prev = curr; // ab prev curr ko point krega
+            curr = next; aur // curr next ko 
+        }
+        
+        return prev;
+    }
+}
