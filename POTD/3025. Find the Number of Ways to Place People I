@@ -1,0 +1,56 @@
+Time Complexity: O(n³) 
+Space Complexity: O(1)
+-----------------------------------------------------------------------------------------------------
+class Solution {
+    public int numberOfPairs(int[][] points) {
+        // simple idea hai
+        // ek point lo, aisa point dhoondo jo lower right me ho
+        // agar mila to check kro un points se bane ractangle me koi 3rd point nhi hona chaiye, boundary pe bhi nahi
+        int count = 0;
+
+        int n = points.length;
+
+        for(int i = 0; i < n; i++)
+        {
+            int x1 = points[i][0];
+            int y1 = points[i][1];
+
+            for(int j = 0; j < n; j++)
+            {
+                if(i == j)
+                    continue;
+                
+                int x2 = points[j][0];
+                int y2 = points[j][1];
+
+                if(x2 >= x1 && y2 <= y1)
+                {
+                    boolean valid = true;
+                    for(int k = 0; k < n; k++)
+                    {
+                        if(k == i || k == j)
+                        {
+                            continue;
+                        }
+
+                        int x3 = points[k][0];
+                        int y3 = points[k][1];
+
+                        if(x3 <= x2 && x3 >= x1 && y3 >= y2 && y3 <= y1)
+                        {
+                            valid = false;
+                            break;
+                        }
+
+                    }
+
+                    if(valid)
+                        count++;
+                }
+                
+            }
+        }
+
+        return count;
+    }
+}
