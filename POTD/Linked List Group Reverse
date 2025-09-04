@@ -1,0 +1,107 @@
+// Brute Force -
+// Time: O(2n) ~ O(n)
+// Space: O(1)
+----------------------------------------------------------------------------------------------------------------------------
+/*
+class Node
+{
+    int data;
+    Node next;
+    Node(int key)
+    {
+        data = key;
+        next = null;
+    }
+}
+*/
+
+class Solution {
+    public static Node findKthNode(Node node, int k)
+    {
+        int val = 1;
+        
+        while(node != null && val != k)
+        {
+            node = node.next;
+            val++;
+        }
+        
+        return node;
+    }
+    
+    public static Node reverseLL(Node node)
+    {
+        Node curr = node;
+        Node prev = null;
+        Node next = null;
+        
+        while(curr != null)
+        {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        
+        return prev;
+    }
+    
+    public Node reverseKGroup(Node head, int k) {
+        // code here
+        if(head == null)
+            return null;
+        
+        Node temp = head;
+        Node prevNode = null;
+        Node nextNode = null;
+        Node newHead = null;
+        Node kthNode = null;
+        
+        while(temp != null)
+        {
+            kthNode = findKthNode(temp, k);
+            
+            // agar kthNode null raha to
+            if(kthNode == null)
+            {
+                Node lastGroupHead = reverseLL(temp); // akshri group ko reverse kro aur
+                if(prevNode != null)
+                {
+                    prevNode.next = lastGroupHead;   // bss point kr do 
+                }
+                else
+                {
+                    head = lastGroupHead;  // agar pahle hi kam blocks the to yee new head rahega
+                    return head;
+                }
+                
+            }
+            
+            nextNode = kthNode.next;
+            
+            kthNode.next = null;
+            
+            newHead = reverseLL(temp);
+            
+            if(temp == head)
+            {
+                head = newHead; // or head = kthNode
+            }
+            else
+            {
+                prevNode.next = newHead;
+            }
+            
+            prevNode = temp;
+            temp = nextNode;
+        }
+        
+        return head;
+    }
+}
+
+----------------------------------------------------------------------------------------------------------------------------
+// Optimal Approach - Single Pass
+// Time: O(n)
+// Space: O(1)
+----------------------------------------------------------------------------------------------------------------------------
