@@ -1,0 +1,98 @@
+// Time: O(2n) ~ O(n)
+// Space: O(1)
+------------------------------------------------------------------------------------------------------------------------------
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+/**
+    idea simple hai
+    question hard hai 😐
+    aisa socho kya hum linked list ko k-size k chunks me divide krk reverse kr skhte kya ?
+    answer hai hha kr skhte
+
+    bohot sare pointers lagenge so try kro
+ */
+class Solution {
+    public static ListNode findKthNode(ListNode temp, int k)
+    {
+        int val = 1;
+
+        while(temp != null && val != k) // kth node ko point krne k liye
+        {
+            temp = temp.next;
+            val++;
+        }
+
+        return temp;
+    }
+
+    public static ListNode reverse(ListNode head, ListNode tail) // reverse krega
+    {
+        ListNode prev = null;
+        ListNode curr = head;
+        ListNode next = null;
+        
+        while(curr != null)
+        {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        return prev;
+    }
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if(head == null)
+            return null;
+        
+        ListNode temp = head;
+        ListNode kthNode = null;
+        ListNode prevNode = null;
+        ListNode nextNode = null;
+        ListNode newHead = null;
+
+        while(temp != null)
+        {
+            kthNode = findKthNode(temp, k); // sable pahle kthNode nikalo
+
+            if(kthNode == null)  // agar null raha to yee remaining block aisa hi rahne dene ka hai
+            {
+                if(prevNode != null)
+                {
+                    prevNode.next = temp; // so bss jo previously reverse ka last block tha, usko iss point krne bolo
+                }
+
+                return head; // head return maro
+            }
+
+            nextNode = kthNode.next; // uske next node ko preserve kro
+
+            kthNode.next = null;     // ab link break kr do
+
+            newHead = reverse(temp, kthNode) ;// ab itne ko reverse kro
+
+            if(head == temp) // agar temp hi head raha matlab ye apna first block tha so head update krna padega
+            {
+                head = kthNode;
+            }
+            else
+            {
+                prevNode.next = newHead; // nhi to hamesha newHead of reversed LL ko point krna hai
+            }
+        
+            prevNode = temp; // aage badne se pahle prevNode update kro
+            temp = nextNode; // aur ab temp ko sirkao
+        }
+
+        return head;
+    }
+}
