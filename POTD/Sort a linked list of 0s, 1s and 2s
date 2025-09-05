@@ -1,0 +1,78 @@
+// Approach 1 - Two Pass Solution
+// Time: O(2n) ~ O(n)
+// Space: O(1)
+-------------------------------------------------------------------------------------------------------------------------------
+
+/*
+class Node {
+    int data;
+    Node next;
+
+    Node(int d)
+    {
+        data = d;
+        next = null;
+    }
+}*/
+
+// simple idea hai 
+// pura linked list chaan maro, aur dekho kitne 0's, 1's, 2's hai
+// count maintain kro aur phir starting me zero dalo jab tak uska count 0 nhi hota
+// baad me ones aur twos, bss
+
+class Solution {
+    public Node segregate(Node head) {
+        // code here
+        if(head == null)
+            return null;
+        
+        Node temp = head;
+        
+        int countZeroes = 0;
+        int countOnes = 0;
+        int countTwos = 0;
+        
+        while(temp != null)
+        {
+            if(temp.data == 0)
+                countZeroes++;
+            else if(temp.data == 1)
+                countOnes++;
+            else
+                countTwos++;
+            
+            temp = temp.next;
+        }
+        
+        temp = head;
+        
+        while(temp != null)
+        {
+            if(countZeroes > 0)
+            {
+                temp.data = 0;
+                countZeroes--;
+            }
+            else if(countOnes > 0)
+            {
+                temp.data = 1;
+                countOnes--;
+            }
+            else
+            {
+                temp.data = 2;
+                countTwos--;
+            }
+            
+            temp = temp.next;
+        }
+        
+        return head;
+    }
+}
+-------------------------------------------------------------------------------------------------------------------------------
+
+// Approach 2 - Two Pass Solution
+// Time: O(2n) ~ O(n)
+// Space: O(1)
+-------------------------------------------------------------------------------------------------------------------------------
