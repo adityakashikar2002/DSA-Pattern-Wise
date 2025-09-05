@@ -23,8 +23,8 @@ class Node {
 class Solution {
     public Node segregate(Node head) {
         // code here
-        if(head == null)
-            return null;
+        if(head == null || head.next == null)
+            return head;
         
         Node temp = head;
         
