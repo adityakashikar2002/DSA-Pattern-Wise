@@ -1,0 +1,141 @@
+// Approach 1 - Two Pass Solution
+// Time: O(2n) ~ O(n)
+// Space: O(1)
+-------------------------------------------------------------------------------------------------------------------------------
+
+/*
+class Node {
+    int data;
+    Node next;
+
+    Node(int d)
+    {
+        data = d;
+        next = null;
+    }
+}*/
+
+// simple idea hai 
+// pura linked list chaan maro, aur dekho kitne 0's, 1's, 2's hai
+// count maintain kro aur phir starting me zero dalo jab tak uska count 0 nhi hota
+// baad me ones aur twos, bss
+
+class Solution {
+    public Node segregate(Node head) {
+        // code here
+        if(head == null || head.next == null)
+            return head;
+        
+        Node temp = head;
+        
+        int countZeroes = 0;
+        int countOnes = 0;
+        int countTwos = 0;
+        
+        while(temp != null)
+        {
+            if(temp.data == 0)
+                countZeroes++;
+            else if(temp.data == 1)
+                countOnes++;
+            else
+                countTwos++;
+            
+            temp = temp.next;
+        }
+        
+        temp = head;
+        
+        while(temp != null)
+        {
+            if(countZeroes > 0)
+            {
+                temp.data = 0;
+                countZeroes--;
+            }
+            else if(countOnes > 0)
+            {
+                temp.data = 1;
+                countOnes--;
+            }
+            else
+            {
+                temp.data = 2;
+                countTwos--;
+            }
+            
+            temp = temp.next;
+        }
+        
+        return head;
+    }
+}
+-------------------------------------------------------------------------------------------------------------------------------
+
+// Approach 2 - One Pass Solution
+// Time: O(n)
+// Space: O(1)
+-------------------------------------------------------------------------------------------------------------------------------
+
+/*
+class Node {
+    int data;
+    Node next;
+
+    Node(int d)
+    {
+        data = d;
+        next = null;
+    }
+}*/
+
+// simple idea hai 
+// agar data replacement nhi kr skhte to links change krni padegi, to bss sentinel node vala concept
+// 3 sentinel nodes lagenge, zero, ones, twos k liye
+
+class Solution {
+    public Node segregate(Node head) {
+        // code here
+        if(head == null || head.next == null)
+            return head;
+        
+        Node zeroHead = new Node(-1);
+        Node oneHead = new Node(-1);
+        Node twoHead = new Node(-1);
+        
+        Node zero = zeroHead;
+        Node one = oneHead;
+        Node two = twoHead;
+        
+        Node temp = head;
+        
+        while(temp != null)
+        {
+            if(temp.data == 0)
+            {
+                zero.next = temp;
+                zero = temp;
+            }
+            else if(temp.data == 1)
+            {
+                one.next = temp;
+                one = temp;
+            }
+            else
+            {
+                two.next = temp;
+                two = temp;
+            }
+            
+            temp = temp.next;
+        }
+        
+        // handles all cases
+        zero.next = (oneHead.next != null) ? oneHead.next : twoHead.next;
+        one.next = twoHead.next;
+        two.next = null;
+        
+        // bss ye return krenge to kaam ho jaega
+        return zeroHead.next;
+    }
+}
