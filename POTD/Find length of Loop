@@ -1,0 +1,48 @@
+// Time: O(n) (in worst case 2n)
+// Space: O(1)
+-------------------------------------------------------------------------------------------------------------
+/*
+class Node {
+    int data;
+    Node next;
+
+    Node(int x) {
+        data = x;
+        next = null;
+    }
+}
+*/
+
+class Solution {
+    public int lengthOfLoop(Node head) {
+        if (head == null)
+            return 0;
+
+        Node slow = head;
+        Node fast = head;
+
+        // pahle cycle detect krte hai
+        while (fast != null && fast.next != null)
+        {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (slow == fast) // cycle detected
+            { 
+                
+                // ab cycle ki len nikalo
+                int lenLoop = 1; // ek se isliye kyuki fast ko ek baar already aage khiskana hai so
+                fast = fast.next;
+                
+                while (slow != fast) {
+                    fast = fast.next;
+                    lenLoop++;
+                }
+                return lenLoop;
+            }
+        }
+
+        // No cycle present to phir return 0
+        return 0;
+    }
+}
