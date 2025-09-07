@@ -66,8 +66,85 @@ class Solution {
 ----------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------
 
-// Brute Force - Naive Tarika 😅
+// Approach 2 - Naive Tarika no. 2 😅
 
-// Time Complexity: O(N * K) + O((N * K) log(N * K)) + O(N * K)
-// Space Complexity: O(N * K)
+// Time Complexity: O(N * K²) - kyuki har baar sare k lists k nodes ko double visit krna pad raha hai
+// Space Complexity: O(1)
+----------------------------------------------------------------------------------------------------------------------------------
+/*
+class Node {
+    int data;
+    Node next;
+
+    Node(int x) {
+        data = x;
+        next = null;
+    }
+}
+*/
+
+/*
+    brute force thoda bhari hai to kyu n in place merge kre in lists ko
+    like 2 LL ko merge krna to ata hai hame to phir aisa kte do LL merge kro
+    aur aage badho phir pahle vali merged list k sath naye vali list ko merge kro
+    and repeat the process
+*/
+class Solution {
+    public static Node mergeTwoLL(Node head1, Node head2)
+    {
+        Node dummy = new Node(-1);
+        Node temp = dummy;
+        
+        while(head1 != null && head2 != null)
+        {
+            if(head1.data <= head2.data)
+            {
+                temp.next = head1;
+                temp = head1;
+                head1 = head1.next;
+            }
+            else
+            {
+                temp.next = head2;
+                temp = head2;
+                head2 = head2.next;
+            }
+        }
+        
+        if (head1 != null)
+            temp.next = head1;
+            
+        if (head2 != null)
+            temp.next = head2;
+            
+        return dummy.next;
+    }
+    
+    Node mergeKLists(Node[] arr) {
+        // code here
+        int n = arr.length;
+        
+        if(n == 0)
+            return null;
+        
+        Node head = arr[0];
+        
+        for(int i = 1; i < n; i++)
+        {
+            Node head2 = arr[i];
+            
+            head = mergeTwoLL(head, head2);
+        }
+        
+        return head;
+    }
+}
+
+----------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------
+
+// Optimal Solution
+
+// Time Complexity: O()
+// Space Complexity: O()
 ----------------------------------------------------------------------------------------------------------------------------------
