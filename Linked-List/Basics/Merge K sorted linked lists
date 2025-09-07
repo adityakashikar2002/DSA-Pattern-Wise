@@ -146,7 +146,7 @@ class Solution {
 // Optimal Solution -- Uttam Solution 😅
 
 // Time Complexity: O((n * k) log(k))
-// Space Complexity: O(1) 
+// Space Complexity: O(log(k)) 
 ----------------------------------------------------------------------------------------------------------------------------------
 
 /*
