@@ -1,0 +1,78 @@
+// Time: O(n logn)
+// Space: O(logn)
+-----------------------------------------------------------------------------------------------------------------------------
+/*
+class Node {
+    int data;
+    Node next;
+
+    Node(int key) {
+        data = key;
+        next = null;
+    }
+}
+*/
+
+class Solution {
+    public static Node getMid(Node node)
+    {
+        Node slow = node;
+        Node fast = node.next; // isliye taki even length k liye LL k yee 1st mid ko point kre
+        
+        while(fast != null && fast.next != null)
+        {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        
+        return slow; // ye hamesha mid ko point krega
+        
+    }
+    
+    public Node mergeSort(Node head) {
+        // code here
+        if(head == null || head.next == null)
+            return head;
+        
+        Node mid = getMid(head);
+        
+        Node right = mid.next;
+        
+        mid.next = null; // connection break
+        
+        Node leftSorted = mergeSort(head); // yee head se mid tak jaha connection break kiya left part hoga
+        Node rightSorted = mergeSort(right); // yee vala right hoga
+        
+        return merge(leftSorted, rightSorted);
+    }
+    
+    public static Node merge(Node h1, Node h2)
+    {
+        Node dummy = new Node(-1);
+        Node temp = dummy;
+        
+        while(h1 != null && h2 != null)
+        {
+            if(h1.data <= h2.data)
+            {
+                temp.next = h1;
+                h1 = h1.next;
+            }
+            else
+            {
+                temp.next = h2;
+                h2 = h2.next;
+            }
+            
+            temp = temp.next;
+        }
+        
+        if(h1 != null)
+            temp.next = h1;
+        
+        if(h2 != null)
+            temp.next = h2;
+            
+        return dummy.next;
+    }
+}
