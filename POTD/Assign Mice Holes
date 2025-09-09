@@ -1,0 +1,21 @@
+// Time: O(n logn)
+// Space: O(1)
+-----------------------------------------------------------------------------------
+class Solution {
+    public int assignHole(int[] mices, int[] holes) {
+        // code here
+        int n = mices.length;
+        
+        Arrays.sort(mices);
+        Arrays.sort(holes);
+        
+        int maxMinutes = 0;
+        
+        for(int i = 0; i < n; i++)
+        {
+            maxMinutes = Math.max(maxMinutes, Math.abs(mices[i] - holes[i]));
+        }
+        
+        return maxMinutes;
+    }
+};
