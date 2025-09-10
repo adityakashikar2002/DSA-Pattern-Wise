@@ -1,0 +1,74 @@
+// Time: O(n)
+// Space: O(1)
+-------------------------------------------------------------------------------------------------------
+class Solution {
+    public String largestSwap(String s) {
+        // code here
+        
+        char[] digits = s.toCharArray();
+        int n = digits.length;
+        
+        int[] lastIndex = new int[10];
+        
+        for(int i = 0; i < n; i++)
+        {
+            lastIndex[digits[i] - '0'] = i;
+        }
+        
+        for(int i = 0; i < n; i++)
+        {
+            int currDigit = digits[i] - '0';
+            
+            for (int d = 9; d > currDigit; d--) {
+                if (lastIndex[d] > i) {
+                    // Swap
+                    char temp = digits[i];
+                    digits[i] = digits[lastIndex[d]];
+                    digits[lastIndex[d]] = temp;
+
+                    // Return result after one swap
+                    return new String(digits);
+                }
+            }
+        }
+        
+        return s;
+    }
+-------------------------------------------------------------------------------------------------------
+// Time: O(n)
+// Space: O(1)
+-------------------------------------------------------------------------------------------------------
+class Solution {
+    public String largestSwap(String s) {
+        int n = s.length();
+        StringBuilder sb = new StringBuilder(s);
+
+        int[] lastIndex = new int[10];
+
+        // Record last index of each digit
+        for (int i = 0; i < n; i++) {
+            lastIndex[s.charAt(i) - '0'] = i;
+        }
+
+        // Traverse from left to right
+        for (int i = 0; i < n; i++) {
+            int currDigit = s.charAt(i) - '0';
+
+            // Look for bigger digit on the right
+            for (int d = 9; d > currDigit; d--) {
+                if (lastIndex[d] > i) {
+                    // Swap in StringBuilder
+                    char temp = sb.charAt(i);
+                    sb.setCharAt(i, sb.charAt(lastIndex[d]));
+                    sb.setCharAt(lastIndex[d], temp);
+
+                    return sb.toString();
+                }
+            }
+        }
+
+        return s; // no swap needed
+    }
+}
+
+}
