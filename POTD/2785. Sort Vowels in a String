@@ -48,7 +48,52 @@ class Solution {
 ----------------------------------------------------------------------------------------------------------------------
 
 // Optimal Approach - 
-// Time: O()
-// Space: O()
+// Time: O(n)
+// Space: O(n) - for StringBuilder (O(1) extra apart from output string)
 ----------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------
+import java.util.*;
+// ek idea hai ki sare vowels ka ek freq array bana lo jisme unke occurence ka count hoga
+// phir jab dursi baar iterate krenge to bss array to sorted hoga vowels ka jaha freq zero nhi hogi vaha
+// ruk jana , aur uss character ko replace kr dena uss vowel se
+// at last uss char ki frequency -- kr dene ka 😎
+class Solution {
+
+    public static boolean checkIsVowel(char ch) {
+        return (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' ||
+                ch == 'A' || ch == 'E' || ch == 'I' || ch == 'O' || ch == 'U');
+    }
+
+    public String sortVowels(String s) {
+        int n = s.length();
+
+        int[] freq = new int[128];
+        
+        // collect vowels
+        for (int i = 0; i < n; i++) {
+            char ch = s.charAt(i);
+            if (checkIsVowel(ch)) {
+                freq[ch]++; // vowel hai to array me uski freq badane ka
+            }
+        }
+
+        // replace vowels in order
+        int ascii = 0; // index ka kaam krega
+
+        StringBuilder sb = new StringBuilder(s);
+
+        for (int i = 0; i < n; i++) {
+            char ch = s.charAt(i);
+
+            if (checkIsVowel(ch)) {
+                while(ascii < 128 && freq[ascii] == 0)  // jab tak freq 0 hai matlab vo ek to consonant hai,
+                    ascii++;                            //  nhi to vowel hai but string me nhi hai so aage badho
+                
+                sb.setCharAt(i, (char) ascii);          // replace maro
+                freq[ascii]--;                          // freq ghatao  
+            }
+        }
+
+        return sb.toString();                           // last me convert kr do
+    }
+}
