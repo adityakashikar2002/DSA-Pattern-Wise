@@ -1,0 +1,56 @@
+// Time: O(n)
+// Space: O(1)
+----------------------------------------------------------------------------------------------------------------
+/** 
+    simple idea hai, ek count array le lo 26 size ka
+    usme character ka count store kro
+    phir vohi max value ka code likho aur sum return kro
+*/
+class Solution {
+
+    public static boolean checkIsVowel(char ch)
+    {
+        switch(ch)
+        {
+            case 'a':
+            case 'e':
+            case 'i':
+            case 'o':
+            case 'u':
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public int maxFreqSum(String s) {
+        int n = s.length();
+
+        int[] arr = new int[26];
+
+        for(int i = 0; i < n; i++)
+        {
+            int ch = s.charAt(i) - 'a';
+            arr[ch]++;
+        } 
+
+        int maxVowelF = 0;
+        int maxConsonantF = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            char ch = s.charAt(i);
+
+            if(checkIsVowel(ch))
+            {
+                maxVowelF = Math.max(maxVowelF, arr[ch - 'a']);
+            }
+            else
+            {
+                maxConsonantF = Math.max(maxConsonantF, arr[ch - 'a']);
+            }
+        }
+
+        return maxVowelF + maxConsonantF;
+    }
+}
