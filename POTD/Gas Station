@@ -1,0 +1,80 @@
+// Brute Force
+// Time: O(n²)
+// Space: O(1)
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+/*
+    idea yee hoga ki har ek station ko starting point leke dekho aur, dekho answer ata hai ki nhi
+*/
+class Solution {
+    public int startStation(int[] gas, int[] cost) {
+        int n = gas.length;
+
+        for (int start = 0; start < n; start++) {
+            int fuel = 0;
+            int stationsVisited = 0;
+            int station = start;
+
+            while (stationsVisited < n) {
+                fuel += gas[station] - cost[station];
+                if (fuel < 0) 
+                    break; // ran out of fuel
+                
+                // move to next station
+                station = (station + 1) % n;
+                stationsVisited++;
+            }
+
+            if (stationsVisited == n) 
+                return start; // completed circle
+        }
+        return -1;
+    }
+}
+
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+// Optimal Solution
+// Time: O(n)
+// Space: O(1)
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+
+/*
+    simple idea hoga ki agar mera total fuel kam hoga total fuel cost se to mai cycle complete nhi kr skhta
+*/
+class Solution {
+    public int startStation(int[] gas, int[] cost) {
+        int n = gas.length;
+
+        int totalFuel = 0;
+        int totalCost = 0;
+        
+        for(int i = 0; i < n; i++)
+        {
+            totalFuel += gas[i];
+            totalCost += cost[i];
+        }
+        
+        if(totalFuel < totalCost)
+            return -1;
+        
+        
+        int fuel = 0;
+        int startStation = 0;
+        
+        for(int station = 0; station < n; station++)
+        {
+            fuel += gas[station] - cost[station]; 
+            
+            if (fuel < 0) // if at any station fuel goes negative means apn vaha se start nhi kr skhte
+            {
+                // can't start from 'startStation'
+                startStation = station + 1;
+                fuel = 0;
+            }
+        }
+        
+        return startStation;
+    }
+}
