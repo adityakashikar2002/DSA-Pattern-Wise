@@ -134,7 +134,124 @@ class Solution {
 ----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------
 // Optimal Approach -
-// Time: O(q * w * l)
-// Space: O(q)
+// Time: O(w * L + q * L)
+// Space: O(w * L + q)
 ----------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------
+
+/**
+    simple idea hai 
+    1 - set
+    2 - HashMap ki garaj hai 😅
+
+    ------------------------------------
+
+    pahe wordlist ko ek set me transfer kro taki exact match vale aram se mil skhte
+    phir capitalization issue k liye wordlist k sare elements ko lowercase me convert kro aur usko as a key value pair store kro
+    vowel error k liye phir se, wordlist k har word ko jaha vowel hai vaha * se uss character ko replace mark store kro, key - value
+
+    bss jab ab query kroge to sare answers jaldi milenge in O(1) bss conversion ko word ki length anusar time legega
+*/
+
+class Solution {
+    public static boolean checkIsVowel(char ch)
+    {
+        switch(ch)
+        {
+            case 'a':
+            case 'e':
+            case 'i':
+            case 'o':
+            case 'u':
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+                return true;
+            
+            default :
+                return false;
+        }
+    } 
+
+    public static String vowelConvert(String word)
+    {
+        StringBuilder sb = new StringBuilder(word);
+
+        for(int i = 0; i < word.length(); i++)
+        {
+            char ch = word.charAt(i);
+
+            if(checkIsVowel(ch))
+            {
+                sb.setCharAt(i, '*'); // agar vowel hai to uss char ko * se replace maro
+            }
+
+        }
+
+        return sb.toString();
+    }
+
+    public String[] spellchecker(String[] wordlist, String[] queries) {
+        int w = wordlist.length;
+        int q = queries.length;
+
+        String[] res = new String[q];
+
+        Set<String> set = new HashSet<>();
+        HashMap<String, String> caseMap = new HashMap<>();
+        HashMap<String, String> vowelMap = new HashMap<>();
+
+        for(int i = 0; i < w; i++)
+        {
+            String word = wordlist[i];
+            set.add(word); // set me add kro word ko
+
+            String lowerWord = word.toLowerCase(); // lowercase me convert kro wor ko
+
+            if(!caseMap.containsKey(lowerWord))
+            {
+                caseMap.put(lowerWord, word);
+            }
+
+            String vowelKey = vowelConvert(lowerWord); // lowercase me converted word ko * se replace maro characters me
+
+            if(!vowelMap.containsKey(vowelKey))
+            {
+                vowelMap.put(vowelKey, word);
+            }
+        }
+
+        for(int i = 0; i < q; i++)
+        {
+            String query = queries[i];
+
+            if(set.contains(query))
+            {
+                res[i] = query;
+                continue;
+            }
+
+            String qLowerCase = query.toLowerCase();
+
+            if(caseMap.containsKey(qLowerCase))
+            {
+                res[i] = caseMap.get(qLowerCase);
+                continue;
+            }
+
+            String qVowelCase = vowelConvert(qLowerCase);
+
+            if(vowelMap.containsKey(qVowelCase))
+            {
+                res[i] = vowelMap.get(qVowelCase);
+                continue;
+            }
+
+            res[i] = ""; // agar sab fail hue matlab no match res me "" empty String jaega
+        }
+
+        return res;
+    }
+}
