@@ -1,0 +1,140 @@
+// Brute Approach -
+// Time: O(q * w * l)
+// Space: O(q)
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+
+    public static boolean checkError(String a, String b)
+    {
+        for(int i = 0; i < a.length(); i++)
+        {
+            char ca = Character.toLowerCase(a.charAt(i));
+            char cb = Character.toLowerCase(b.charAt(i));
+
+            if(ca == cb)
+                continue;
+            
+            if(checkIsVowel(ca) && checkIsVowel(cb))
+                continue;
+            
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean checkIsVowel(char ch)
+    {
+        switch(ch)
+        {
+            case 'a':
+            case 'e':
+            case 'i':
+            case 'o':
+            case 'u':
+            case 'A':
+            case 'E':
+            case 'I':
+            case 'O':
+            case 'U':
+                return true;
+            
+            default :
+                return false;
+        }
+    } 
+
+    public String[] spellchecker(String[] wordlist, String[] queries) {
+        int w = wordlist.length;
+        int q = queries.length;
+
+        String[] res = new String[q]; 
+
+        for(int i = 0; i < q; i++)
+        {
+            String query = queries[i];
+            String ans = "";
+
+            // Step 1: sabse pahle exact match k liye dekho (case-sensitive)
+            boolean match = false;
+
+            for(int j = 0; j < w; j++)
+            {
+                String word = wordlist[j];
+
+                if(query.equals(word))
+                {
+                    match = true;
+                    ans = word;
+                    break;
+                }
+            }
+
+            if(match)
+            {
+                res[i] = ans;
+                continue;
+            }
+
+            //-------------------------------------------------------------------------------------
+            //-------------------------------------------------------------------------------------
+
+            // Step 2: abhi agar exact match nhi mila to case-insensitive check kro
+
+            for(int j = 0; j < w; j++)
+            {
+                String word = wordlist[j];
+                
+                if(query.equalsIgnoreCase(word))
+                {
+                    match = true;
+                    ans = word;
+                    break;
+                }
+            }
+
+            if(match)
+            {
+                res[i] = ans;
+                continue;
+            }
+
+            //-------------------------------------------------------------------------------------
+            //-------------------------------------------------------------------------------------
+
+            // Step 3: agar aise bhi nhi mila to kuch nhi VowelError k liye dekho
+
+            for(int j = 0; j < w; j++)
+            {
+                String word = wordlist[j];
+
+                if(word.length() != query.length())
+                    continue;
+
+                if(checkError(query, word))
+                {
+                    match = true;
+                    ans = word;
+                    break;
+                }
+            }
+
+            if(match)
+                res[i] = ans;
+            else
+                res[i] = "";
+        }
+
+        return res;
+    }
+}
+
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+// Optimal Approach -
+// Time: O(q * w * l)
+// Space: O(q)
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
