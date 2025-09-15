@@ -1,0 +1,59 @@
+// Brute Approach -
+// Time: words * len of each word * len of broken characters string ~ O(W * L * B) ~ O(N * B)
+// Space: O(N)
+-------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------
+/*
+    sabse brute appraoch hoga ki, strings me se words ko separate kro aur un words me agar koi be ek broken
+    letter aya to vo word fully type nhi kr skhte
+    so uska ek check rakho
+    aise har word k liye dekho
+*/
+class Solution {
+    public int canBeTypedWords(String text, String brokenLetters) {
+        String[] words = text.split(" "); // words me split kiya
+
+        int n = words.length;
+
+        int canType = 0; // ye bataega ki kitne words fully type kr skhte
+
+        for(int i = 0; i < n; i++)
+        {
+            String word = words[i]; // word 
+            boolean type = true;    // check krega
+
+            for(int j = 0; j < word.length(); j++)
+            {
+                char ch = word.charAt(j); // liye hue word ka character by character comparision
+
+                for(int k = 0; k < brokenLetters.length(); k++) // broken letters ki string se char by char check krnge
+                {
+                    char b = brokenLetters.charAt(k);
+
+                    if(ch == b)
+                    {
+                        type = false;
+                        break;
+                    }
+                }
+
+                if(!type)  // agar type nhi kr skhte to aage k characters check krna bekar jaega uss word k liye so break
+                    break;
+                    
+            }
+
+            if(type)   // agar type kr skhte to bss count badao
+                canType++;
+        }
+
+        return canType;
+    }
+}
+
+-------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------
+// Optimal Approach -
+// Time:
+// Space: O(N)
+-------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------
