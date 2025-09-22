@@ -1,0 +1,27 @@
+// Time: O(n)
+// Space: O(1)
+-------------------------------------------------------------------------
+class Solution {
+    public int maxFrequencyElements(int[] nums) {
+        int n = nums.length;
+        int maxF = -1;
+        int[] freq = new int[101];
+
+        for(int i = 0; i < n; i++)
+        {
+            freq[nums[i]]++;
+            maxF = Math.max(maxF, freq[nums[i]]);
+        }
+
+        int res = 0;
+        for(int i = 0; i < n; i++)
+        {
+            if(maxF == freq[nums[i]])
+            {
+                res++; 
+            }
+        }
+
+        return res;
+    }
+}
