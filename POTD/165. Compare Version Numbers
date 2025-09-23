@@ -1,6 +1,6 @@
 // Brute Force
-// Time: O(n)
-// Space: O(n)
+// Time: O(max(n1,n2))
+// Space: O(n1 + n2)
 --------------------------------------------------------------------------------------------------------
 /*
     sabse asan tarika hoga ki string ko array me split kro, har ek number barobar split ho jaega
@@ -29,7 +29,49 @@ class Solution {
 
 --------------------------------------------------------------------------------------------------------
 // Optimal Solution
-// Time: O(n)
+// Time: O(max(n1,n2))
 // Space: O(1)
 --------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------
+/*
+    dursa tarika hoga ki bina split kiya string ko character by character compare kro
+    '.' aya to skip maro bss vohi process
+*/
+class Solution {
+    public int compareVersion(String version1, String version2) {
+        int v1 = version1.length();
+        int v2 = version2.length();
+
+        int i = 0;
+        int j = 0;
+
+        while(i < v1 || j < v2) // koi ek string khatam bhi ho gai to bhi niche a and b se koi n koi 0 jarror rahega
+        {
+            int a = 0; 
+            int b = 0;
+
+            while(i < v1 && version1.charAt(i) != '.')
+            {
+                a = a * 10 + (version1.charAt(i) - '0'); // yee sare characters ko jodke dega // like 1.123.6 so 123 ko brobar..
+                i++;
+            }
+
+            while(j < v2 && version2.charAt(j) != '.')
+            {
+                b = b * 10 + (version2.charAt(j) - '0');
+                j++;
+            }
+            
+            if(a < b)
+                return -1;
+            
+            if(a > b)
+                return 1;
+            
+            i++;
+            j++;
+        }
+
+        return 0;
+    }
+}
