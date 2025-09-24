@@ -1,0 +1,63 @@
+Time Complexity: O(denominator)
+
+Space Complexity: O(denominator)
+----------------------------------------------------------------------------------------------------------------------
+/**
+    simple idea hai, agar num zero hai, to ans zero hoga
+    pahle to integer vale quotient ko result me add kr do
+    then abhi agar koi negative hai ya dono num, deno negative hai uska check kro aur vaise - sign lagao
+
+    ab . add kro
+
+    abhi hashmap leke rem zero hone tak check kro agar remainder repeat hota hai matlab cycle repeat hoti
+    vaha parenthesis lagao aur return maro
+
+    baki rem ko 10 se multiply krte raho aur process continue krte rahe
+    
+     
+
+
+*/
+class Solution {
+    public String fractionToDecimal(int numerator, int denominator) {
+        if(numerator == 0)
+            return "0";
+        
+        StringBuilder str = new StringBuilder("");
+
+        if ((numerator < 0) ^ (denominator < 0)) {
+            str.append("-");
+        }
+
+        long num = Math.abs((long) numerator);
+        long deno = Math.abs((long) denominator);
+
+        str.append(num / deno);
+
+        long rem = num % deno;
+        if(rem == 0)
+            return str.toString();
+        
+        str.append(".");
+
+        HashMap<Long, Integer> map = new HashMap<>();
+
+        while(rem > 0)
+        {
+            if(map.containsKey(rem))
+            {
+                int index = map.get(rem);
+                str.insert(index, "(");
+                str.append(")");
+                return str.toString();
+            }
+
+            map.put(rem, str.length());
+            rem = rem * 10;
+            str.append(rem / deno);
+            rem = rem % deno;
+        }
+
+        return str.toString();
+    }
+}
