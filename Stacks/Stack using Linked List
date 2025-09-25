@@ -1,0 +1,56 @@
+// Time: O(q)
+// Space: O(n)
+-------------------------------------------------------------------------------------------------
+// Node class
+/* class Node {
+    int data;
+    Node next;
+
+    Node(int new_data) {
+        data = new_data;
+        next = null;
+    }
+} */
+
+// Stack class
+class myStack {
+    Node head;  // top of the stack
+    int count;  // current size
+
+    public myStack() {
+        head = null;
+        count = 0;
+    }
+
+    public boolean isEmpty() {
+        return head == null;
+    }
+
+    public void push(int x) {
+        Node newNode = new Node(x);
+        
+        newNode.next = head; // insert at the beginning
+        
+        head = newNode;
+        count++;
+    }
+
+    public void pop() {
+        if (!isEmpty()) 
+        {
+            head = head.next; // remove top
+            count--;
+        }
+    }
+
+    public int peek() {
+        if (isEmpty()) 
+            return -1;
+            
+        return head.data;
+    }
+
+    public int size() {
+        return count;
+    }
+}
