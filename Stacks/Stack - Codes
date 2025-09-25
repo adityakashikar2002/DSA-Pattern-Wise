@@ -310,67 +310,74 @@ public class stack_LinkedList {
 -------------------------------------------------------------------------------
 
 // Linked Representation of Stack - Generic DataType
-import java.util.ArrayList;
-
-public class StackDynamic<T> {
-    private ArrayList<T> list;
-
-    public StackDynamic() {
-        list = new ArrayList<>();
+// Generic Linked Representation of Stack
+public class StackLinkedList<T> {
+    
+    class Node {
+        T data;
+        Node next;
+        
+        public Node(T data) {
+            this.data = data;
+            this.next = null;
+        }
     }
-
-    // Push element
+    
+    private Node head;
+    
+    public StackLinkedList() {
+        this.head = null;
+    }
+    
+    // Push element onto stack
     public void push(T item) {
-        list.add(item);
+        Node newNode = new Node(item);
+        newNode.next = head;
+        head = newNode;
     }
-
-    // Pop element
+    
+    // Pop element from stack
     public T pop() {
-        if (list.isEmpty()) {
-            throw new RuntimeException("Stack Underflow");
-        }
-        return list.remove(list.size() - 1);
+        if (head == null)
+            throw new RuntimeException("Stack UnderFlow");
+        
+        T item = head.data;
+        head = head.next;
+        return item;
     }
-
-    // Peek at top element
+    
+    // Peek top element
     public T peek() {
-        if (list.isEmpty()) {
+        if (head == null)
             throw new RuntimeException("Stack is Empty");
-        }
-        return list.get(list.size() - 1);
+        return head.data;
     }
-
-    // Check if stack is empty
-    public boolean isEmpty() {
-        return list.isEmpty();
-    }
-
-    // Stack size
-    public int size() {
-        return list.size();
-    }
-
-    // Print stack contents
+    
+    // Print stack
     public void printStack() {
-        for (T item : list) {
-            System.out.print(item + " ");
+        Node temp = head;
+        System.out.print("Stack is :- ");
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
         }
         System.out.println();
     }
-
-    // Example usage
+    
     public static void main(String[] args) {
-        // Integer stack
-        StackDynamic<Integer> intStack = new StackDynamic<>();
+        StackLinkedList<Integer> intStack = new StackLinkedList<>();
+        
         intStack.push(10);
         intStack.push(20);
         intStack.push(30);
         intStack.printStack();
+        
         System.out.println("Popped: " + intStack.pop());
+        intStack.printStack();
         System.out.println("Peek: " + intStack.peek());
-
-        // String stack
-        StackDynamic<String> strStack = new StackDynamic<>();
+        
+        // Example with Strings
+        StackLinkedList<String> strStack = new StackLinkedList<>();
         strStack.push("Hello");
         strStack.push("World");
         strStack.printStack();
