@@ -1,0 +1,94 @@
+// Brute Approach - 
+// Time: O(n)
+// Space: O(n)
+---------------------------------------------------------------------------------------------------------
+/*
+    sabse brute tarika hoga ki jab bhi '(' ye mile to stack me push kro
+    agar ')' ye mila to valid hai ki nhi check kro, if yes to pop kro stack se
+    agar invalid ho to count badao, matlab hame ek opening brace ki jarurat hai
+    similarly agar stack empty rahta hai and we say ch == ')' hai to bhi count badao
+    aakhir me kuch elements stack me pade rahenge so pop kro jab tak stack empty nhi hota 
+    aur iska bhi count badate chalo
+    yehi ans hoga
+*/
+class Solution {
+    public static boolean checkValid(Stack<Character> st, char ch)
+    {
+        char top = st.peek();
+        if(ch == ')' && top != '(')
+            return false;
+
+        return true; 
+    } 
+
+    public int minAddToMakeValid(String s) {
+        
+        Stack<Character> st = new Stack<>();
+        int count = 0;
+
+        for(char ch : s.toCharArray())
+        {
+            if(ch == '(')
+                st.push(ch);
+            else
+            {
+                if(st.isEmpty())
+                    count++;
+                else if(checkValid(st, ch))
+                {
+                    st.pop();
+                }
+                else
+                {
+                    count++;
+                }
+            }
+        }
+
+        while(!st.isEmpty())
+        {
+            st.pop();
+            count++;
+        }
+
+        return count;
+    }
+}
+---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
+
+// Optimal Approach - 
+// Time: O(n)
+// Space: O(1)
+---------------------------------------------------------------------------------------------------------
+/**
+    dusra smart way hoga ki bina stack me store kiye, take two variables open and needed
+    '(' agar yee hai to open ++ kro matlab hamare paas itne open braces hai abhi
+    agar hame ')' yeh milta hai aur open > 0 hai matlab match ho gaya to apn generally pop krte
+    so open-- kro, ab ek kam ho gaya, 
+    agar open < 0 matlab ek bhi '(' nhi hai 
+    so needed ++ kro matlab hame chaiye hoga n kuch match krne k liye valid banane k liye so...
+    ans = open + needed
+    jitne open bach gaye + jitne valid banane k liye chaiye minimum itne add kiye to kaam ban jaega
+*/
+
+class Solution {
+    public int minAddToMakeValid(String s) {
+        int open = 0; // kitne braces open hai / close krne hai  
+        int needed = 0; // kitne ko valid banana hai / inka sathi banana hai 😂
+
+        for(int i = 0; i < s.length(); i++)
+        {
+            char ch = s.charAt(i);
+
+            if(ch == '(')
+                open++;
+            else if(open > 0) // ')' ye hai aur match bhi krta hai to phir open--;
+                open--;
+            else
+                needed++; // nhi to sathi dhoondna padega
+        }
+
+        return open + needed; // ans
+    }
+}
