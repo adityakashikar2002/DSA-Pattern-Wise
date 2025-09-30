@@ -31,3 +31,43 @@ class Solution {
         return st.isEmpty();
     }
 }
+
+------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------
+// Time: O(n)
+// Space: O(1) ~ Ignoring the space of character array as Strings in Java are immutable
+------------------------------------------------------------------------------------------------------------------
+/*
+    java me strings immutable hai so hum in place operations k liye ek charArray lenge vaha in place stack vala kaam krenge 
+*/
+class Solution {
+    public boolean isBalanced(String s) {
+        // code here
+        char[] stack = s.toCharArray();
+        int top = -1;
+        
+        for(int i = 0; i < s.length(); i++)
+        {
+            char ch = stack[i];
+            
+            if(ch == '(' || ch == '[' || ch == '{')
+                stack[++top] = s.charAt(i); // push in stack
+            else
+            {
+                if(top == -1)
+                    return false; // empty stack raha to invalid hai
+                
+                char topStack = stack[top];
+                top--; // pop kro
+                
+                if(ch == ')' && topStack != '(' || ch == ']' && topStack != '[' || ch == '}' && topStack != '{')
+                    return false;
+                
+                
+                
+            }
+        }
+        
+        return top == -1;
+    }
+}
