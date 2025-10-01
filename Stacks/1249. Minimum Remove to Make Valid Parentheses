@@ -59,8 +59,87 @@ class Solution {
 
 -----------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------
-Approach 2 - Using Two Pass Method
-// Time: O(n)
-// Space: O(1)
+Approach 2 - Using Two Pass Method - (Better)
+// Time: O(2n) ~ O(n)
+// Space: O(n) ~ O(1) (if we ignore the resultant string auxiliary space)
+-----------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+/**
+    dursa tarika hai agar space ko eliminate krna hai (bina stack aur set k)
+    two pass solution
+    1st pass me left to right scan krk pata krnge ki kya koi extra ')' hai kya
+    2nd pass me 1st pass ki resultant string ko right se left scan krnge ki koi extra '(' hai kya
+    simple idea hai, jo extra mila usko skip kr denge
+*/
+class Solution {
+    public String minRemoveToMakeValid(String s) {
+        int n = s.length();
+
+        int open = 0;
+        int close = 0;
+
+        StringBuilder str = new StringBuilder("");
+
+        // First Pass Left -> Right checks for extra ')'
+        for(int i = 0; i < n; i++)
+        {
+            char ch = s.charAt(i);
+            
+            if(ch >= 'a' && ch <= 'z') // a-z to append marna hai hai
+                str.append(ch);
+            else if(ch == '(') // open brace mila to open ka count badao aur uska append kro
+            {
+                open++;
+                str.append(ch);
+            }
+            else if(open > 0) // agar closing brace mila to kya opening brace hai ? agar hai to isko bhi append krenge
+            {                 // kyuki match hogaya so invalid parentheses to nhi hai
+                open--;
+                str.append(ch);
+            }
+            else // agar ye uppar se koi match nhi hota aur jab hamare paas bss ')' brace hai
+            {    // without any open brace available so yee invalid ho jaega so.. skip maro
+                continue; // vaise else part likhne ki garaj nhi 😅
+            }
+
+        }
+
+        StringBuilder res = new StringBuilder("");
+
+        // Second Pass Right -> Left  checks for extra '(' same kaam in opposite direction
+        for(int i = str.length() - 1; i >= 0; i--)
+        {
+
+            char ch = str.charAt(i);
+
+            if(ch >= 'a' && ch <= 'z')
+                res.append(ch);
+            else if(ch == ')')
+            {   
+                close++;
+                res.append(ch);
+            }
+            else if(close > 0)
+            {
+                close--;
+                res.append(ch);
+            }
+            else
+            {
+                continue;
+            }
+        }
+
+
+        return res.reverse().toString(); // kyuki append kiya tha isliye pahle reverse krna padega
+    }
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------
+Approach 3 - Using Two Pass Method - (Better)
+// Time: O(2n) ~ O(n)
+// Space: O(n) ~ O(1) (if we ignore the resultant string auxiliary space)
 -----------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------
