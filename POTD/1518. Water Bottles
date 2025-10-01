@@ -1,0 +1,44 @@
+Approach 1 - Brute Approach
+Time complexity: O(numBottles / numExchange)
+Space complexity: O(1)
+-----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+/*
+    simple idea hai jab tak hamare pass itni empty bottles nhi bachti ki hum exchange kr skhe tab tak chalne do
+*/
+class Solution {
+    public int numWaterBottles(int numBottles, int numExchange) {
+        int total = numBottles;
+        int empty = numBottles;
+
+        while (empty >= numExchange) {
+            int newBottles = empty / numExchange;  // how many new bottles you can get
+            total += newBottles;                   // drink them
+            empty = newBottles + (empty % numExchange); // remaining empty bottles
+        }
+
+        return total;
+    }
+}
+
+-----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+Approach 2 - Formula Based
+Time complexity: O(1)
+Space complexity: O(1)
+-----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+/**
+ * Each exchange effectively costs (numExchange - 1) empty bottles 
+ * because you give numExchange and get 1 back after drinking.
+ * 
+ * Formula: total = numBottles + (numBottles - 1) / (numExchange - 1)
+ *
+ * Example: numBottles = 9, numExchange = 3
+ *          total = 9 + (9 - 1) / (3 - 1) = 9 + 4 = 13
+ */
+class Solution {
+    public int numWaterBottles(int numBottles, int numExchange) {
+        return numBottles + (numBottles - 1) / (numExchange - 1);
+    }
+}
