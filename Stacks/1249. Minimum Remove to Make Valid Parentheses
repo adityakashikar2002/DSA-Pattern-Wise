@@ -138,8 +138,67 @@ class Solution {
 
 -----------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------
-Approach 3 - Using Two Pass Method - (Better)
+Approach 3 - Using Two Pass Method - (Slightly More Better)
 // Time: O(2n) ~ O(n)
 // Space: O(n) ~ O(1) (if we ignore the resultant string auxiliary space)
 -----------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------
+
+/**
+    theesra tarika hai two pass solution but slight change
+    1st pass me open ki value count kr lete 
+    2nd pass me right to left scan krte vakht jitne open hai unko skip marne ka append hi mat kro
+    
+*/
+class Solution {
+    public String minRemoveToMakeValid(String s) {
+        int n = s.length();
+
+        int open = 0;
+
+        StringBuilder str = new StringBuilder("");
+
+        // First Pass Left -> Right checks for extra ')'
+        for(int i = 0; i < n; i++)
+        {
+            char ch = s.charAt(i);
+            
+            if(ch >= 'a' && ch <= 'z') // a-z to append marna hai hai
+                str.append(ch);
+            else if(ch == '(') // open brace mila to open ka count badao aur uska append kro
+            {
+                open++;
+                str.append(ch);
+            }
+            else if(open > 0) // agar closing brace mila to kya opening brace hai ? agar hai to isko bhi append krenge
+            {                 // kyuki match hogaya so invalid parentheses to nhi hai
+                open--;
+                str.append(ch);
+            }
+
+        }
+
+        StringBuilder res = new StringBuilder("");
+
+        // Second Pass Right -> Left  checks for extra '(' same kaam in opposite direction
+        for(int i = str.length() - 1; i >= 0; i--)
+        {
+
+            char ch = str.charAt(i);
+
+            if(ch >= 'a' && ch <= 'z' || ch == ')')
+                res.append(ch);
+            else if(ch == '(' && open > 0) // agar yee extra vala mila to skip mara count decrement kr di
+            {   
+                open--;
+            }
+            else              // ab kuch nhi ab '(' ye aya to append kr skhte
+            {
+                res.append(ch);
+            }
+        }
+
+
+        return res.reverse().toString(); // kyuki append kiya tha isliye pahle reverse krna padega
+    }
+}
