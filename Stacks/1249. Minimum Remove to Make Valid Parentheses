@@ -1,0 +1,66 @@
+Approach 1 - Using Stack & HashSet - (Brute)
+// Time: O(3n) ~ O(n)
+// Space: O(3n) ~ O(n)
+-----------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------
+/*
+    sabse asan tarika hoga ki, ek stack me jaise valid parentheses lete vaise kro push and pop vala kaam
+    but iss baar '(' ye push krne k bajah, index push kro uska
+    agar stack empty nhi rahta matlab '(' yee additional kahi to bhi aya hai
+    same goes for if stack empty ho gaya lekin ')' bach jata hai matlab closing brace jyada hai, uska index store kro
+    bss phir ek new string banao jisme yee indexes apn skip krenge
+    store krne k liye HashSet le lo taki lookup O(1) me ho jaye
+*/
+class Solution {
+    public String minRemoveToMakeValid(String s) {
+        int n = s.length();
+
+        Stack<Integer> st = new Stack<>(); // '(' k indexes store krenge stack me 
+        Set<Integer> set = new HashSet<>(); // yaha sare bache hue indexes store krenge jo skip krne hai
+
+        for(int i = 0; i < n; i++)
+        {
+            char ch = s.charAt(i);
+
+            if(ch >= 'a' && ch <= 'z') // agar a-z k beech k char aye to skip maro
+                continue;
+            else if(ch == '(')  // agar '(' mila to uska index stack me dalo
+                st.push(i);
+            else
+            {
+                if(st.isEmpty()) // stack empty hai aur ')' mila hai to ')' additional hai, iska index store kro
+                    set.add(i);
+                else
+                {
+                    st.pop();  // agar stack empty nhi hai matlab usme '(' ka index hai match hua so pop
+                }
+                
+            }
+        }
+
+        while(!st.isEmpty()) // jab tak stack empty nhi hota uske sare indexes set me dalo
+        {
+            set.add(st.pop());
+        }
+
+        StringBuilder res = new StringBuilder("");
+
+        for(int i = 0; i < n; i++) // skip krne vale indexes k characters ko resultant string me skip kro
+        {
+            char c = s.charAt(i);
+
+            if(!set.contains(i))
+                res.append(c);
+        }
+
+        return res.toString();
+    }
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------
+Approach 2 - Using Two Pass Method
+// Time: O(n)
+// Space: O(1)
+-----------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------
