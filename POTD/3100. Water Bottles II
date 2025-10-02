@@ -31,3 +31,40 @@ class Solution {
         return drunkBottles;
     }
 }
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+🤔 Understanding the Problem
+We are given some bottles filled with water, we can drink them to obtain empty bottles.
+We are given a value numExchange, which allows us to exchange x number of empty bottles, in return for a bottle filled with water.
+This value x is initially equal to numExchange but keeps incrementing by 1 (the exchange keeps getting more expensive), everytime we perform the exchange once.
+We need to return the maximum number of bottles that we can drink?
+💡 Intuition
+You just need to ask yourself two questions here, and then you'll be done with solving this problem.
+1️⃣ What do we need to maximize here?
+The number of bottles we've drunk.
+As initially when we are given numBottles, we can just simply drink all of them.
+This is as, trades can be performed only using empty bottles, and drinking full bottles adds onto our result so its better for us.
+2️⃣ How do we simulate the trade?
+For every numBottles >= x that we have, we decrement x - 1,
+Well why x - 1?
+This is as, everytime we trade, our number of empty bottles reduces by x, while our number of filled bottles increment by 1.
+So inorder to simulate this, we count it as x bottles lost and 1 bottle gained.
+We then increment the count of result (ans) here as now we can drink the filled bottle obtained and turn it into an empty bottle as well.
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+// Time: O(n) ~ O(numBottles)
+// Space: O(1)
+-----------------------------------------------------------------------------------------------------------------------------
+class Solution {
+    public int maxBottlesDrunk(int numBottles, int numExchange) {
+        int ans = numBottles;
+        while (numBottles >= numExchange) 
+        {
+            numBottles -= numExchange - 1;
+            numExchange++;
+            ans++;
+        }
+        return ans;
+    }
+}
