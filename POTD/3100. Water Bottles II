@@ -1,0 +1,33 @@
+// Time: O(n)
+// Space: O(1)
+-----------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    public int maxBottlesDrunk(int numBottles, int numExchange) {
+        int emptyBottles = numBottles;
+        int drunkBottles = numBottles;
+        int fullBottles = 0;
+
+        boolean flag = true;
+
+        while(flag)
+        {
+            if(fullBottles == 0 && (emptyBottles < numExchange)) // yee termination condition hai
+                break;
+            else if(emptyBottles >= numExchange) // agar yee hai to hame numExchange ko +1 krna hai aur ek Full Bottle
+            {                                    // bhi milegi
+                emptyBottles = emptyBottles - numExchange;
+                fullBottles++;
+                numExchange++;
+            }
+            else
+            {
+                drunkBottles += fullBottles; // gar kam hua to vo bottle pee lenge
+                emptyBottles += fullBottles; // aur khali bottles hongi
+                fullBottles = 0; // sare empty ho gai
+            }
+        }
+
+        return drunkBottles;
+    }
+}
