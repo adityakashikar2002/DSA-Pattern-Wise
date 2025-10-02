@@ -48,6 +48,11 @@ class Solution {
 // Space: O(n1 + n2)
 ----------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------
+/*
+    dursa aur asan tarika hoga ki, nums2 k array k har element k greater ko
+    advance me find krk ek map me store kr do
+    taki jab nums1 se hum scan marenge vo lookup jaldi ho jaega 
+*/
 class Solution {
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
         int n1 = nums1.length;
