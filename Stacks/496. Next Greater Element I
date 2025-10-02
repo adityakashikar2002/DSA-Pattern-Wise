@@ -1,0 +1,50 @@
+// Brute Force Approach
+// Time: O(n³)
+// Space: O(1)
+----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------
+/*
+    Brute Force Tarika 
+    sabse pahle linear search se durse vale ko dhoodho
+    milne k baad vaha se greater ki talash kro
+*/
+class Solution {
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        int[] ans = new int[nums1.length];
+
+        int n1 = nums1.length;
+        int n2 = nums2.length;
+
+        for(int i = 0; i < n1; i++)
+        {
+            for(int j = 0; j < n2; j++)
+            {
+                if(nums1[i] == nums2[j]) // match hua to vaha se greater ele dekhenge
+                {
+                    int greater = -1;
+
+                    for(int k = j + 1; k < n2; k++)
+                    {
+                        if(nums2[k] > nums2[j])
+                        {
+                            greater = nums2[k]; // mila to update krk break
+                            break;
+                        }
+                    }
+
+                    ans[i] = greater;
+                }
+            }
+        }
+
+        return ans;
+    }
+}
+
+----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------
+// Brute Force Approach
+// Time: O(n³)
+// Space: O(1)
+----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------
