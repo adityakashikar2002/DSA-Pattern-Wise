@@ -36,3 +36,48 @@ class Solution {
 // Space: O(n)
 ---------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------------
+/*
+    simple idea hai baar baar peeche jake har ek ele ko check krne k bajay
+    ek kaam krte har ek elment ka index store krte
+    agar stack empty hai to span = i + 1 hoga
+    nhi to span i - st.peek() hoga
+    
+    agar top > curr hai to push krenge nhi to pop krenge jab tak top > curr nhi hota, ya empty nhi hota
+    
+*/
+class Solution {
+    public ArrayList<Integer> calculateSpan(int[] arr) {
+        // code here
+        int n = arr.length;
+        
+        ArrayList<Integer> res = new ArrayList<>();
+        
+        Stack<Integer> st = new Stack<>();
+        
+        int span = 0;
+        
+        for(int i = 0; i < n; i++)
+        {
+            
+            while(!st.isEmpty() && arr[st.peek()] <= arr[i]) // agar top < curr to pop krte jao
+            {
+                st.pop();
+            }
+            
+            if(st.isEmpty()) // pop krne k baad agar stack khali ho gaya to span i + 1 hoga kyuki index i se 0 tak sare elements span me honge so
+            {
+                span = i + 1;
+            }
+            else
+            {
+                span = i - st.peek(); // agar nhi hai to vaha tak rahega bss jaha ele bada ho agar , jo span me nhi ata
+            }
+            
+            st.push(i);
+            res.add(span);
+            
+        }
+        
+        return res;
+    }
+}
