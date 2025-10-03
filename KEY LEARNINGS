@@ -167,3 +167,9 @@
     use: 
     for (Map.Entry<Integer,Integer> ele : map.entrySet()) map is the name of HashMap
     for keys: ele.getKey(), for values: ele.getValue()
+
+31) When asked to fill an ArrayList use:
+
+  ArrayList<Integer> res = new ArrayList<>(Collections.nCopies(n, -1));
+
+32) for arrays use Arrays.fill(arr, -1);
