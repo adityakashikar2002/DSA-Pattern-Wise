@@ -1,0 +1,30 @@
+// Time: O(2 * n)
+// Space: O(n)
+-----------------------------------------------------------------------------------------
+/*
+    simple idea hai 2 * n tak iterate maro cyuki circular hai
+    i < n k liye hi push kro
+*/
+class Solution {
+    public int[] nextGreaterElements(int[] nums) {
+        int n = nums.length;
+        int[] ans = new int[n];
+        Arrays.fill(ans, -1);  // default: -1 if no next greater
+
+        Stack<Integer> st = new Stack<>();
+
+        // Traverse twice to simulate circular array
+        for (int i = 0; i < 2 * n; i++) {
+            int num = nums[i % n];
+
+            while (!st.isEmpty() && nums[st.peek()] < num) {
+                ans[st.pop()] = num;
+            }
+
+            if (i < n) { // push only first round indices
+                st.push(i);
+            }
+        }
+        return ans;
+    }
+}
