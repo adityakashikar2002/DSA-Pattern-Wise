@@ -38,3 +38,33 @@ class Solution {
 // Space: O(n)
 ----------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------
+
+/*
+    dusra asan tarika hoga ki
+    stack me indexes dalo
+    aur top k liye greater temperature dhoodhno same Next Greater Element I vala kaam
+*/
+class Solution {
+    public int[] dailyTemperatures(int[] temperatures) {
+        int n = temperatures.length;
+
+        int[] ans = new int[n];
+
+        Stack<Integer> st = new Stack<>();
+        int k = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            while(!st.isEmpty() && temperatures[i] > temperatures[st.peek()]) // agar empty nhi hoga to check kro
+            {                                                                 // curr temp > stack k top ka temp
+                int top = st.pop();
+
+                ans[top] = i - top;  // appropriate index pr update kro
+            }
+
+            st.push(i);
+        }
+
+        return ans;
+    }
+}
