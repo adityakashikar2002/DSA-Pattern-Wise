@@ -1,0 +1,124 @@
+// Brute Force
+// Time: O(7n) - if we consider stack pop, push, update for each ele ~ otherwise O(3n), NSE, PSE, linear traversal
+// Space: O(4n)
+--------------------------------------------------------------------------------------------------------------------------
+Even though the Time and Space Complexity reduces to O(n) the solution is still slower 
+--------------------------------------------------------------------------------------------------------------------------
+
+/** 
+    agar area nikalne ki baat kre to kuch aise nikal skhte hai
+    ek-ek element (bar) ko pakdo aur dekho uska kaha tak aage yaa peeche tak kheech shte hai i mean uski height 
+    valid rahti
+
+    heights = [2 1 5 6 2 3]
+
+    iss example me 2 ko dekhenge to max index 1 tak jaega keuki 1 vali index par 1 hai (1 < 2)
+    max height 2 invalid ho jaegi, aur peeche to kuch hai hi nhi so maxArea 2 hoga
+
+    abhi 4th index vale 2 ko dekho
+    kaha tak kheech skhte right me ??
+    end tak le skhte kyuki 2 k aage k sare elements usse bade hai (3 > 2)
+    aur peeche left me kaha tak kheech skhte to index no. 1 tak jaha 1 hai vaha tak kheech skhte (1 < 2)
+    in dono indexes right vali aur left vali k beech me apn ko maxArea milega
+    like 2 k liye jo bhi NSE(Next Smaller Element) hoga vo index - PSE(Previous Smaller Element) iska index apne
+    rectangle ki length banega
+
+    lekin 2 ka NSE to -1 hai kyuki 2 se chota to right me koi hai hi nhi to iss case me arr.length jo last index apn
+    hypothetical n - size of array le lenge
+
+    so area of rectangle hoga 2 x (NSE(6) - PSE(1) - 1) = 2 x (6 - 1 - 1) = 2 x 4 = 8 area hoga
+
+    akhir me -1 isliye kyuki apn ko NSE aur PSE k beech ka area chaiye so..
+
+    to yee har ek liye krna padega
+
+    to sabse easy tarika hoga ki aap
+    array k sare elements k PSE aur NSE nikal k rakho, bss NSE k liye jaha -1 vaha n krna, PSE me garaj nhi
+
+    formula me put kro answer nikalo bss. aur maxArea to ata hi hai 😅
+
+    Formula:
+        area = height x [NSE[height] - PSE[height] - 1]
+
+*/
+class Solution {
+
+    public int[] nextSmallerElement(int[] arr)
+    {
+        int n = arr.length;
+        int[] ans = new int[n];
+
+        Stack<Integer> st = new Stack<>();
+
+        for(int i = 0; i < n; i++)
+        {
+            while(!st.isEmpty() && arr[st.peek()] > arr[i])
+            {
+                int top = st.pop();
+                ans[top] = i;
+            }
+
+            st.push(i);
+        }
+
+        while(!st.isEmpty())
+        {
+            ans[st.pop()] = n;
+        }
+
+        return ans;
+    } 
+
+    public int[] previousSmallerElement(int[] arr)
+    {
+        int n = arr.length;
+        int[] ans = new int[n];
+
+        Stack<Integer> st = new Stack<>();
+
+        for(int i = 0; i < n; i++)
+        {
+            while(!st.isEmpty() && arr[st.peek()] >= arr[i])
+            {
+                st.pop();
+            }
+
+            if(st.isEmpty())
+            {
+                ans[i] = -1;
+                st.push(i);
+            }
+            else
+            {
+                ans[i] = st.peek();
+                st.push(i);
+            }
+        }
+
+        return ans;
+    } 
+
+    public int largestRectangleArea(int[] heights) {
+        int n = heights.length;
+        int[] NSE = nextSmallerElement(heights);
+        int[] PSE = previousSmallerElement(heights);
+
+        int maxArea = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            int area = heights[i] * (NSE[i] - PSE[i] - 1);
+
+            maxArea = Math.max(maxArea, area);
+        }
+
+        return maxArea;
+    }
+}
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O()
+// Space: O()
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
