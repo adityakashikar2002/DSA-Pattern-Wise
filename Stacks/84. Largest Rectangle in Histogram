@@ -118,7 +118,112 @@ class Solution {
 --------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------
 // Optimal Approach
-// Time: O()
-// Space: O()
+// Time: O(n)
+// Space: O(n)
 --------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------
+
+/*
+    so... sabse optimal tarika kya hoga ?? taki hum space aur runtime kam kr skhe
+    kya aisa nhi ho skhta ki hum ek traversal me hi NSE aur PSE nikal le ??
+
+    like ho skhta, hum apna khandani code PSE k hisab se lihenge Stack vala okay
+    ab jab bhi peek > curr hoga matlab, curr peek ka NSE ban gaya bss khatam baat
+    jab bhi pop krne vale honge, to pop se pahle hi hame NSE mil jaega aur pop k baad jo stack me peek rahega vo 
+    pop hue ele ka PSE hoga simple
+    ek dry run dekhte hai
+
+    heights = [2, 1, 5, 6, 2, 3]
+    indexes = [0, 1, 2, 3, 4, 5]
+
+    Step 1:
+    sabse pahle stack me 2 (index - 0) gaya
+    ab 1 pe point kr raha, 1 < 2
+    matlab 1 , 2 ka NSE hai
+    abhi 2 ko pop krenge, kr diya stack empty ho gaya matlab 2 ka koi PSE nhi tha so -1
+
+    Step 2:
+    stack k top pr 1 hai (index - 1), pointer (index - 2) 5 pr hai
+    5 > 1 so push krenge bss
+
+    Step 3:
+    ab top pr 5 hai 6 ko push kiya
+
+    Step 4:
+    ab stack k top pr 6 hai (index - 3), i ab 2 pr hai (index - 4)
+    so ab 2 < 6,
+    6 ka NSE hai 2
+    pop kiya 
+    6 ka PSE hai 5 kyuki 2 k pop k baad ab 5 peek tha
+
+    6 ka karykram nipatne k baad 5 ki bari
+    5 > 2 5 ka NSE 2 hai
+    pop kiya top pr 1 hai, 5 ka PSE 1
+
+    ab ruk gaya
+
+    ab stack k top pr 1 aur push krnge 2 ko
+    i bada ab 3 last index pr hai push kiya
+
+    game over
+
+    hamne dekha ki stack me kuch elements bach rahe so 
+
+    ab ek ek krne inki kahani dekho 3 ka NSE -1 aa raha so usko n - size of array kr do (hypothetical index)
+    3 ko pop kiya to 2 mila , PSE of 3 is 2
+
+    ab 2 k liye kro same aur last me 1 vishay khatam
+
+    har ek step me bss area aur maxArea vala kaam krna hai
+
+    area = heights[i] x (NSE[i] - PSE[i] - 1)
+
+*/
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        int n = heights.length;
+
+        int maxArea = 0;
+        int area = 0;
+
+        Stack<Integer> st = new Stack<>();
+
+        int top = -1;
+        int NSE = -1;
+        int PSE = -1;
+
+        for(int i = 0; i < n; i++)
+        {
+            while(!st.isEmpty() && heights[st.peek()] > heights[i])
+            {
+                NSE = i;
+
+                top = st.pop();
+
+                PSE = st.isEmpty() ? - 1 : st.peek();
+
+                area = heights[top] * (NSE - PSE - 1);
+
+                maxArea = Math.max(maxArea, area);    
+            }
+
+            st.push(i);
+        }
+
+        while(!st.isEmpty())
+        {
+            NSE = n;
+
+            top = st.pop();
+
+            PSE = st.isEmpty() ? -1 : st.peek();
+            
+            area = heights[top] * (NSE - PSE - 1);
+
+        	maxArea = Math.max(area, maxArea);
+                    
+        }
+
+        return maxArea;
+    }
+}
