@@ -1,0 +1,223 @@
+# 🧙‍♂️ Find the Minimum Time to Brew Potions
+
+## 📜 Problem Statement
+
+You are given two integer arrays —
+`skill[]` (of n wizards) and `mana[]` (of m potions).
+
+Each potion must pass **through all wizards in order** to be brewed properly.
+
+* The time taken by wizard `i` for potion `j` = `skill[i] * mana[j]`
+* Each potion moves **immediately** from one wizard to the next (no waiting allowed)
+* The wizards must brew all potions **in order**
+
+Your task:
+👉 Find the **minimum total time** required to brew all potions properly.
+
+---
+
+## ⚙️ Rules Recap
+
+| Rule                  | Description                                                                 |
+| --------------------- | --------------------------------------------------------------------------- |
+| 🔹 Order              | Each potion must go through all wizards in sequence (0 → 1 → 2 → ... → n−1) |
+| 🔹 No Waiting         | A potion must be handed over immediately once a wizard finishes             |
+| 🔹 Sequential Potions | Each wizard must finish potion `p-1` before starting potion `p`             |
+
+---
+
+## 💡 Intuition (In Hindi-English Mix)
+
+Sochho ek laboratory jahan har potion ko sabhi wizards ke through jaana padta hai.
+Har wizard apna part karta hai aur agle wizard ko turant potion handover karna hota hai.
+Ab problem yeh hai — **kaise synchronize karein taaki koi waiting time na ho**
+aur sabse kam total time mile. ⚡
+
+---
+
+## 🧩 Step-by-Step Logic
+
+### 🪄 Step 1: Brew the First Potion
+
+For the very first potion (`mana[0]`):
+
+* Wizard 0 starts at t = 0
+* Each next wizard starts as soon as the previous one finishes
+
+So total time so far:
+
+```
+ans[0] = skill[0] * mana[0]
+ans[i] = ans[i-1] + skill[i] * mana[0]
+```
+
+That’s the timeline for the first potion ✅
+
+---
+
+### 🪄 Step 2: Add the Next Potions
+
+Now, for each next potion (`mana[p]`):
+
+* Wizard 0 can start only after finishing his last potion.
+* Wizard `w` must wait until:
+
+  1. He finishes his previous potion (`ans[w]`)
+  2. The previous wizard (`w-1`) finishes the current potion.
+
+Hence the start time for wizard `w`:
+
+```
+start = max(ans[w], ans[w-1])
+ans[w] = start + skill[w] * mana[p]
+```
+
+This ensures no overlap or wrong sequencing.
+
+---
+
+### 🪄 Step 3: Backward Synchronization 🔁
+
+After one round of brewing this potion,
+we need to ensure **instant handover** (no gap between wizards).
+
+We move **backward**:
+
+```
+ans[w-1] = ans[w] - skill[w] * mana[p]
+```
+
+This syncs everything perfectly so that
+each potion finishes **exactly when the next wizard is ready** — no waiting!
+
+---
+
+### 🪄 Step 4: Repeat for All Potions
+
+Repeat this process for every `mana[p]`.
+At the end, `ans[n-1]` will give the **minimum total time** for all potions.
+
+---
+
+## 🧪 Example
+
+### Input
+
+```
+skill = [1, 5, 2, 4]
+mana  = [5, 1, 4, 2]
+```
+
+### Output
+
+```
+110
+```
+
+| Potion | Start Time | Wizard 0 Done | Wizard 1 Done | Wizard 2 Done | Wizard 3 Done |
+| ------ | ---------- | ------------- | ------------- | ------------- | ------------- |
+| 0      | 0          | 5             | 30            | 40            | 60            |
+| 1      | 52         | 53            | 58            | 60            | 64            |
+| 2      | 54         | 58            | 78            | 86            | 102           |
+| 3      | 86         | 88            | 98            | 102           | 110           |
+
+Total minimum time = **110**
+
+---
+
+## 🧮 Complexity
+
+| Measure  | Complexity |
+| -------- | ---------- |
+| 🕒 Time  | O(n × m)   |
+| 💾 Space | O(n)       |
+
+---
+
+## 🚀 Key Observations
+
+✅ `max(ans[w], ans[w-1])` → handles dependency between wizards and potions.
+✅ Backward synchronization → ensures “instant handover” between wizards.
+✅ Only 1D array needed → keeps space efficient.
+✅ `ans[n-1]` → gives final total time.
+
+---
+
+## 💬 Summary
+
+> “Forward for waiting, backward for syncing!” ⚡
+> That’s the whole mantra to solve this potion brewing puzzle perfectly. 🧪💥
+
+---
+
+## 🧠 Intuitive Visualization
+
+Think of it like an assembly line 👇
+
+```
+Wizard 0 → Wizard 1 → Wizard 2 → Wizard 3
+   |           |           |           |
+Potion 0 → Potion 1 → Potion 2 → Potion 3
+```
+
+Each potion flows continuously — no idle time, no delay, full synchronization! 🚀
+
+---
+
+## 🎯 Final Output
+
+At the end:
+
+```
+return ans[n - 1];
+```
+
+This value = **Minimum total brewing time**. ✅
+
+----------------------------------------------------------------------------------------------------------------------
+======================================================================================================================
+
+/*
+    core idea do cheezo pr hai
+    koi wizard next potion ko kab haath laga skhta ?
+
+    1) jab uska prev potion pr kaam khatam ho gaya ho aur, 
+    2)   pichle wizard ne bhi iss naye potion  pr kam khatam kr liya ho
+
+    to vohi potion 1 to aram se ho jaega
+    rahi baat 2nd vale se suru krne ki, to in baato ka dyan rahkkhe krna hai 
+*/
+class Solution {
+    public long minTime(int[] skill, int[] mana) {
+        int n = skill.length;
+        int m = mana.length;
+
+        long[] ans = new long[n];
+
+        ans[0] = skill[0] * mana[0];
+
+        for(int i = 1; i < n; i++)
+        {
+            ans[i] = ans[i - 1] + (long) skill[i] * mana[0]; 
+        }
+
+        for(int p = 1; p < m; p++) // mana
+        {
+            ans[0] = ans[0] + (long) (skill[0] * mana[p]);
+
+            for(int w = 1; w < n; w++) // skill
+            {
+                long start = Math.max(ans[w], ans[w - 1]);
+
+                ans[w] = start + (long) (skill[w] * mana[p]);
+            }
+
+            for(int w = n - 1; w > 0; w--)
+            {
+                ans[w - 1] = ans[w] - (long) (skill[w] * mana[p]);
+            }
+        }
+
+        return ans[n - 1];
+    }
+}
