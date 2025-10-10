@@ -173,3 +173,7 @@
   ArrayList<Integer> res = new ArrayList<>(Collections.nCopies(n, -1));
 
 32) for arrays use Arrays.fill(arr, -1);
+
+33) if we don't want to use ceil for division thing then
+
+    ceil of (a / b) is (a + b - 1 / b) always works 
