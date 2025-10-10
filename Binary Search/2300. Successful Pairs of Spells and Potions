@@ -1,5 +1,5 @@
 // Brute Force
-// Time: O(n²)
+// Time: O(n * m)
 // Space: O(n)
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------
@@ -14,7 +14,7 @@ class Solution {
 
         for(int i = 0; i < n; i++)
         {
-            for(int j = 0; j < p; j++)
+            for(int j = 0; j < m; j++)
             {
                 if((long) spells[i] * potions[j] >= success)
                 {
@@ -30,8 +30,68 @@ class Solution {
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------
 // Optimal Approach
-// Time: O()
-// Space: O()
+// Time: O(m * logm + n * logm)
+// Space: O(n)
 
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------
+/*
+    dusra ek asan tarika hai ki 
+    formula to yee hai
+
+    spell x potion >= success right ?
+
+    to,
+    ->  minPotion >= ceilValue of (success / spell)
+    -> aur agar hum potions array ko sort kr de to ham pata laga skhte hai ki minPotion konse index pr hai
+    -> vo uske aage k sare potions ka multiplication >= success hoga so bss count badane ka kaam bachega
+*/
+class Solution {
+    public static int findMinPotionPos(long min, int[] arr)
+    {
+        int low = 0;
+        int high = arr.length - 1;
+
+        int ans = -1;
+
+        while(low <= high)
+        {
+            int mid = (low + high) / 2 ;
+            if(arr[mid] >= min)
+            {
+                ans = mid;
+                high = mid - 1;
+            }
+            else
+            {
+                low = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+
+    public int[] successfulPairs(int[] spells, int[] potions, long success) {
+        int n = spells.length;
+        int m = potions.length;
+
+        int[] res = new int[n];
+
+        Arrays.sort(potions);
+
+        for(int i = 0; i < n; i++)
+        {
+            int spell = spells[i];
+
+            long minPotion = (long) Math.ceil((double) success / spell);
+            // aisa bhi kr shkte
+            // long minPotion = (success + spell - 1) / spell;
+
+            int pos = findMinPotionPos(minPotion, potions);
+
+            res[i] = pos == -1 ? 0 : m - pos;
+        }
+
+        return res;
+    }
+}
