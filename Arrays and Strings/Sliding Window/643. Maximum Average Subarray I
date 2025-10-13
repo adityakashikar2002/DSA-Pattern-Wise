@@ -1,0 +1,37 @@
+// Brute Approach
+// Time: O(n x k)
+// Space: O(1)
+---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
+
+/**
+    sabse easy tarika har k size k subarray ko check kro aur maxSum nikalne ki koshish kro
+    jiska subarray ka sum Max hoga, definity uska avg bhi Max hoga  
+*/
+class Solution {
+    public double findMaxAverage(int[] nums, int k) {
+        int n = nums.length;
+        double maxSum = Double.NEGATIVE_INFINITY;
+
+        for (int i = 0; i <= n - k; i++) 
+        {
+            int sum = 0;
+
+            for (int j = i; j < i + k; j++) 
+            {
+                sum += nums[j];
+            }
+
+            maxSum = Math.max(maxSum, sum);
+        }
+
+        return maxSum / k;
+    }
+}
+---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O()
+// Space: O()
+---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
