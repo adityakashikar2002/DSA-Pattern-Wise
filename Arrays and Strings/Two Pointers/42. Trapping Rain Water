@@ -1,0 +1,63 @@
+// Brute Force Approach
+// Time: O(3n)
+// Space: O(2n)
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+/**
+    sabse brute force tarika hoga ki,
+    socho pani trap tabhi hoga jab dono side left aur right me curr height se jyada k heights hongi
+    like example [2, 1, 3]
+    yaha jab 1 pr honge to pani trap hoga 
+
+    lekin ab sawal hai ki kitna hoga ??
+
+    to isko hum aise dekh skhte hai ki left me sabse max aur right me sabse max 
+    in dono ka minimum , minus currHeight iska pani trap hoga
+
+    formula = min(leftMax, rightMax) - arr[i]
+
+    to ab sawal yee hai ki leftMax aur rightMax kaise nikale
+
+    to asan hai ek prefix aur ek suffix max nikalte hai...
+*/
+class Solution {
+    public int trap(int[] height) {
+        int n = height.length;
+
+        int trappedWater = 0;
+
+        int[] prefixMax = new int[n];
+        int[] suffixMax = new int[n];
+
+        prefixMax[0] = height[0];
+        suffixMax[n - 1] = height[n - 1];
+
+        for(int i = 1; i < n; i++)
+        {
+            int leftMax = Math.max(prefixMax[i - 1], height[i]);
+            prefixMax[i] = leftMax;
+        }
+
+        for(int i = n - 2; i >=0; i--)
+        {
+            int rightMax = Math.max(suffixMax[i + 1], height[i]);
+            suffixMax[i] = rightMax;
+        }
+
+        for(int i = 0; i < n; i++)
+        {
+            trappedWater += Math.min(prefixMax[i], suffixMax[i]) - height[i];
+        }
+
+        return trappedWater;
+
+    }
+}
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+
+// Optimal Solution
+// Time: O()
+// Space: O()
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
