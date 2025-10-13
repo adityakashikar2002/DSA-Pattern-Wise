@@ -1,0 +1,28 @@
+// Time: O(n)
+// Space: O(1)
+----------------------------------------------------------------
+----------------------------------------------------------------
+/*
+  kaisa hai seedha kaam hai ek last updated index dekho
+  agar koi different ele milta hai to uss element ko, last + 1 vale index pr overwrite kr do
+  aur last ko ab iss pr point krne do
+  finally hamare pass last + 1 unique elements honge
+*/
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int n = nums.length;
+
+        int last = 0;
+
+        for(int i = 1; i < n; i++)
+        {
+            if(nums[i] != nums[last])
+            {
+                nums[last + 1] = nums[i];
+                last++;
+            }
+        }
+
+        return last + 1;
+    }
+}
