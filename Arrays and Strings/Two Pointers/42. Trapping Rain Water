@@ -57,7 +57,60 @@ class Solution {
 ------------------------------------------------------------------------------------------------------
 
 // Optimal Solution
-// Time: O()
-// Space: O()
+// Time: O(n)
+// Space: O(1)
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
+/**
+    brute force me space bohot lag rahi to hum ise bina space liye solve kr skhte kya
+    problem bss itna hai ki kya hum ek pass me hi pata kr skhte kya ki left aur rightMax kya the ?
+    rahi baat water trapping ki vo to trap vohi hoga jaha height minimum hogi
+    matlab vohi min of leftMax, rightMax vala concept
+
+    to bss hum aate hai two pointers pr...
+
+    aisa socho jab tak left < right hai tab tak pani trap kr skhte
+
+    ab agar height[left] < height[right] se to do cheeze check krni padegi
+    1) kya yee naya left , leftMax se bada hai , agar hua to update krna padega nhi to pani overflow hoga
+    2) agar leftMax se kam hai to bss trapWater nikalo yee apna uss index tak ka min hai (leftMax)
+    left++ karo
+
+    ab agar right < left hai to bhi same cheeze repeat hongi vohi conditions check hongi bss yaha right-- krnge
+
+*/
+class Solution {
+    public int trap(int[] height) {
+        int n = height.length;
+        int totalWater = 0;
+
+        int left = 0;
+        int right = n - 1;
+
+        int leftMax = height[0];
+        int rightMax = height[n - 1];
+
+        while(left < right)
+        {
+            if(height[left] < height[right])
+            {
+                if(height[left] > leftMax)
+                    leftMax = height[left];
+                else
+                    totalWater += leftMax - height[left];
+                
+                left++;
+            }
+            else
+            {
+                if(height[right] > rightMax)
+                    rightMax = height[right];
+                else
+                    totalWater += rightMax - height[right];
+
+                right--;
+            }
+        }
+        return totalWater;
+    }
+}
