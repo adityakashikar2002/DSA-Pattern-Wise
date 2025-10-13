@@ -1,0 +1,83 @@
+// Time: O(rows x cols) + O(row x cols)
+// Space: O(rows x cols) + O(cols)
+---------------------------------------------------------------------------------------------------------------
+/*
+    Largest Area in Histogram vala kaam krna hai
+    bss matrix ko column wise prefix sum krk, har row ab histogram ki tarah hoga, bss 
+    vo row paas krna hai
+*/
+class Solution {
+    public int maximalRectangle(char[][] matrix) {
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+
+        int[][] prefixSum = new int[rows][cols];
+
+        int maxArea = 0;
+
+        for(int c = 0; c < cols; c++)
+        {
+            for(int r = 0; r < rows; r++)
+            {
+                if(matrix[r][c] == '1')
+                    prefixSum[r][c] = (r == 0 ? 1 : prefixSum[r - 1][c] + 1);
+            }
+        }
+
+        for(int row = 0; row < rows; row++)
+        {
+            int area = findLargestAreaHistogram(prefixSum[row]);
+
+            maxArea = Math.max(maxArea, area); 
+        }
+
+        return maxArea;
+    }
+
+    public static int findLargestAreaHistogram(int[] arr)
+    {
+        int n = arr.length;
+
+        int NSE = -1;
+        int PSE = -1;
+        int maxArea = 0;
+
+        Stack<Integer> st = new Stack<>();
+        int[] store = new int[n];
+
+        for(int i = 0; i < n; i++)
+        {
+            while(!st.isEmpty() && arr[st.peek()] >= arr[i])
+            {
+                NSE = i;
+
+                int top = st.pop();
+
+                PSE = st.isEmpty() ? -1 : st.peek();
+
+                int area = arr[top] * (NSE - PSE - 1);
+
+                maxArea = Math.max(maxArea, area);
+            }
+
+            st.push(i);
+
+        }
+
+        while(!st.isEmpty())
+        {
+            NSE = n;
+
+            int top = st.pop();
+
+            PSE = st.isEmpty() ? -1 : st.peek();
+            
+            int area = arr[top] * (NSE - PSE - 1);
+
+            maxArea = Math.max(area, maxArea);
+                        
+        }
+
+        return maxArea;
+    }
+}
