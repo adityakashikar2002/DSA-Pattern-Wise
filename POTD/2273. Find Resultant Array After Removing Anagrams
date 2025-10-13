@@ -1,0 +1,46 @@
+// Brute Force Approach
+// Time: O(n × k + n²) Frequency counts per word (O(n × k)) + shifting while inserting at front (O(n²)
+// Space: O(n) Result list + constant-size frequency arrays
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+class Solution {
+    public List<String> removeAnagrams(String[] words) {
+        int n = words.length;
+
+        List<String> res = new ArrayList<>();
+
+        int[] currWord = new int[26];
+        int[] prevWord;
+
+        for(int i = 0 ; i < words[n - 1].length(); i++)
+        {
+            currWord[words[n - 1].charAt(i) - 'a']++;
+        }
+
+        for(int i = n - 1; i > 0; i--)
+        {
+            String curr = words[i];
+            String prev = words[i - 1];
+
+            prevWord = new int[26];
+
+            for(int j = 0; j < prev.length(); j++)
+            {
+                prevWord[prev.charAt(j) - 'a']++;
+            }
+
+            if(!Arrays.equals(currWord, prevWord))
+            {
+                res.add(0, curr);
+            }
+
+            currWord = prevWord;
+        }
+
+        res.add(0, words[0]);
+
+        return res;
+    }
+}
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
