@@ -31,7 +31,36 @@ class Solution {
 ---------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------
 // Optimal Approach
-// Time: O()
-// Space: O()
+// Time: O(n)
+// Space: O(1)
 ---------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------
+/**
+    subarray ka size fixed hai 'k' matlab apn fixed sized Sliding Window approach use kr skhte
+    jab bhi window k baher jaega left vala ele minus krenge, naya vala add krenge
+*/
+class Solution {
+    public double findMaxAverage(int[] nums, int k) {
+        int n = nums.length;
+
+        int maxSum;
+
+        // sabse pahle k size ka sum nikal lete
+        int sum = 0;
+
+        for(int i = 0; i < k; i++)
+        {
+            sum += nums[i];
+        }
+
+        maxSum = sum;
+
+        for(int i = k; i < n; i++)
+        {
+            sum = sum - nums[i - k] + nums[i]; // prev vala udao aur naya vala add kro
+            maxSum = Math.max(maxSum, sum);
+        }
+
+        return (double) maxSum / k;
+    }
+}
