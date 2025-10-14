@@ -44,7 +44,76 @@ class Solution {
 -----------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------
 // Optimal Approach
-// Time: O()
-// Space: O()
+// Time: O(n)
+// Space: O(1)
 -----------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------
+/*
+    n * k se bhi optimal solution kya ho skhta socho..
+
+    kya single pass me check kr skhte ??
+
+    haa kr skhte
+
+    hame 2 subarrays track krna hai
+    ek prev vala ek curr vala
+
+    kaise karenge ??
+
+    sable pahle jab tak increasing order maintain ho raha gadi chalne do,
+    jaha break ho gaya pahle iss run ki length dekho
+
+    kya L1 >= 2 * k hai ? if yes apn ko adjacent increasing subarrays mil gaye
+
+    if nhi mila to ab iss run ko prevRun me store krenge
+
+    aur dursa run lenge jab iske sath bhi aisa hadsa hoga 😂
+
+    to check krenge
+
+    kya L2 >= 2 * k to ans true;
+
+    nhi to min(L1, L2) >= k hai kya  if yes true
+
+    like [2,5,7,8,9,2,3,4,3,1], k = 3
+    1st L1 => 0-4 (5 Length)
+    2nd L2 => 5-7 (3 Length)
+
+    min(L1, L2) = 3 >= 3 so true
+
+    to true kyu ??
+    2, 5, 7, 8, 9 me se 7, 8, 9 to increasing hai n
+    to bss 2, 3, 4 to adjacent hai hi uske to bss
+*/
+class Solution {
+    public boolean hasIncreasingSubarrays(List<Integer> nums, int k) {
+        int n = nums.size();
+        int curr = 1;
+        int prev = 0;
+
+        for(int i = 1; i < n; i++)
+        {
+            if(nums.get(i) > nums.get(i - 1))
+                curr++;
+            else
+            {
+                prev = curr;
+                curr = 1;
+            }
+
+            if(curr >= 2 * k)
+            {
+                return true;
+            }
+            else
+            {
+                int minimum = Math.min(prev, curr);
+
+                if(minimum >= k)
+                    return true;
+            }
+        }
+
+        return false;
+    }
+}
