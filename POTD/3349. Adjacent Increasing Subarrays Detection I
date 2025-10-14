@@ -1,0 +1,50 @@
+// Brute Force
+// Time: O(n x 2k) ~ O(n * k)
+// Space: O(1)
+-----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+/*
+    to sabse asan tarika to yee hoga ki hame check krna padega har ek subarray leke
+    so like 1st subarray hoga i, i + k - 1 tak
+            2nd subarray hoga i + k, i + k + k - 1 (i + 2 * k - 1) tak
+    
+    to hame yee dyan rakhna hoga ki i ki yee value (i + 2 * k - 1) n se baher na jaye
+
+    i + 2 * k - 1 < n or i + 2 * k <= n to bss check krte hai vaise hi
+
+
+*/
+class Solution {
+
+    public boolean isIncreasing(List<Integer> nums,int start, int end)
+    {
+        for(int i = start + 1; i <= end; i++)
+        {
+            if(nums.get(i) <= nums.get(i - 1))
+                return false;
+        }
+
+        return true;
+    }
+    public boolean hasIncreasingSubarrays(List<Integer> nums, int k) {
+        int n = nums.size();
+
+        for(int i = 0; i + 2 * k <= n; i++)
+        {
+            boolean first = isIncreasing(nums, i, i + k - 1);
+            boolean second = isIncreasing(nums, i + k, i + 2 * k - 1);
+
+            if(first && second)
+                return true;
+        }
+
+        return false;
+    }
+}
+-----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O()
+// Space: O()
+-----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
