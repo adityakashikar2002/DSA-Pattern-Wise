@@ -26,7 +26,39 @@ class Solution {
 ---------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------
 // Optimal Approach
-// Time: O()
-// Space: O()
+// Time: O(n)
+// Space: O(1)
 ---------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------
+/*
+    dusra tarika hoga ki
+    socho maxProfit kaise ho skhta hai ??
+    sidhee baat hai agar buy day ki price minimum ho, aur sell day ki prize hamesha buy day se badi ho
+
+    to do cheeze hai
+    1) apn profit tab hi nikalenge jab buy_day price (min price) badi hogi sell day say
+    2) agar hamko iterate krte vakht koi nayi choti price milti hai to apn usko apna new minBuy price set kr denge
+
+    code dekho...  
+*/
+class Solution {
+    public int maxProfit(int[] prices) {
+        int n = prices.length;
+        int maxProfit = 0;
+        int minPrice = prices[0];
+
+        for(int i = 1; i < n; i++)
+        {
+            if(prices[i] < minPrice) // agar ye hai to profit nikal k bhi matlab nhi kyuki vo nagative me jaega
+            {
+                minPrice = prices[i];
+            }
+            else                     // agar nahi hoga matlab apna sell day ka price bada hai buy day se so profit.      
+            {
+                maxProfit = Math.max(maxProfit, prices[i] - minPrice);
+            }
+        }
+
+        return maxProfit;
+    }
+}
