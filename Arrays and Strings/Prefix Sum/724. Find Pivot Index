@@ -1,0 +1,46 @@
+// Brute Approach
+// Time: O(n²)
+// Space: O(1)
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+/** 
+    the most brute approach would be take each index and calculate leftSum and rightSum 
+    check if they are equal if yes badiya
+*/
+class Solution {
+    public int pivotIndex(int[] nums) {
+        int n = nums.length;
+
+        for (int i = 0; i < n; i++) 
+        {
+            int leftSum = 0;
+            int rightSum = 0;
+
+            // sum of elements on the left of i
+            for (int j = 0; j < i; j++) 
+            {
+                leftSum += nums[j];
+            }
+
+            // sum of elements on the right of i
+            for (int j = i + 1; j < n; j++) 
+            {
+                rightSum += nums[j];
+            }
+
+            if (leftSum == rightSum) 
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+}
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O()
+// Space: O()
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
