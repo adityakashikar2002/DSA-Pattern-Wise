@@ -40,7 +40,36 @@ class Solution {
 -----------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------
 // Optimal Approach
-// Time: O()
-// Space: O()
+// Time: O(2n) ~ O(n)
+// Space: O(1)
 -----------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------
+/** 
+    dusra asan tarika hoga ki hum advance me pahle totalSum nikal le
+    phir scan krte vakht leftSum nikale agar at any point
+
+    leftSum == totalSum - leftSum - curr element hua to curr ka index lauta do
+*/
+class Solution {
+    public int pivotIndex(int[] nums) {
+        int n = nums.length;
+        int totalSum = 0;
+
+        for(int i = 0; i < n; i++)
+            totalSum += nums[i];
+
+        int leftSum = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            if(leftSum == totalSum - leftSum - nums[i])
+                return i;
+            else
+            {
+                leftSum += nums[i];
+            }
+        }
+
+        return -1;
+    }
+}
