@@ -1,0 +1,31 @@
+// Time: O(n)
+// Space: O(1)
+------------------------------------------------------------------------------------------------
+/**
+    same as its 1st part
+*/
+class Solution {
+    public int maxIncreasingSubarrays(List<Integer> nums) {
+        int n = nums.size();
+
+        int k = 0;
+        int prev = 0;
+        int curr = 1;
+
+        for(int i = 1; i < n; i++)
+        {
+            if(nums.get(i) > nums.get(i - 1))
+                curr++;
+            else
+            {
+                prev = curr;
+                curr = 1;
+            }
+
+            k = Math.max(k, curr / 2); // agar curr run me hi bada k mil skhta hai
+            k = Math.max(k, Math.min(curr, prev)); // nhi to k aur min(prevRun, currRun)
+        }
+
+        return k;
+    }
+}
