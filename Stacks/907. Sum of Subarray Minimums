@@ -29,7 +29,111 @@ class Solution {
 ----------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------
 // Optimal Approach
-// Time: O(n)
-// Space: O(n)
+// Time: O(3n) ~ O(n)
+// Space: O(3n) ~ O(n)
 ----------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------
+/*
+    socho ki hamne sare subarrays nikal liye
+    
+    example le lo [3, 1, 2, 4]
+    ab batao ki har ek element ne kitna contribute kiya ??
+    matlab har ek element jo min tha, to vo minimum kitne subarrays me raha
+    like agar 3 ko dekhe to vo 1 time hi contribute kiya
+    1 ne 6 time contribute kiya 
+
+    agar sab ka sum nikale to ans mil jaega
+
+    to ab problem hai ki inka contribution kaise nikalenge ??
+
+    to hum ek cheez kr skhte har ele pr jaake uska NSE aur PSE nikalenge
+    Next and Previous Smaller Element
+
+    yee nikla ki apna kaam khtam
+
+    kaise 
+
+    [1, 4, 6, 7, 3, 7, 8, 1]
+
+    isme agar 3 ka contribution dekenge to 3 ka 
+    PSE 0th index pr hai
+    NSE 7th index pr hai
+    3 ka index 4 hai 
+
+    4 - PSE * NSE - 4 = 4 * 3 = 12 to 3 ne 12 baar contribute kiya
+
+    to yee kaam kaise krega 
+    kyuki 3 k left me kuch elements hai jo 3 se bade hai to vo subary me 3 hi minimum hai, same goes
+    for right vala subarray
+
+    ab kitne subarrays me ayega to aise niklega
+
+    Ab har left start ek right end ke saath milkar ek alag subarray banata hai.
+
+    Left start choose karne ke 4 tareeke hai 4, 6, 7, 3
+
+    Right end choose karne ke 3 tareeke 3, 7, 8
+
+    so total subarrays jisme 3 ayega hi ayega is 4 x 3 = 12
+*/
+class Solution {
+    public int sumSubarrayMins(int[] arr) {
+        int n = arr.length;
+
+        long sum = 0;
+        int MOD = (int) (1e9 + 7);
+
+        int[] PSE = new int[n];
+        int[] NSE = new int[n];
+
+        Stack<Integer> st = new Stack<>();
+
+        // Calculate PSE
+        for(int i = 0; i < n; i++)
+        {
+            while(!st.isEmpty() && arr[st.peek()] >= arr[i])
+            {
+                st.pop();
+            }
+
+            if(st.isEmpty())
+                PSE[i] = -1;
+            else
+            {
+                PSE[i] = st.peek();
+            }
+
+            st.push(i);
+        }
+
+        st.clear();
+
+        // Calculate NSE
+        for(int i = 0; i < n; i++)
+        {
+            while(!st.isEmpty() && arr[st.peek()] >= arr[i])
+            {
+                int top = st.pop();
+                NSE[top] = i;
+            }
+
+            st.push(i);
+        }
+
+        while(!st.isEmpty())
+        {
+            int top = st.pop();
+            NSE[top] = n;
+        }
+
+        for(int i = 0; i < n; i++)
+        {
+            int left = i - PSE[i];
+            int right = NSE[i] - i;
+
+            sum += (long) arr[i] * left * right;  // here (long) will only be applied to arr[i]
+        }
+
+        return (int) (sum % MOD);
+    }
+}
