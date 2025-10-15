@@ -179,3 +179,10 @@
     ceil of (a / b) is (a + b - 1 / b) always works 
 
 34) when asked to do MOD by 10⁹ + 7 can be written as int MOD = 1_000_000_007; always make sure when you return answer, typecast to the required datatype (int) (sum % MOD);
+
+35) | Context          | NGE/PGE/NSE/PSE for values | NGE/PGE/NSE/PSE for contribution |  VIMP Concept
+| -------------------- | -------------------------- | -------------------------------- |
+| **Next Greater**     | peek `<`  curr             | peek `<`  curr                   |
+| **Previous Greater** | peek `<=` curr             | peek `<`  curr                   |
+| **Next Smaller**     | peek `>`  curr             | peek `>=` curr                   |                  
+| **Previous Smaller** | peek `>=` curr             | peek `>=` curr                   |               
