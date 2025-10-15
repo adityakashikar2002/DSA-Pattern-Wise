@@ -177,3 +177,5 @@
 33) if we don't want to use ceil for division thing then
 
     ceil of (a / b) is (a + b - 1 / b) always works 
+
+34) when asked to do MOD by 10⁹ + 7 can be written as int MOD = 1_000_000_007; always make sure when you return answer, typecast to the required datatype (int) (sum % MOD);
