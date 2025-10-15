@@ -1,0 +1,65 @@
+// Brute Approach
+// Time: O()
+// Space: O()
+-------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------
+// Better Approach
+// Time: O(26 x n) ~ O(n)
+// Space: O(2 * 26) ~ O(1)
+-------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------
+/**
+    iska best tarika hoga solve krne ka ki 
+    s1 ka freq nikal lete
+    s2 me fixed size sliding window chalake check krne jab tak window valid hai
+
+    s1 ka freqArray kya s2 k freqArray se match krta if yes hum true retun krenge
+*/
+class Solution {
+    public boolean checkInclusion(String s1, String s2) {
+        int l1 = s1.length();
+        int l2 = s2.length();
+
+        if(l1 > l2)
+            return false;
+
+        int[] f1 = new int[26];
+        int[] f2 = new int[26];
+
+        int k = l1;
+
+        for(int i = 0; i < k; i++)
+        {
+            char ch = s1.charAt(i);
+
+            f1[ch - 'a']++;
+        }
+
+        for(int i = 0; i < k; i++)
+        {
+            char ch = s2.charAt(i);
+
+            f2[ch - 'a']++;
+        }
+
+        if(Arrays.equals(f1, f2))
+            return true;
+
+        for(int i = k; i < l2; i++)
+        {
+            int prev = s2.charAt(i - k);
+            int ch = s2.charAt(i);
+
+            f2[prev - 'a']--;
+            f2[ch - 'a']++;
+
+            if(Arrays.equals(f1, f2))
+                return true;
+        }
+
+        return false;
+    }
+}
