@@ -1,0 +1,58 @@
+// Time: O(n)
+// Space: O(n)
+-------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------
+class Solution {
+    public int evaluatePostfix(String[] arr) {
+        // code here
+        int n = arr.length;
+        
+        int ans = 0;
+        
+        Stack<Integer> stack = new Stack<>();
+        
+        for(String token : arr)
+        {
+            if(token.equals("+") || token.equals("-") || token.equals("*") 
+            || token.equals("/") || token.equals("^")) 
+            {
+                int op1 = stack.pop();
+                int op2 = stack.pop();
+                
+                int result = 0;
+                
+                switch (token) 
+                {
+                    case "+":
+                        result = op2 + op1;
+                        break;
+                    case "-":
+                        result = op2 - op1;
+                        break;
+                    case "*":
+                        result = op2 * op1;
+                        break;
+                    case "/":
+                        result = (int) Math.floor((double) op2 / op1);
+                        break;
+                    case "^":
+                        // Using Math.pow for exponentiation, cast result back to int
+                        // If '^' was intended as bitwise XOR, use 'result = op2 ^ op1;'
+                        result = (int) Math.pow(op2, op1);
+                        break;
+                    
+                }
+                stack.push(result);
+            } 
+            else 
+            {
+                // If it's not an operator, it must be an operand (a number).
+                // Convert the string to an integer and push it onto the stack.
+                stack.push(Integer.parseInt(token));
+            }
+            
+        }
+        
+        return stack.pop();
+    }
+}
