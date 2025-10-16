@@ -178,6 +178,11 @@
 
     ceil of (a / b) is (a + b - 1 / b) always works 
 
+34) When asked to handle division of both '+' and '-' numbers
+    use int res = (int) Math.floor( (double) op2 / op1);
+
+    floor(5 / 3) = 1 and floor(-5 / 3) = -2
+
 34) when asked to do MOD by 10⁹ + 7 can be written as int MOD = 1_000_000_007; always make sure when you return answer, typecast to the required datatype (int) (sum % MOD);
 
 35) | Context          | NGE/PGE/NSE/PSE for values | NGE/PGE/NSE/PSE for contribution |  VIMP Concept
