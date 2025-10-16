@@ -1,0 +1,120 @@
+// Time: O(n)
+// Space: O(n)
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+/*
+    Infix ---> Postfix
+    
+    Simple Logic hai
+    
+    sabse pahle to ek getPriority Function bana lo
+    jisme hum operators ki priority define kr denge done !!
+    
+    abhi stack me hamesha hum bss '(' aur operators push krenge
+    
+    agar hame aplhabets ya numbers milte hai to vo seedhe ans vale string me append krge
+    
+    kuch rules hai:
+    1) agar ch == '('
+        to stack me push kro
+        
+    2) agar ch == ')'
+        to jab tak stack empty nhi hai aur hame '(' nhi milta,
+        tab tak pop krge aur resultant string me append krte jaenge
+        
+        append krne k baad ek baar aur pop() krenge taki stack se '(' hat jaye
+        
+    3) agar ch == operator hua
+        to jab tak stack empty nhi aur peek ki Prior >= ch ki Prior hai
+        tab tak hum pop krenge aur resultant str me append krnge
+        bss yee dyan rahkhenge ki right associativity valo ko ch == '^'
+        priority equal hone pr pop nhi krnge
+        
+        while (!st.isEmpty() &&
+              (getPriority(st.peek()) > getPriority(ch) 
+              || (getPriority(st.peek()) == getPriority(ch) && ch != '^')))
+        {
+            str.append(st.pop());
+        }
+
+        bss agar '(' aya to break kr denge
+        
+        aur last me curr operator ko push krnge
+        
+    
+    yee sab krne k baad agar stack me kuch bacha hai to sabko append maar denge
+    
+*/
+class Solution {
+    public static String infixToPostfix(String s) 
+    {
+        int n = s.length();
+        
+        StringBuilder str = new StringBuilder("");
+        Stack<Character> st = new Stack<>();
+        
+        for(int i = 0; i < n; i++)
+        {
+            char ch = s.charAt(i);
+            
+            if(ch == '(') // open brace always push krne ka
+                st.push(ch);
+            else if(Character.isLetterOrDigit(ch)) // sada character hua to append marne ka
+            {
+                str.append(ch);
+            }
+            else if(ch == ')') // agar closing brace nikla to
+            {
+                while(!st.isEmpty() && st.peek() != '(')
+                {
+                    str.append(st.pop());
+                }
+                
+                if(!st.isEmpty()) // to remove '(' if exists
+                    st.pop();
+            }
+            else
+            {
+                // agar operator hua to
+                while (!st.isEmpty() &&
+                (getPriority(st.peek()) > getPriority(ch)
+                || (getPriority(st.peek()) == getPriority(ch) && ch != '^'))) 
+                // ye 3rd line yee ensure krega ki right associativity vale ko priority equal hone pr pop
+                // nhi krna hai for '^' exponent vale k liye
+                {
+                    str.append(st.pop());
+                }
+
+                
+                st.push(ch);
+            }
+            
+        }
+        
+        // remaining elements in stack;
+        while(!st.isEmpty())
+            str.append(st.pop());
+        
+        return str.toString();
+    }
+    
+    public static int getPriority(char ch)
+    {
+        switch(ch)
+        {
+            case '^':
+                return 3;
+                
+            case '*':
+            case '/':
+                return 2;
+            
+            case '+':
+            case '-':
+                return 1;
+            
+            default:
+                return 0;
+        }
+    }
+}
