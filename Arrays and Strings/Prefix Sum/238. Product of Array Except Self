@@ -120,7 +120,78 @@ class Solution {
 -----------------------------------------------------------------------------------------------------
 
 // Better Approach - 2 Using leftPrefixProduct and RightSuffixProduct arrays (Without Division)
-// Time: O(2n) ~ O(n)
-// Space: O(n)
+// Time: O(3n) ~ O(n)
+// Space: O(3n) ~ O(n)
+-----------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------
+/**
+    abhi agar division mat use kro bola to ek aur tarika hai
+    kya hum aisa nhi kr skhte ki har element k left ka product kya hai 
+    aur uske right ka product kya hai ??
+
+    isse yee hoga ki dono taraf k products ka jab product krnge to
+    pure arr ka product without that ele milega
+
+    like 
+
+    arr = [1, 2, 3, 4]
+    left = [1, 1, 2, 6]
+
+    ab left ka yee kaise aya
+
+    1 k left me koi elements so 1 ka left ka product -> 1
+    2 k left me product 1 x 1 hoga so -> 1
+    3 k left ka 1 x 2 -> 2
+    4 k left ka 2 x 3 -> 6
+
+    right = [24, 12, 4, 1]
+    right k liye ulta reverse traverse krenge
+
+    4 k right me koi nhi so -> 1
+    3 k right me 1 x 4 -> 4
+    2 k right me 4 x 3 -> 12
+    1 k right me 12 x 2 -> 24
+
+    bss pointer ghatane ya badane se pahle
+    uske next ya prev acc s multiply kr dene ka nhi to curr ele aage yaa peeche k product me nhi ayega
+
+*/
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+
+        int[] res = new int[n];
+
+        int[] left = new int[n];
+        int[] right = new int[n];
+
+        left[0] = 1;
+        right[n - 1] = 1;
+
+        for(int i = 1; i < n; i++)
+        {
+            left[i] = left[i - 1] * nums[i - 1];
+        }
+
+        for(int i = n - 2; i >= 0; i--)
+        {
+            right[i] = right[i + 1] * nums[i + 1]; 
+        }
+
+        for(int i = 0; i < n; i++)
+        {
+            res[i] = left[i] * right[i];
+        }
+
+        return res;
+    }
+}
+-----------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------
+
+// Optimal Approach - Updated Version of LeftProduct and RightProduct array
+// Extra Space katta hai
+// Time: O()
+// Space: O()
 -----------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------
