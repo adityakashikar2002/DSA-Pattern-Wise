@@ -1,0 +1,64 @@
+// Time: O(n)
+// Space: O(n)
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+
+/*
+    simple idea hai prefix expression ko agar evaluate krna hai to array k end se traverse maro
+    sirf numbers ko stack me push kro
+    
+    agar operator aya to two numbers pop mark result stack me dalo bss vohi kahani hai
+*/
+class Solution {
+    public int evaluatePrefix(String[] arr) {
+        // code here
+        int n = arr.length;
+        
+        Stack<Integer> st = new Stack<>();
+        
+        for(int i = n - 1; i >= 0; i--)
+        {
+            String str = arr[i];
+            
+            if(str.equals("+") || str.equals("-") || str.equals("*") || str.equals("/") || str.equals("^"))
+            {
+                int op1 = st.pop();
+                int op2 = st.pop();
+                
+                int result = 0;
+                
+                switch(str)
+                {
+                    case "+":
+                        result = op1 + op2;
+                        break;
+                        
+                    case "-":
+                        result = op1 - op2;
+                        break;
+                        
+                    case "*":
+                        result = op1 * op2;
+                        break;
+                        
+                    case "/":
+                        result = (int) Math.floor((double) op1 / op2);
+                        break;
+                        
+                    case "^":
+                        result = (int) Math.pow(op1, op2);
+                        break;
+                    
+                }
+                
+                st.push(result);
+            }
+            else
+            {
+                st.push(Integer.parseInt(str));
+            }
+        }
+        
+        return st.pop();
+    }
+}
