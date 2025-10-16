@@ -1,0 +1,33 @@
+// Time: O(n)
+// Space: O(1)
+-----------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------
+
+/**
+    kya hum kuch aisa kr skhte hai ki hum
+    lastZero vale ka Index maintain krenge
+    aur jo non-zero ele hoga usse usko lastZero index pr daal denge
+
+    last me lastZeroIndex se n tak sabhi ko zero kr denge
+*/
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int zeroIndex = 0;
+        
+        int n = nums.length;
+
+        for(int i = 0; i < n; i++)
+        {
+            if(nums[i] != 0)
+            {
+                nums[zeroIndex] = nums[i];
+                zeroIndex++;
+            }
+        }
+
+        while(zeroIndex < n)
+        {
+            nums[zeroIndex++] = 0;
+        }
+    }
+}
