@@ -1,0 +1,68 @@
+//Brute Approach
+// Time: O(n²)
+// Space:O(1)
+-------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------
+/**
+    sabse brute tarika hoga ki
+    har ek subarray ko dekho aur dekho ki kya uss subarray ka sum >= target hai kya aur
+    minimum length maintain kro
+*/
+class Solution {
+    public int minSubArrayLen(int target, int[] nums) {
+        int n = nums.length;
+
+        int minimum = Integer.MAX_VALUE;
+
+        for(int i = 0; i < n; i++)
+        {
+            int sum = 0;
+
+            for(int j = i; j < n; j++)
+            {
+                sum += nums[j];
+
+                if(sum >= target)
+                {
+                    minimum = Math.min(minimum, j - i + 1);
+                    break;
+                }
+            }    
+        }
+
+        return minimum == Integer.MAX_VALUE ? 0 : minimum;
+    }
+}
+-------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------
+
+// Optimal Approach
+// Time: O(n) + O(n) ~ O(n)
+// Space: O(1)
+-------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------
+/**
+    dursa asan tarika hoga ki hum prefix sum banake chalte aur jab humko sum >= target mil jaye 
+    hum minimum length ko update krenge acc, aur left se shrink mar k dekhenge kya sum maintain rahta hai bss 
+*/
+class Solution {
+    public int minSubArrayLen(int target, int[] nums) {
+        int n = nums.length;
+        int sum = 0;
+        int minimum = Integer.MAX_VALUE;
+        int i = 0;
+
+        for(int j = 0; j < n; j++)
+        {
+            sum += nums[j]; // sum nikalo
+
+            while(sum >= target) // agar sum target se bada hai to bss ab
+            {                    // ye pata krna hai ki tab tak yee maintain hota hai minLen
+                minimum = Math.min(minimum, j - i + 1);
+                sum = sum - nums[i++];
+            }
+        }
+
+        return minimum == Integer.MAX_VALUE ? 0 : minimum;
+    }
+}
