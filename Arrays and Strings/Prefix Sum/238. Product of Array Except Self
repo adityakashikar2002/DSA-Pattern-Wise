@@ -1,5 +1,5 @@
 // Brute Approach
-// Time: O(n)
+// Time: O(n²)
 // Space: O(n)
 -----------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------
@@ -191,7 +191,43 @@ class Solution {
 
 // Optimal Approach - Updated Version of LeftProduct and RightProduct array
 // Extra Space katta hai
-// Time: O()
-// Space: O()
+// Time: O(2n) ~ O(n)
+// Space: O(2n) ~ O(n)
 -----------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------
+/**
+    actually dekha jaye to yee left right product array time aur space bohot
+    le raha to kya hum kuch space kam kr skhte hai ?
+    definitely kr skhte
+
+    hum sirf leftProduct nikalenge
+
+    aur scan krte vakht hi rightProduct nikal k res me left x right ka product nikalenge 
+
+*/
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+
+        int[] res = new int[n];
+
+        int[] left = new int[n];
+
+        left[0] = 1; // kyuki 1st ele k left me koi ele nhi to prod = 1
+
+        for(int i = 1; i < n; i++)
+        {
+            left[i] = left[i - 1] * nums[i - 1]; // aage k liye  
+        }
+
+        int rightProd = 1; // last ele k right me koi nhi so..
+
+        for(int i = n - 1; i >= 0; i--)
+        {
+            res[i] = rightProd * left[i]; // curr ka prod hoga
+            rightProd *=nums[i]; // aage badne se pahle update krnge rightProd ko
+        }
+
+        return res;
+    }
+}
