@@ -1,0 +1,40 @@
+// Brute Approach
+// Time: O(n)
+// Space: O(n)
+-----------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------
+/** 
+    sabse brute force tarika hoga ki,
+    sare elements pr jaake unko skip krk product lete vakht result array banao
+    [1, 2, 3, 4]
+
+    like 3 k vakht 2nd index 3 ko skip marenge product lee lenge
+*/
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        
+        int[] res = new int[nums.length];
+
+        for(int i = 0; i < nums.length; i++)
+        {
+            int product = 1;
+
+            for(int j = 0; j < nums.length; j++)
+            {
+                if(i == j)
+                    continue;
+                
+                product *= nums[j];
+            }
+
+            res[i] = product;
+        }
+
+        return res;
+    }
+}
+-----------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------
+// Better Approach - 1 (Using Division)
+-----------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------
