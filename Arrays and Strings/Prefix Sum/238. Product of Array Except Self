@@ -35,6 +35,92 @@ class Solution {
 }
 -----------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------
+
 // Better Approach - 1 (Using Division)
+// Time: O(2n) ~ O(n)
+// Space: O(n)
+-----------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------
+/**
+    ab hame to yaha without division use krne bola hai
+    still yaha division se solve kiya ja skhta hai
+
+    like [1, 2, 3, 4] k liye to kaam kr jaega
+
+    lekin agar [1, 0, 3] k liye bola to gadbad ho jayegi
+    Division by 0
+
+    to ap sochenge bss 0 vale ka problem hai n
+
+    to jaha zero hai vaha product without zero lee lo
+
+    1 0 3
+    0 3 0
+
+    but yee bhi hamesha kaam nhi krega
+
+    like
+
+    1 0 0 3
+
+    yaha productWithZero = 0, productWithoutZero = 3
+
+    1 0 0 3
+    0 3 3 0 yee wrong ho jayega kyuki 2nd zero k liye bhi product zero hi aa raha
+
+    to hum kya kr skhte
+
+    hum yee kah skhte hai agar count of zeroes count > 1 yaha to uss jagah pkka product zero hoga
+    agar count of zeroes total array me bss 1 hi hai to productWithout zero ko sidha ans me daal shte
+
+    1 0 0 3
+    0 0 0 0 yee correct hai 
+*/
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        
+        int n = nums.length;
+
+        int[] res = new int[n];
+
+        int countZero = 0;
+        int productWithoutZeroes = 1;
+
+        for(int i = 0; i < n; i++)
+        {
+            if(nums[i] == 0)
+                countZero++;
+            else
+                productWithoutZeroes *= nums[i]; 
+        }
+
+        for(int i = 0; i < n; i++)
+        {
+            if(nums[i] != 0)
+            {
+                if(countZero > 0)
+                    res[i] = 0;
+                else
+                    res[i] = productWithoutZeroes / nums[i];
+            }
+            else
+            {
+                if(countZero > 1)
+                    res[i] = 0;
+                else
+                    res[i] = productWithoutZeroes;
+            }
+
+        }
+
+        return res;
+    }
+}
+-----------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------
+
+// Better Approach - 2 Using leftPrefixProduct and RightSuffixProduct arrays (Without Division)
+// Time: O(2n) ~ O(n)
+// Space: O(n)
 -----------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------
