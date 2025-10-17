@@ -66,3 +66,126 @@ class Solution {
     aur ek ans aisa milega jab map me kuch match nhi hoga so vo apna answer hoga
 
 */
+/**
+    agar dyan se observe krnege to, hum dekhenge ki agar har ele pr mod kr diya 
+    aur saro k result me samzho store kiya to hame minimum excluded mil skhta hai
+    add ya subtract krk bhi hamko usko minimum banana hai n
+    so mod yee kaam asan kr deta hai bacha hua sidha lauta deta hai
+
+    to bss ek baat dyan me rakhne ka ki negative ka mod bhi hame positive chaiye 
+    so % for -ve numbers will be 
+    ((a % b) + b) % b 
+
+*/
+// class Solution {
+//     public int findSmallestInteger(int[] nums, int value) {
+//         int n = nums.length;
+//         Set<Integer> set = new HashSet<>();
+//         int ans = 0;
+        
+//         for(int i = 0; i < n; i++)
+//         {
+//             if(nums[i] < 0)
+//                 set.add(((nums[i] % value) + value) % value);
+//             else
+//                 set.add(nums[i] % value);
+//         }
+
+//         for(int i = 0; i < Integer.MAX_VALUE; i++)
+//         {
+//             if(!set.contains(i))
+//             {
+//                 ans = i;
+//                 break;
+//             }
+                
+//         }
+
+//         return ans;
+//     }
+// }
+/**
+    [3,0,3,2,4,2,1,1,0,4] value = 5
+
+    iss example k liye upar ka code fail ho jaega
+
+    output 10 hona chahiye lekin 5 milega
+
+    aisa is liye kyuki numbers repeat ho rahe hai 2 zeros hai
+    to durse zero me 5 add krk hum, 5 bana skhte the soo... fail
+
+    to actually har element ko dekhna padega aur sath me remainders ka count hona
+    kyuki agar vo hai, hamare pass to hum pata kr skhte 0, 1, 2, ... agar target array hai ans vala
+    to t % value agar hai available to hame dursa mex dhoondhna padega
+
+    arr =     [3,0,3,2,4,2,1,1,0,4]
+    mod arr HashMap
+    0 - 2
+    1 - 2
+    3 - 2
+    4 - 2
+
+    so jab hai MEX k liye 0 -> MAX tal jayege
+
+    hum map me dekhenge ki match hua t % value to 
+    uss remainder ka value -- krenge
+    jab 0 ho jaega to remove kr denge
+
+    aur ek ans aisa milega jab map me kuch match nhi hoga so vo apna answer hoga
+
+*/
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    public int findSmallestInteger(int[] nums, int value) {
+        int n = nums.length;
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for(int i = 0; i < n; i++)
+        {
+            int rem = ((nums[i] % value) + value) % value;
+
+            if(map.containsKey(rem))
+                map.put(rem, map.get(rem) + 1);
+            else
+                map.put(rem, 1);
+        }
+
+        for(int ans = 0; ans < Integer.MAX_VALUE; ans++)
+        {
+            int res = ans % value;
+
+            if(map.containsKey(res) && map.get(res) > 0)
+            {
+                map.put(res, map.get(res) - 1);
+            }
+            else
+            {
+                return ans;
+            }
+        }
+
+        return 0;
+    }
+}
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+class Solution {
+    public int findSmallestInteger(int[] nums, int value) {
+        int[] count = new int[value];
+        for (int num : nums) 
+        {
+            int r = ((num % value) + value) % value;
+            count[r]++;
+        }
+
+        int ans = 0;
+        while (count[ans % value] > 0) 
+        {
+            count[ans % value]--;
+            ans++;
+        }
+        return ans;
+    }
+}
