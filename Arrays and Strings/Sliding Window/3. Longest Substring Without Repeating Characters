@@ -93,3 +93,36 @@ class Solution {
 // Space: O(n)
 ---------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------
+/**
+    Set use krne se ek problem hoti hai ki left ko ek-ek krk
+    shrink krna pdta hai usse acha hum direct jump krnge
+
+    like jab curr window me curr char repeat hua to uski index value + 1 pr left ko jump
+    kra denge aur maxLen to update hota rahega hi
+*/
+class Solution {
+    public int lengthOfLongestSubstring(String s) 
+    {
+        int n = s.length();
+        int maxLen = 0;
+        HashMap<Character, Integer> map = new HashMap<>();
+
+        int left = 0;
+        int right = 0;
+
+        while(right < n)
+        {
+            char ch = s.charAt(right);
+
+            if(map.containsKey(ch) && map.get(ch) >= left)
+                left = map.get(ch) + 1;
+
+            map.put(ch, right);
+            maxLen = Math.max(maxLen, right - left + 1);
+
+            right++;
+        }
+
+        return maxLen;
+    }
+}
