@@ -1,0 +1,27 @@
+// Time: O(n)
+// Space: O(1)
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+
+/**
+    since the array given to us is of net gain altitude between two points
+    adding them up would give us the actual altitude between two points
+*/
+class Solution {
+    public int largestAltitude(int[] gain) {
+        int maxAltitude = 0;
+
+        int altitude = 0;
+
+        int n = gain.length;
+
+        for(int i = 0; i < n; i++)
+        {
+            altitude = altitude + gain[i];
+
+            maxAltitude = Math.max(maxAltitude, altitude);
+        }
+
+        return maxAltitude;
+    }
+}
