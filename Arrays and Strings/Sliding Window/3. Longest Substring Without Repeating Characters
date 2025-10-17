@@ -46,8 +46,50 @@ class Solution {
 }
 ---------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------
-// Optimal Approach
-// Time: O()
-// Space: O()
+// Better Approach - Fast in O(n)
+// Time: O(n)
+// Space: O(n)
+---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
+
+/**
+    ek tarika yee ho skhta hai ki hum ek sliding window lee lenge
+    jab bhi curr window me koi repeated char ayega to hum maxLen update krk
+    shrink kr denge
+
+    Set ka kaam to padega hi
+*/
+class Solution {
+    public int lengthOfLongestSubstring(String s) 
+    {
+        int n = s.length();
+        int maxLen = 0;
+        Set<Character> window = new HashSet<>();
+
+        int left = 0;
+        for (int right = 0; right < n; right++) 
+        {
+            char ch = s.charAt(right);
+
+            // shrink window until current char is unique
+            while (window.contains(ch)) 
+            {
+                window.remove(s.charAt(left));
+                left++;
+            }
+
+            window.add(ch);
+            maxLen = Math.max(maxLen, right - left + 1);
+        }
+
+        return maxLen;
+    }
+}
+---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
+
+// Optimal Approach - Best runtime no need to remove left ele one by one direct jump
+// Time: O(n)
+// Space: O(n)
 ---------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------
