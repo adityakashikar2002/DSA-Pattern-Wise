@@ -104,7 +104,7 @@ class Solution {
             freq[ch - 'A']++;
             maxF = Math.max(maxF, freq[ch - 'A']);
 
-            if(r - l + 1 - maxF > k)
+            if(r - l + 1 - maxF > k) // winLen - maxF > k
             {
                 freq[s.charAt(l) - 'A']--;
                 l++;
