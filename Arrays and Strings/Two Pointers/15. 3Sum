@@ -52,8 +52,140 @@ class Solution {
 -----------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------
 
-// Optimal Approach
-// Time: O()
-// Space: O()
+// Better Approach
+// Time: O(n²)
+// Space: O(n²) ~ consider Set stores k unique list each of 3 size so O(k), but if all triplets are unique
+          then can go upto n² in worst case
 -----------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------
+/**
+    Brute Force bohot time lagaega so what can we do ??
+
+    2Sum me sort krk Two Pointers lagaya tha
+    to 3Sum me bhi ek value fix krk baki k array me 2Sum vala concept laga denge
+
+*/
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        int n = nums.length;
+
+        Arrays.sort(nums);
+
+        List<List<Integer>> res = new ArrayList<>();
+        Set<List<Integer>> set = new HashSet<>();
+
+        List<Integer> sumEle;
+
+        for(int i = 0; i < n - 2; i++)
+        {
+            int l = i + 1;
+            int r = n - 1;
+
+            int sum = 0;
+            int target = 0;
+
+            while(l < r)
+            {
+                sum = nums[i] + nums[l] + nums[r];
+
+                if(sum == target)
+                {
+                    sumEle = new ArrayList<>();
+
+                    sumEle.add(nums[i]);
+                    sumEle.add(nums[l]);
+                    sumEle.add(nums[r]);
+
+                    set.add(sumEle);
+
+                    l++;
+                    r--;
+                }
+                else if(sum < target)
+                {
+                    l++;
+                }
+                else
+                {
+                    r--;
+                }
+            
+            }   
+        }
+
+        for(List<Integer> list: set)
+        {
+            res.add(list);
+        }
+
+        return res;
+    }
+}
+-----------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------
+
+// Optimal Solution
+// Time: O(n²)
+// Space: O(k) ~ no triplets
+-----------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------
+/**
+    chalo 2Sum vala concept laga bhi diya still space bohot le raha n 
+    like set me add kro aur jamela phir set se vapis list me dalo
+
+    to apn bss jab duplicate raha to skip maar denge vo iteration
+
+    lekin sabse pahle arr ko sort marna mat bhoolna
+
+*/
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        int n = nums.length;
+
+        Arrays.sort(nums);
+
+        List<List<Integer>> res = new ArrayList<>();
+
+
+        for(int i = 0; i < n - 2; i++)
+        {
+            if(i > 0 && nums[i] == nums[i - 1])
+                continue;
+            
+            int l = i + 1;
+            int r = n - 1;
+
+            int sum = 0;
+            int target = 0;
+
+            while(l < r)
+            {
+                sum = nums[i] + nums[l] + nums[r];
+
+                if(sum == target)
+                {
+                    res.add(Arrays.asList(nums[i], nums[l], nums[r]));
+
+                    while(l < r && nums[l] == nums[l + 1])
+                        l++;
+                    while(l < r && nums[r] == nums[r - 1])
+                        r--;
+                    
+                    l++;
+                    r--;
+                }
+                else if(sum < target)
+                {
+                    l++;
+                }
+                else
+                {
+                    r--;
+                }
+            
+            }   
+        }
+
+        return res;
+    }
+}
