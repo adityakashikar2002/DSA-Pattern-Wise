@@ -1,0 +1,75 @@
+// Brute Force
+// Time: O(n²)
+// Space: O(26) ~ O(1) 
+---------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------
+
+/**
+    sabse asan tarika kya hoga ?
+    humko characters replace krne hai right ??
+
+    to socho hum ek window me hai jaha characters hai
+    MAX CHANCES TO REPLACE = k hai
+
+    to hum kaise pata kr skhte hai ki uss window me
+    kitne characters replace krne hai ??
+
+    ans simple hai
+
+    CHAR TO REPLACE = WINDOW_LENGTH- MAX_FREQUENCY 
+
+    kyuki uss window me 2 hi characters honge jisme me ek ki freq max hogi
+    ab hame longest subarray chaiye so, hum obviously minFreq vale elements ko replace krnge
+
+    to bss simple logic hoga
+
+    agar yee CharacterstoChange ki value <= k matlab hum aur lamba window bana skhte 
+    agar yee value > k ho gai matlab usse aage hum update nhi kr payenge
+
+    so bss break kr denge aur dusri window me dekhenge 
+*/
+class Solution {
+    public int characterReplacement(String s, int k) {
+        int n = s.length();
+        int maxLen = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            int[] freq = new int[26];
+            int maxF = 0;
+            int charToReplace = 0;
+            int windowSize = 0;
+
+            for(int j = i; j < n; j++)
+            {
+                char ch = s.charAt(j);
+
+                freq[ch - 'A']++;
+                maxF = Math.max(maxF, freq[ch - 'A']); // curr window me maxF 
+
+                windowSize = j - i + 1;
+
+                charToReplace = windowSize - maxF; // kitne characters replace marne k hai ??
+
+                if(charToReplace <= k) // agar valid hai replace krna to badiya hai
+                {
+                    maxLen = Math.max(maxLen, windowSize);
+                }
+                else // agar invalid raha to break kr denge
+                {
+                    break;
+                }
+
+            }
+        }
+
+        return maxLen;
+    }
+}
+---------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O()
+// Space: O()
+---------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------
