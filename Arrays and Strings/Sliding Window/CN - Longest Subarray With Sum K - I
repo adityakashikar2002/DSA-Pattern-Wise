@@ -1,0 +1,78 @@
+// Brute Force
+// Time: O(n²)
+// Space: O(1)
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+/*
+    to sabse asan tarika hoga ki sare subarrays ko chaan maro
+    bss yee dyan rahna ki sum match krne pr direct break mat kro kyuki arr me
+    0 bhi hai aur apn ko longest subarray hona 
+    so bss sum == k pr maxLen update marenge 
+*/
+public class Solution {
+    public static int longestSubarrayWithSumK(int []a, long k) {
+        // Write your code here
+        int n = a.length;
+        int maxLen = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            long sum = 0;
+            for(int j = i; j < n; j++)
+            {
+                sum += a[j];
+
+                if(sum == k)
+                {
+                    maxLen = Math.max(maxLen, j - i + 1);
+                }
+            }
+        }
+
+        return maxLen;
+    }
+}
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O(2n) ~ O(n)
+// Space: O(1)
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+/*
+    dusra tarika hoga baat longest ki hai to sliding window se kaam ban jana chaiye
+    jab bhi sum <=k hum window ka size increase krte rahenge
+    bss jab sum > k hua tak left se eliminate krenge
+*/
+public class Solution {
+    public static int longestSubarrayWithSumK(int []a, long k) {
+        // Write your code here
+        int n = a.length;
+        int maxLen = 0;
+
+        long sum = 0;
+
+        int l = 0;
+        int r = 0;
+
+        while(r < n)
+        {
+            sum += a[r];
+            
+            while(sum > k) // agar sum k se bada hai to left se shrink kro
+            {
+                sum = sum - a[l];
+                l++;
+            }
+
+            if(sum == k)  // sum == k hai to maxLen update kro
+            {
+                maxLen = Math.max(maxLen, r - l + 1);
+            }
+
+            r++;
+        }
+
+        return maxLen;
+    }
+}
