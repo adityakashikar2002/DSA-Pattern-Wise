@@ -69,7 +69,50 @@ class Solution {
 ---------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------
 // Optimal Approach
-// Time: O()
-// Space: O()
+// Time: O(n)
+// Space: O(1)
 ---------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------
+/**
+    ab yee CharactersToReplace vale cheez ko kya hum Single Pass me nhi kr skhte
+    agar window ka use kr hi rahe hai to Sliding Window use kr skhte hai
+
+    like jab bhi CharactersToReplace > k hoga tab hum left se shrink krenge jab tak window phir se valid nhi hota
+
+    hame bss ek cheez ka dyan rakhna hai ki 
+    maF ko ghatana nhi, aur maxWinLen ko bhi kam nhi krna 
+    bss window valid rahni chaiye okay ?? kyuki better se best pr jana hai
+
+    long -> longest
+
+    so degrade krk bhi koi matlab nhi
+*/
+class Solution {
+    public int characterReplacement(String s, int k) {
+        int n = s.length();
+
+        int[] freq = new int[26];
+        int maxF = 0;
+        int maxWinLen = 0;
+
+        int l = 0;
+
+        for(int r = 0; r < n; r++)
+        {
+            char ch = s.charAt(r);
+
+            freq[ch - 'A']++;
+            maxF = Math.max(maxF, freq[ch - 'A']);
+
+            if(r - l + 1 - maxF > k)
+            {
+                freq[s.charAt(l) - 'A']--;
+                l++;
+            }
+
+            maxWinLen = Math.max(maxWinLen, r - l + 1);
+        }
+
+        return maxWinLen;
+    }
+}
