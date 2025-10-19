@@ -1,0 +1,85 @@
+// Brute Approach
+// Time: O(n²)
+// Space: O(1)
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+/**
+    sabse brute force tarika hoga ki har ek subarray ko dekho aur dekho kitna lamba jaa skhte apn
+*/
+class Solution {
+    public int longestOnes(int[] nums, int k) {
+        int n = nums.length;
+
+        int maxL = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            int flips = k;
+            int currL = 0;
+
+            for(int j = i; j < n; j++)
+            {
+                if(nums[j] == 0)
+                {
+                    if(flips > 0)
+                    {
+                        flips--;
+                    }
+                    else
+                    {
+                        break;
+                    }
+
+                }
+                
+                currL++;
+                maxL = Math.max(maxL, currL);
+            }
+            
+        }
+
+        return maxL;
+    }
+}
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O(n)
+// Space: O(1)
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+/**
+    dusra asan tarika hoga ki ek sliding window lete hai aur usme count of Zeroes maintain krenge
+    aur, bss shrink krnge agar window invalid jati hai, like countZeroes > k tab
+*/
+class Solution {
+    public int longestOnes(int[] nums, int k) {
+        int n = nums.length;
+
+        int maxL = 0;
+
+        int countZeroes = 0;
+
+        int left = 0;
+        for(int right = 0; right < n; right++)
+        {
+            if(nums[right] == 0)
+                countZeroes++;
+            
+            if(countZeroes <= k)
+            {
+                maxL = Math.max(maxL, right - left + 1);
+            }
+            else
+            {
+                if(nums[left] == 0)
+                    countZeroes --;
+                
+                left++;
+            }
+
+        }
+
+        return maxL;
+    }
+}
