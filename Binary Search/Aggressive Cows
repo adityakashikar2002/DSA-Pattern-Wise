@@ -1,6 +1,102 @@
-// Time: Time: O(n * logn + n * log(max-min))
+// Brute Approach
+// Time: O(nlogn + n(maxD - minD))
 // Space: O(1)
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
+    sabse asan tarika jo ho skhta hai ki apn simulate kre cows place krk
+    socho min aur max distance kya ho skhta hai
+    
+    agar hum stalls k array ko sort kr de aur dekhe ki 
+    min distance hamesha 1 rahega
+    max distance laststall - min stall yee hoga
+    
+    ab apna answer is range me rahega
+    
+    hum dekhenge ki kya say for example 
+    [1, 2, 4, 8, 9], k = 3
+    
+    minD = 1
+    maxD = 9 - 1 = 8
+    
+    ans = [1, 8] k beech me hoga
+    
+    hum dekhenge ki kya sare cows ko minDistance 1 maintain krk place kiya jaa skhta hai ??
+    phir 2, 3, 4... so on till 8 tak
+    
+    apn ko minimum distance to chaiye but vo maximum possible minimum distance hona chaiye
+    matlab ki like uske baad agar try kiya to sare cows fit nhi baithte
+    
+    like for the example jo apn ne dekha ans 3 hai matlab agar 4 k liye try kiya to sare cows fit nhi baitha
+    kuch rah jaenge yaa min kuch aur banega < 4 so..
+    
+    hum pahle hamesha
+    
+    1st cow ko 0th stall pr rahkhte jaenge
+    aur phir dekhenge lastPlaced 0 hoga
+    
+    to 1 se n tak dekhenge ki 
+    agar arr[i] - lastPlaced >= d rahta hai 
+    so k -- kr denge matlab cows place kr skhte
+    
+    agar k == 0 
+    matlab sare fit baith rahe
+    
+    
+*/
+class Solution {
+    public int aggressiveCows(int[] stalls, int k) {
+        // code here
+        int n = stalls.length;
+        
+        Arrays.sort(stalls);
+        
+        int minD = 1;
+        int maxD = stalls[n - 1] - stalls[0];
+        
+        int ans = -1;
+        
+        for(int i = minD; i <= maxD; i++)
+        {
+            boolean flag = canPlace(i, k, stalls);
+            
+            if(flag)
+                ans = i;
+            else
+                break;
+        }
+        
+        return ans;
+        
+    }
+    
+    public static boolean canPlace(int d, int cows, int[] arr)
+    {
+        int lastPlaced = arr[0];
+        cows--;
+        
+        for(int i = 1; i < arr.length; i++)
+        {
+            if(arr[i] - lastPlaced >= d)
+            {
+                cows--;
+                lastPlaced = arr[i];
+            }
+            
+            if(cows == 0)
+                return true;
+        }
+        
+        return false;
+    }
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: Time: O(nlogn + nlog(max-min))
+// Space: O(1)
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------
 
 import java.util.Arrays;
 
