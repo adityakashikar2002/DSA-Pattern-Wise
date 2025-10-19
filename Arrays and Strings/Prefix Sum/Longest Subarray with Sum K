@@ -1,0 +1,90 @@
+// Brute Approach
+// Time: O(n²)
+// Space: O(1)
+---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
+
+/*
+    sabse asan tarika hoga ki sare subarrays ka sum dekhte hai
+*/
+class Solution {
+    public int longestSubarray(int[] arr, int k) {
+        // code here
+        int n = arr.length;
+        
+        int maxLen = 0;
+        
+        for(int i = 0; i < n; i++)
+        {
+            int sum = 0 ;
+            
+            for(int j = i; j < n; j++)
+            {
+                sum += arr[j];
+                
+                if(sum == k)
+                {
+                    maxLen = Math.max(maxLen, j - i + 1);
+                }
+            }
+        }
+        
+        return maxLen;
+    }
+}
+---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
+// Optimal Solution
+// Time: O(n)
+// Space: O(n)
+---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
+/*
+    jab constraints me arr[i] 0 ya +ve hota tha
+    tab vaha sliding window chal jata tha
+    kyuki jab bhi sum > k jata tha apn shrink kr dete the
+    lekin yaha pr aisa nhi hai kyuki negative number aa jake sum ghatake phir se equal to k bana skhta hai
+    aur hame longest subarray ki jaroorat hai.. so socho kya kr skhte hai ??
+    
+    ek tarika hoga ki prefix sum nikal lete aur jab hame kahi sum - k milega matlab 
+    baki ka sum k hoga
+    
+    prefixSum[i] = sum of elements from 0 to i
+
+    If at some index j, we have a previous prefix prefixSum[p] such that
+    prefixSum[j] - prefixSum[p] = k
+    ⟹ subarray (p+1 ... j) has sum k
+    
+    So we just need to store the first index of every prefix sum and check this difference.
+*/
+class Solution {
+    public int longestSubarray(int[] arr, int k) {
+        // code here
+        int n = arr.length;
+        
+        int maxLen = 0;
+        
+        HashMap<Integer, Integer> map = new HashMap<>();
+        
+        int prefixSum = 0;
+        
+        for(int i = 0; i < n; i++)
+        {
+            prefixSum += arr[i];
+            
+            if(prefixSum == k)
+            {
+                maxLen = i + 1;
+            }
+            else if(map.containsKey(prefixSum - k))
+            {
+                maxLen = Math.max(maxLen, i - map.get(prefixSum - k));
+            }
+            
+            if(!map.containsKey(prefixSum))
+                map.put(prefixSum, i);
+        }
+        
+        return maxLen;
+    }
+}
