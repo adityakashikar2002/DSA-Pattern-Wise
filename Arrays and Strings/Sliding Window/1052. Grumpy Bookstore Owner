@@ -104,3 +104,51 @@ class Solution {
         return maxSatisfiedCus;
     }
 }
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+
+// maxExtra bhi kr skhte aisa krk
+class Solution {
+    public int maxSatisfied(int[] customers, int[] grumpy, int minutes) {
+        int n = customers.length;
+
+        int satisfiedCustomers = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            if(grumpy[i] == 0)
+            {
+                satisfiedCustomers += customers[i];
+            }
+        }
+
+        int extraSatisfied = 0;
+
+        for(int m = 0; m < minutes; m++)
+        {
+            if(grumpy[m] == 1)
+            {
+                extraSatisfied += customers[m];
+            }
+        }
+        
+        int maxExtraSatCus = extraSatisfied;
+        
+        for(int j = minutes; j < n; j++)
+        {
+            if(grumpy[j - minutes] == 1)
+            {
+                extraSatisfied -= customers[j - minutes];
+            }
+
+            if(grumpy[j] == 1)
+            {
+                extraSatisfied += customers[j];
+            }
+
+            maxExtraSatCus = Math.max(maxExtraSatCus, extraSatisfied);
+        }
+
+        return satisfiedCustomers + maxExtraSatCus;
+    }
+}
