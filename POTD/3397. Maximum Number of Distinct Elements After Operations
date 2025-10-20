@@ -1,0 +1,46 @@
+// Brute Approach
+// Time: O(n x 2k)
+// Space: O(n) ~ jitne unique elements honge utne in worst case sare
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+/**
+    sabse brute force tarika to yehi hoga ki ham pahle sort kr le taki 
+    duplicates elements aur baki ascending order me aa jaye
+
+    ab hum har ele ko minimum possible unique element banane ki koshish krenge aur yee kaam sorting 
+    se asan ho jayega 
+
+*/
+class Solution {
+    public int maxDistinctElements(int[] nums, int k) {
+        int n = nums.length;
+        
+        Arrays.sort(nums);
+
+        Set<Integer> set = new HashSet<>();
+
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = -k; j <= k; j++)
+            {
+                if(!set.contains(nums[i] + j))
+                {
+                    set.add(nums[i] + j);
+                    break;
+                }
+            }
+             
+        }
+
+        return set.size();
+    }
+}
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+// Optimal Approach
+// Time: O()
+// Space: O()
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
