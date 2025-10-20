@@ -1,0 +1,45 @@
+// Time: O(rows x cols)
+// Space: O(1)
+-----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
+
+/**
+    sabse asan tarika hoga ki socho hame minimum possible area chaiye jo sare 1 ko cover kre
+    so hame 4 cheezo ki jarrorat hogi
+    minR, minC, maxR, maxC
+
+    area hoga (maxR - minR + 1) x (maxC - minC + 1)
+*/
+class Solution {
+    public int minimumArea(int[][] grid) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        int minArea = 0;
+
+        int minR = 1000;
+        int minC = 1000;
+
+        int maxR = -1;
+        int maxC = -1;
+
+        for(int r = 0; r < rows; r++)
+        {
+            for(int c = 0; c < cols; c++)
+            {
+                if(grid[r][c] == 1)
+                {
+                    minR = Math.min(minR, r);
+                    minC = Math.min(minC, c);
+
+                    maxR = Math.max(maxR, r);
+                    maxC = Math.max(maxC, c);
+                }
+            }
+        }
+
+        int area = (maxR - minR + 1) * (maxC - minC + 1);
+
+        return area;
+    }
+}
