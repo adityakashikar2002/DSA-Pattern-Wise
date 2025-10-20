@@ -31,8 +31,106 @@ class Solution {
 }
 --------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------
-// Optimal Approach
-// Time: O()
-// Space: O()
+// Optimal Approach 1 - Using HashMap
+// Time: O(n)
+// Space: O(k)
 --------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------
+/**
+    iska optimal solution kafi similar hai no. of subarrays with sum 'k' k jaise
+
+    like i aur j do indices hai okay
+
+    sum(i -> j) % k = 0 matlab sum of i -> j divisible hai 'k' se
+
+    to agar 0 -> i tak ka sum prefixSum[i] hai
+    aur 0 -> j tak ka sum prefixSum[j] hai
+
+   to prefix[i + 1 -> j] = prefix[j] - prefix[i] brobar ??
+   (i se j k beech ka subarray)
+
+   to agar yee subarray divisible by k hai 
+
+   0 = prefix[j] % k - prefix[i] % k hoga
+
+   matlab prefix[j] % k == prefix[i] % k hoga
+
+   so agar hame same remainders pahle kahi milta hai to jitne baar milta hai usko answer me add krenge
+
+   but yee yaad rakhenge ki -ve numbers k rem me + k krenge
+ */
+class Solution {
+    public int subarraysDivByK(int[] nums, int k) {
+        int n = nums.length;
+
+        int ans = 0;
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int sum = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            sum += nums[i];
+
+            int rem = sum % k;
+
+            if(rem < 0)
+                rem += k;
+
+            if(rem == 0)
+                ans++;
+
+            else if(map.containsKey(rem))
+            {
+                ans += map.get(rem);
+                map.put(rem, map.get(rem) + 1);
+            }
+            else
+            {
+                map.put(rem, 1);
+            }
+        }
+
+        return ans;
+    }
+}
+--------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------
+// Optimal Approach 2 - Using Array Fastest
+// Time: O(n)
+// Space: O(k)
+--------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------
+/**
+    same HashMap vali cheez apn array leke bhi kr skhte like
+    atmost 0 - k tak ki key-values hi hongi n so HashMap costly jaega
+
+    apn array lenge
+*/
+class Solution {
+    public int subarraysDivByK(int[] nums, int k) {
+        int n = nums.length;
+
+        int[] freq = new int[k];
+        int sum = 0;
+
+        int count = 0;
+
+        for(int num : nums)
+        {
+            sum += num;
+            int rem = sum % k;
+
+            if(rem < 0)
+                rem += k;
+            
+            if(rem == 0)
+                count++;
+
+            count += freq[rem]++;
+            
+        }   
+
+        return count;
+    }
+}
