@@ -51,7 +51,56 @@ class Solution {
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
 // Optimal Approach
-// Time: O()
-// Space O()
+// Time: O(n + n) ~ O(n)
+// Space O(1)
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
+
+/**
+    dusra tarika hoga ki minutes k fixed size window ki tarah hai to hum usko maintain krte hue sum me
+    satisfied customers nikal skhte jab window ka size bada ho jaega to shrink kr denge j - minutes se
+*/
+class Solution {
+    public int maxSatisfied(int[] customers, int[] grumpy, int minutes) {
+        int n = customers.length;
+
+        int satisfiedCustomers = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            if(grumpy[i] == 0)
+            {
+                satisfiedCustomers += customers[i];
+            }
+        }
+
+        int maxSatisfiedCus = satisfiedCustomers;
+
+        for(int m = 0; m < minutes; m++)
+        {
+            if(grumpy[m] == 1)
+            {
+                satisfiedCustomers += customers[m];
+            }
+        }
+        
+        maxSatisfiedCus = Math.max(maxSatisfiedCus, satisfiedCustomers);
+        
+        for(int j = minutes; j < n; j++)
+        {
+            if(grumpy[j - minutes] == 1)
+            {
+                satisfiedCustomers -= customers[j - minutes];
+            }
+
+            if(grumpy[j] == 1)
+            {
+                satisfiedCustomers += customers[j];
+            }
+
+            maxSatisfiedCus = Math.max(maxSatisfiedCus, satisfiedCustomers);
+        }
+
+        return maxSatisfiedCus;
+    }
+}
