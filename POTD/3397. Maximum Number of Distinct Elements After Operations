@@ -1,5 +1,5 @@
 // Brute Approach
-// Time: O(n x 2k)
+// Time: O(nlogn + n x 2k)
 // Space: O(n) ~ jitne unique elements honge utne in worst case sare
 ------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------
@@ -40,7 +40,60 @@ class Solution {
 ------------------------------------------------------------------------------------------------------------------------
 
 // Optimal Approach
-// Time: O()
-// Space: O()
+// Time: O(nlogn + n) ~ O(nlogn)
+// Space: O(1)
 ------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------
+/**
+    dursa aur optimal tarika ho skhta hai 
+    humko jyada se jyada unique elements chaiye right ??
+
+    to ek kaam kr skhte 
+    kisi bhi ele ko unique banane k liye hum usme 
+    1) minimum nums[i] - k ya
+    2) maximum nums[i] + k value add kr skhte iss range k beech ki right ??
+    
+    to hum ek prev ele maintain krenge 
+    aur dekhenege ki curr ele me agar minVal (curr - k) repeat hui hai already kahi 
+    to prev me bss 1 add kr denge taki apna curr prev se bada ho just aur unique ban jaye
+    aur add kab krnege ??
+
+    jab vo minVal - maxVal ki range me fit baitha ho
+
+    agar prev already maxVal k barabar ya bada hai to hum add nhi kr skhte aur isse aisa hi rakhna padega
+
+
+*/
+class Solution {
+    public int maxDistinctElements(int[] nums, int k) {
+        int n = nums.length;
+        
+        Arrays.sort(nums);
+
+        int uniqueEle = 0;
+
+        int prev = Integer.MIN_VALUE;;
+
+        for(int i = 0; i < n; i++)
+        {
+            int minVal = nums[i] - k;
+            int maxVal = nums[i] + k;
+
+            if(prev < minVal) // agar prev ele currEle k sabse minimum value se chota hai matlab ye unique hai
+            {
+                nums[i] = minVal;
+                prev = nums[i];
+                uniqueEle++;
+            }
+            else if(prev + 1 <= maxVal) // agar chota nhi hai matlab prev barabar nhi to bada hoga to
+            {                           // kya iss prev me 1 add krk yee maxVal me fit baitha hai kya if yes..
+                nums[i] = prev + 1;
+                prev = nums[i];
+                uniqueEle++;
+            }
+            // else skip matlab unique nhi banaya ja skhta
+        }
+
+       return uniqueEle;
+    }
+}
