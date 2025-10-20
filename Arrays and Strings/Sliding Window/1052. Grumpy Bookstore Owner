@@ -1,0 +1,57 @@
+// Brute Approach
+// Time: O(n + n x k) ~ O(n x k)
+// Space: O(1)
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+/**
+    sabse asan tarika har window of size minutes, k har ek subarray jo ban skhta hai
+    usme me kitne customers apn le skhte vo lenge aur final satisfied customers me add krnge
+
+    already satisfied customers pahle nikal lenge sum krk jaha
+    grumpy array me 0 hoga vaha
+*/
+class Solution {
+    public int maxSatisfied(int[] customers, int[] grumpy, int minutes) {
+        int n = grumpy.length;
+
+        int satisfiedCus = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            if(grumpy[i] == 0)
+            {
+                satisfiedCus += customers[i];
+            }
+        }
+
+        int maxSatCus = satisfiedCus;
+
+        int cusSum = 0;
+
+        for(int i = 0; i <= n - minutes; i++)
+        {
+            int j = i;
+            cusSum = satisfiedCus;
+
+            for(int k = 0; k < minutes; k++)
+            {
+                if(grumpy[j] == 1)
+                {
+                    cusSum += customers[j];
+                }
+                j++;
+            }
+
+            maxSatCus = Math.max(maxSatCus, cusSum);
+        }
+
+        return maxSatCus;
+    }
+}
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O()
+// Space O()
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
