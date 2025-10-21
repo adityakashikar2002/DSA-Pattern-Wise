@@ -1,0 +1,53 @@
+// Brute Approach
+// Time: O(pLen) + O(sLen ∗ pLen) + O(sLen) ≈ O(sLen ∗ pLen)
+    O(pLen) → building the frequency array freqP
+    O(sLen * pLen) → for every index i, you build freqS of length pLen
+    O(sLen) → iterating over substrings (for i = 0; i <= sLen - pLen; i++)
+// Space: O(sLen)
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+/**
+    sabse asan tarika hoga ki badi string s me hum sare p size vale substrings check kre 
+    ki kya vo anagrams hai p vali string k
+
+    iske liye 2 boolean arrays le lenge
+*/
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        int sLen = s.length();
+        int pLen = p.length();
+
+        int[] freqP = new int[26];
+
+        List<Integer> res = new ArrayList<>();
+
+        for(int i = 0; i < pLen; i++)
+        {
+            freqP[p.charAt(i) - 'a']++;
+        }
+
+        for(int i = 0; i <= sLen - pLen; i++)
+        {
+            int[] freqS = new int[26];
+            for(int j = i; j < i + pLen; j++)
+            {
+                freqS[s.charAt(j) - 'a']++;
+            }
+
+            if(Arrays.equals(freqP, freqS))
+            {
+                res.add(i);
+            }
+        }
+
+        return res;
+    }
+}
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+
+// Optimal Approach
+// Time: O()
+// Space: O()
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
