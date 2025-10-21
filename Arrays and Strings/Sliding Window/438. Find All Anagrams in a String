@@ -47,7 +47,52 @@ class Solution {
 ------------------------------------------------------------------------------------------------------
 
 // Optimal Approach
-// Time: O()
-// Space: O()
+// Time: O(sLen)
+// Space: O(sLen)
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
+/**
+    optimal tarika hoga ki baar baar freqS banane se achha sliding window of Plen use krenge
+    aur phir shrink krte jaenge 
+*/
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> res = new ArrayList<>();
+
+        int sLen = s.length();
+        int pLen = p.length();
+
+        if(pLen > sLen)
+            return res;
+
+        int[] freqS = new int[26];
+        int[] freqP = new int[26];
+
+
+        for(int i = 0; i < pLen; i++)
+        {
+            freqP[p.charAt(i) - 'a']++;
+            freqS[s.charAt(i) - 'a']++;
+        }
+
+        if(Arrays.equals(freqP, freqS))
+        {
+            res.add(0);
+        }
+
+        int left = 0;
+
+        for(int right = pLen; right < sLen; right++)
+        {
+            freqS[s.charAt(left++) - 'a']--; // prev vale ko ghatao
+            freqS[s.charAt(right) - 'a']++; // curr vale ko add kro
+
+            if(Arrays.equals(freqS, freqP))
+            {
+                res.add(left); // kyuki starting indices chaiye
+            }
+        }
+
+        return res;
+    }
+}
