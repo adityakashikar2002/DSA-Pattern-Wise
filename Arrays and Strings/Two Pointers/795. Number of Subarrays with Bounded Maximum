@@ -43,6 +43,69 @@ class Solution {
 }
 -----------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O(n + n) ~ O(n)
+// Space: O(1)
+-----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
+/**
+    question tricky to hai
 
------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------
+    lekin solution me 2 cheeze hai
+
+    koi bhi contigious subarray kab tak valid rahega ??
+    1) jab tak uske maxEle <= right hoga !!
+
+    2) agar maxEle < left jata hai to valid tab hoga jab usme koi aur bada
+       element aye jo left  barabar ya bada ho aur less than equal right ho
+
+    
+    to agar hame vo sare subarrays chaiye jinka maxEle 
+    left --> right k range me ate hai 
+    
+    to hum yee kr skhte hai 
+
+    countofSubarrays(maxEle <= right) - countofSubarrays(maxEle < left) yee ans hoga
+
+    ab kyu ???
+
+    kyuki countofSubarrays(maxEle <= right) me vo bhi subarrays jinka max < left hoga
+    aur jab hum iss count me se countofSubarrays(maxEle < left) minus krenge to hame
+
+    exact milega countofSubarrays(maxEle >= left && maxEle <= right)
+
+    aur sabse interesting baat ham maxEle nikalne ki garaj bhi nhi
+    bss har ek ele ko check krna hai continuously agar bound k baher jata hai to count reset krna hai
+
+    right k liye bound hoga right
+    left k liye strictly less than left chaiye to left - 1 kr denge
+*/
+class Solution {
+    public static int countSubarrays(int bound, int[] arr, int n)
+    {
+        int count = 0;
+        int currCount = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            if(arr[i] <= bound)
+            {
+                currCount++;
+                count = count + currCount;
+            }
+            else
+            {
+                currCount = 0;
+            }
+        }
+
+        return count;
+    }
+
+    public int numSubarrayBoundedMax(int[] nums, int left, int right) 
+    {
+        int n = nums.length;
+
+        return countSubarrays(right, nums, n) - countSubarrays(left - 1, nums, n);
+    }
+}
