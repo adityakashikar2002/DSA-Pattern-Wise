@@ -1,0 +1,48 @@
+// Brute Approach
+// Time: O(n²)
+// Space: O(1)
+-----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
+
+/**
+    sabse asan tarika iska ho skhta hai ki hum har subarray ko dekhe aur us subarray
+    k maxEle kya fit baithta hai left, right ki range me yee dekhenge
+    agar nhi baitha to bhi break nhi krenge inner loop se kuki shayad aage koi
+    maxEle aa jaye jo left, right ki range me ho
+
+    aur ek baat ki hame sab subarrays check krne hai so...
+
+    like example [2, 1, 2, 4, 3]
+    1 se agar subarrays dekhna suru kiya,
+    to pahle hi game over ho jaega left = 2, right = 3
+    jabki  1 k baad ka 2 contribute kr raha hai ek subarray me so..
+*/
+class Solution {
+    public int numSubarrayBoundedMax(int[] nums, int left, int right) {
+        int n = nums.length;
+
+        int count = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            int maxEle = Integer.MIN_VALUE;
+
+            for(int j = i; j < n; j++)
+            {
+                maxEle = Math.max(maxEle, nums[j]);
+
+                if(maxEle >= left && maxEle <= right)
+                {
+                    count++;
+                }
+            }   
+        }
+
+        return count;
+    }
+}
+-----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
