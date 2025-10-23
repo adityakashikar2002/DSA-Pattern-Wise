@@ -30,6 +30,51 @@ class Solution {
 ----------------------------------------------------------------------------------------------------
 // Optimal Approach
 // Time: O(n)
-// Space: O(1)
+// Space: O(n)
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
+/**
+    same subarray sum divisible by k vala kaam krna hai
+
+   suppose kro
+   prefixSum(i - 1) = nums[0] + nums[1] + .... + nums[i - 1];
+
+   so. sum of subarray [i...j] will be
+
+   sum[i..j] = prefixSum(j) - prefixSum(i - 1);
+
+   if sum[i..j] % k == 0 hai to phir
+
+   prefixSum(j) % k == prefixSum(i) % k
+
+   so agar koi remainder repeat hua hai to un dono k beech ka subarray sum divisible by k hoga
+*/
+class Solution {
+    public boolean checkSubarraySum(int[] nums, int k) {
+        int n = nums.length;
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1);
+        
+        int sum = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            sum += nums[i];
+
+            int rem = sum % k;
+
+            if(map.containsKey(rem))
+            {
+                if(i - map.get(rem) >= 2)
+                    return true;
+            }
+            else
+            {
+                map.put(rem, i);
+            }
+        }
+
+        return false;
+    }
+}
