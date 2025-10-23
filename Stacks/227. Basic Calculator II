@@ -1,0 +1,103 @@
+// Brute Approach
+// Time: O(n)
+// Space: O(n)
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+
+class Solution {
+    public int calculate(String s) {
+        int n = s.length();
+        int ans = 0;
+
+        Stack<Integer> st = new Stack<>();
+
+        int num = 0;
+        char lastOperator = '+';
+
+        for(int i = 0; i < n; i++)
+        {
+            char ch = s.charAt(i);
+            
+            if(Character.isDigit(ch))
+            {
+                num = num * 10 + ch - '0';
+            }
+
+            if((!Character.isDigit(ch) && ch != ' ') || i == n - 1)
+            {
+                if(lastOperator == '+')
+                    st.push(num);
+                else if(lastOperator == '-')
+                    st.push(-num);
+                else if(lastOperator == '*')
+                    st.push(st.pop() * num);
+                else if(lastOperator == '/')
+                    st.push(st.pop() / num);
+                
+                lastOperator = ch;
+                num = 0;
+            }
+        }
+
+        for(int val : st)
+        {
+            ans += val;
+        } 
+
+        return ans;
+    }
+}
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+// Optimal Approach ~ Without Stack
+// Time: O(n)
+// Space: O(1)
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+class Solution {
+    public int calculate(String s) {
+        int n = s.length();
+        int result = 0;
+        int prev = 0;
+        int num = 0;
+        char sign = '+';
+
+        for (int i = 0; i < n; i++) 
+        {
+            char c = s.charAt(i);
+
+            if (Character.isDigit(c)) 
+            {
+                num = num * 10 + (c - '0');
+            }
+
+            if ((!Character.isDigit(c) && c != ' ') || i == n - 1) 
+            {
+                if (sign == '+') 
+                {
+                    result += prev;
+                    prev = num;
+                }
+                else if (sign == '-') 
+                {
+                    result += prev;
+                    prev = -num;
+                }
+                else if (sign == '*') 
+                {
+                    prev = prev * num;
+                }
+                else if (sign == '/')
+                {
+                    prev = prev / num;
+                }
+
+                sign = c;
+                num = 0;
+            }
+        }
+
+        result += prev;
+        return result;
+    }
+}
