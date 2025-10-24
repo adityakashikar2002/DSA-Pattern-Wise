@@ -1,3 +1,52 @@
+// Brute Approach
+// Time: O(n²)
+// Space: O(3) ~ O(1)
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+/**
+    sabse brute approach ki har ek ped se suru krenge aur dekhenge ki kitne fruits collect kr skhte hai
+    dekha jaye to problem reduce hota hai 
+    find longest contiguous subarray with 2 distinct numbers
+
+    to apn Set ka istemaal krenge jab set ka size > 2 chala jayega apn tab break kr denge
+*/
+class Solution {
+    public int totalFruit(int[] fruits) {
+        int n = fruits.length;
+
+        int maxFruits = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            int collectedFruits = 0;
+            Set<Integer> set = new HashSet<Integer>();
+            
+            for(int j = i; j < n; j++)
+            {
+                set.add(fruits[j]); 
+
+                if(set.size() > 2)
+                    break;
+                
+                collectedFruits++;
+                maxFruits = Math.max(maxFruits, collectedFruits);
+            }
+        }
+
+        return maxFruits;
+    }
+}
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+// Better Approach - Use Sliding Window
+// Time: O(n + n) ~ O(n)
+// Space: O(1)
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
 // Time - O(N) & Space - O(K)
 -------------------------------------------------------------------
 class Solution {
