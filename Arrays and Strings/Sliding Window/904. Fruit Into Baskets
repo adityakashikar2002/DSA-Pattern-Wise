@@ -41,44 +41,102 @@ class Solution {
 
 // Better Approach - Use Sliding Window
 // Time: O(n + n) ~ O(n)
-// Space: O(1)
+// Space: O(3) ~ O(1)
 -----------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------
+/**
+    brute force jyada time lega to kya apn fixed sized sliding window use kr skhte hai
+    definitely, hum ek HashMap me sare types k trees ka count rakhenge 
+    jab map ka size > 2 hoga tab phir left se shrink krte jaenge jab tak phir se
+    window valid nhi hota map.size() <= 2 jab kisi tree ka count zero ho jaega apn usko
+    map me se remove kr denge
 
------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------
-// Time - O(N) & Space - O(K)
--------------------------------------------------------------------
+*/
 class Solution {
     public int totalFruit(int[] fruits) {
-        int n = fruits.length;  
-        int k = 2;
-        HashMap<Integer,Integer> map =  new HashMap<>();
+        int n = fruits.length;
 
-        int i = 0;
-        int j = 0;
-        int maxLen = 0;
+        int maxFruits = 0;
+        int collectedFruits = 0;
 
-        while(j < n)
+        HashMap<Integer, Integer> fruitCount = new HashMap<>();
+
+        int l = 0;
+        for(int r = 0; r < n; r++)
         {
-            map.put(fruits[j], map.getOrDefault(fruits[j], 0) + 1);
+            int fruit = fruits[r];
 
-            while(map.size() > k)
+            if(fruitCount.containsKey(fruit))
             {
-                int temp = fruits[i];
-                map.put(fruits[i], map.get(fruits[i]) - 1);
-                if(map.get(fruits[i]) == 0)
-                    map.remove(temp);
-                
-                i++;
+                fruitCount.put(fruit, fruitCount.get(fruit) + 1);
+            }
+            else
+            {
+                fruitCount.put(fruit, 1);
             }
 
-            maxLen = Math.max(maxLen, j - i + 1);
 
-            j++;
+            while(fruitCount.size() > 2)
+            {
+                int leftFruit = fruits[l++];
 
+                fruitCount.put(leftFruit, fruitCount.get(leftFruit) - 1);
+                
+                if(fruitCount.get(leftFruit) == 0)
+                    fruitCount.remove(leftFruit);
+            }
+
+            maxFruits = Math.max(maxFruits, r - l + 1);
         }
 
-        return maxLen;
+        return maxFruits;
+    }
+}
+
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+// Optimal Approach - Sliding Window No Inner While loop
+// Time: O(n)
+// Space:O(3) ~ O(1)
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+/**
+    sliding window bhi sahi lekin ek problem hai
+    worst case me do baar pura traverse krta hai so apn aisa krenge bss ek baar shrink krenge taki hum maximum
+    subarray nikal skhe, kyuki curr window ki len decrease krk matlab nhi so.. bss ek baar shrink krenge
+
+*/
+class Solution {
+    public int totalFruit(int[] fruits) {
+        int n = fruits.length;
+
+        int maxFruits = 0;
+        int collectedFruits = 0;
+
+        HashMap<Integer, Integer> fruitCount = new HashMap<>();
+
+        int l = 0;
+        for(int r = 0; r < n; r++) {
+            // expand right pointer
+            int fruit = fruits[r];
+            
+            fruitCount.put(fruit, fruitCount.getOrDefault(fruit, 0) + 1);
+
+            // shrink if more than 2 fruit types
+            if(fruitCount.size() > 2) 
+            {
+                int leftFruit = fruits[l++];
+
+                fruitCount.put(leftFruit, fruitCount.get(leftFruit) - 1);
+
+                if(fruitCount.get(leftFruit) == 0)
+                    fruitCount.remove(leftFruit);
+            }
+
+            // update max window size
+            maxFruits = Math.max(maxFruits, r - l + 1);
+        }
+
+        return maxFruits;
     }
 }
