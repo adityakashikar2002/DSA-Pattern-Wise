@@ -1,0 +1,37 @@
+// Time: O(n)
+// Space: O(1)
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+/**
+    sasbe sahi tarika jo inko solve krne ka hoga vo hoga ki 
+    hame ek startValue chaiye jisko leke jab hum nums k sare elements ka sum
+    krenge tab har step pr sum >= 1 hona chaiye
+
+    ab baat aegyi ki aise to bohot baar ho skhta hai ki sum < 1 jaye
+    to agar yee track kr le ki pure nums me sum nikalte 
+    vakht vo kitna kam jaa skhta hai to shyad hame idea aaye ki startValue kya hai
+
+    kyuki formula kuch aisa hoga
+
+    startValue + minPrefixSum >= 1
+
+    therefore, startValue = 1 - minPrefixSum hoga 
+
+    aur yee startValue minStartValue hogi
+*/
+class Solution {
+    public int minStartValue(int[] nums) {
+        int n = nums.length;
+
+        int currSum = 0;
+        int minPrefixSum = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            currSum += nums[i];
+            minPrefixSum = Math.min(minPrefixSum, currSum);
+        }
+
+        return 1 - minPrefixSum;
+    }
+}
