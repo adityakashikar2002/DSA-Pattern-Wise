@@ -78,7 +78,51 @@ class Solution {
 ---------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------
 // Optimal Approach
-// Time: O(n)
+// Time: O(2n + 2n) ~ O(n + n) ~ O(n)
 // Space: O(1)
 ---------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------
+/**
+    sabse optimal solution jo binary array pr lg skhta hai vo hai sliding window
+    kyuki yaha sum 
+    +1 se increase ya -1 se decrease ho skhta do hi cases hai
+
+    so asani say sliding window se kaam ban jaega
+
+    bss hume yee kaam krna hai
+
+    CountSubarraysAtMostSum(goal) - CountSubarraysAtMostSum(goal - 1);
+
+    (sum == goal)  =  (sum <= goal)  - (sum <= goal - 1)
+    vale subarrays    vale subarrays    vale subarrays
+*/  
+class Solution {
+    public int numSubarraysWithSum(int[] nums, int goal) {
+
+        return atMost(nums, goal) - atMost(nums, goal - 1);
+    }
+
+    public static int atMost(int[] arr, int target)
+    {
+
+        int n = arr.length;
+
+        int sum = 0;
+        int count = 0;
+
+        int l = 0;
+        for(int r = 0; r < n; r++)
+        {    
+            sum += arr[r];
+                
+            while(sum > target && l <= r)
+            {
+                sum = sum - arr[l++];
+            }
+
+            count += r - l + 1;
+        }
+
+        return count;
+    }
+}
