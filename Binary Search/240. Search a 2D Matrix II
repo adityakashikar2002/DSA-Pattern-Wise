@@ -1,0 +1,38 @@
+// Time: O(m + n)
+// Space: O(1)
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+/**
+    ek extreme end pakad lo aur check kro kya us box ka value
+    box < target hai to row++ kro
+    agar nhi hai to col-- kro
+    box == target hua to return true maar do
+*/
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+
+        int row = 0;
+        int col = n - 1;
+
+        while(row < m && col >= 0)
+        {
+            int value = matrix[row][col];
+
+            if(value == target)
+                return true;
+            
+            if(value < target)
+            {
+                row++;
+            }
+            else
+            {
+                col--;
+            }
+        }
+
+        return false;
+    }
+}
