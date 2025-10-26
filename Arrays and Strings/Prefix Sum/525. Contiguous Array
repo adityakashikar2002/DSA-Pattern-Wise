@@ -38,30 +38,36 @@ class Solution {
 // Space: O(n)
 -----------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------
+/**
+    dusra aur asan tarika hoga humko equal no of 0's and 1's hona rigt ??
+    to agar sum sare 0's ko -1 se replace krte hai aur sum nikalte hai sabhi sub-arrays ka
+    to jis bhi subarray ka sum 0 hoga, vo ek valid candidate hoga for same no. of 0's & 1's
+    to apn maxLen of such array to asani se nikal skhte
+
+    question deduce ho jaega 
+    Longest Subarray with Sum 0 me
+    ya Longest Subarray with Sum k (k = 0) me 
+*/
 class Solution {
     public int findMaxLength(int[] nums) {
-        int maxLen=0;
-        HashMap<Integer,Integer> map = new HashMap<>();
+        int n = nums.length;
+        int maxLen = 0;
+        int sum = 0;
 
-        int sum=0;
-        int k=0;
-        for(int i=0;i<nums.length;i++)
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1); // sum 0 occurs before array starts
+
+        for (int i = 0; i < n; i++) 
         {
-            sum+=(nums[i]>0)?1:-1;
+            sum += (nums[i] == 0) ? -1 : 1;
 
-            if(sum==0)
+            if (map.containsKey(sum)) 
             {
-                maxLen=Math.max(maxLen,i+1);
-            }
-
-            if(map.containsKey(sum-k))
+                maxLen = Math.max(maxLen, i - map.get(sum));
+            } 
+            else 
             {
-                maxLen=Math.max(maxLen,i-map.get(sum-k));
-            }
-
-            if(!map.containsKey(sum))
-            {
-                map.put(sum,i);
+                map.put(sum, i);
             }
         }
 
