@@ -1,0 +1,75 @@
+Time Complexity:-
+Let k = number of times curr is repeated.
+Let m = length of curr.
+The total cost of append(curr) k times is O(k * m).
+Across the whole string, the sum of all repeated substrings cannot exceed the total length of the decoded string, say L.
+so 
+
+-> Time: O(n + L)
+---------------------------------------------------------------------------------------------------------
+Space Complexity:-
+countStack → stores multipliers → at most nesting depth → O(d)
+strStack → stores partial strings → at most nesting depth → O(L) in total
+
+Current StringBuilder curr → O(L)
+
+✅ So space complexity = O(L + d)
+
+L = length of decoded string
+
+d = max depth of nested brackets
+// Time: O(n + L)
+// Space: O(d + L)
+----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------
+
+/**
+    agar solve krna hai to do stacks lagenge
+    ek    - numStack<Integer> ye vo multiply vale number ko lega
+    dursa - strStack<StringBuilder> yee bss characters k liye apn string banate chalenge
+*/
+class Solution {
+    public String decodeString(String s) {
+        int n = s.length();
+
+        Stack<Integer> numStack = new Stack<>();
+        Stack<StringBuilder> strStack = new Stack<>();
+
+        StringBuilder curr = new StringBuilder("");
+        int num = 0;
+
+        for(char ch : s.toCharArray())
+        {
+            if(Character.isDigit(ch))
+                num = num * 10 + ch - '0';
+            else if(Character.isLetter(ch)) // string banate chalo 😅
+                curr.append(ch);
+            else if(ch == '[')
+            {
+                numStack.push(num); // numStack me multiply vale factor ko push kro
+                strStack.push(curr); // abhi tak banai hui string ko push kro
+
+                // num aur curr dono ko reset kr do 
+                num = 0; 
+
+                curr = new StringBuilder("");
+            }
+            else if(ch == ']')
+            {
+                int repeat = numStack.pop(); // multiply vale factor ko pop kro
+
+                StringBuilder temp = strStack.pop(); // prev bani hui string ko pop kro
+
+                while(repeat > 0)
+                {
+                    temp.append(curr); // prev string me curr ko append kro
+                    repeat--;
+                }
+
+                curr = temp; // curr = prev kro
+            }
+        }
+
+        return curr.toString(); // finally stringbuilder --> string me convert kro
+    }
+}
