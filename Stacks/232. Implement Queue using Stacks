@@ -1,0 +1,159 @@
+// Brute Approach
+// Time: O(n) per operation [except Empty()]
+// Space: O(n)
+--------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
+/**
+    brute force solution hoga 
+    2 stacks chaiye jab push yaa pop kre to shift krna padega st1 se st2 me and vice versa accordingly
+*/
+class MyQueue {
+    Stack<Integer> st1;
+    Stack<Integer> st2;
+
+    public MyQueue() {
+        st1 = new Stack<>();
+        st2 = new Stack<>();
+    }
+    
+    public void push(int x) {
+        if(st1.isEmpty() && st2.isEmpty())
+        {
+            st1.push(x);
+        }
+        else if(st1.isEmpty() && !st2.isEmpty())
+        {
+            while(!st2.isEmpty())
+            {
+                st1.push(st2.pop());
+            }
+
+            st1.push(x);
+        }
+        else if(!st1.isEmpty() && st2.isEmpty())
+        {
+            st1.push(x);
+        }
+    }
+    
+    public int pop() {
+        if(!st1.isEmpty() && st2.isEmpty())
+        {
+            while(!st1.isEmpty())
+            {
+                st2.push(st1.pop());
+            }
+
+            return st2.pop();
+        }
+        else if(st1.isEmpty() && !st2.isEmpty())
+        {
+            return st2.pop();
+        }
+
+        return -1;
+    }
+    
+    public int peek() {
+
+        if(!st1.isEmpty() && st2.isEmpty())
+        {
+            while(!st1.isEmpty())
+            {
+                st2.push(st1.pop());
+            }
+
+            return st2.peek();
+        }
+        else if(st1.isEmpty() && !st2.isEmpty())
+        {
+            return st2.peek();
+        }
+
+        return -1;
+    }
+    
+    public boolean empty() {
+        if(st1.isEmpty() && st2.isEmpty())
+        {
+            return true;
+        }
+
+        return false;
+    }
+}
+
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * MyQueue obj = new MyQueue();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.peek();
+ * boolean param_4 = obj.empty();
+ */
+--------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O(n) for (n) operations ~ O(1) amortized
+// Space: O(n)
+--------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
+/**
+    brute me apn shifting krk check mamla sambhal lete the ab
+    bss peek ya pop k time hi shift krenge
+*/
+class MyQueue {
+    Stack<Integer> st1;
+    Stack<Integer> st2;
+
+    public MyQueue() {
+        st1 = new Stack<>();
+        st2 = new Stack<>();
+    }
+    
+    public void push(int x) {
+        st1.push(x);
+    }
+    
+    public int pop() {
+        if(st2.isEmpty())
+        {
+            while(!st1.isEmpty())
+            {
+                st2.push(st1.pop());
+            }
+
+            return st2.pop();
+        }
+
+        return st2.pop();
+    }
+    
+    public int peek() {
+
+        if(st2.isEmpty())
+        {
+            while(!st1.isEmpty())
+            {
+                st2.push(st1.pop());
+            }
+
+            return st2.peek();
+        }
+        
+        return st2.peek();
+    }
+    
+    public boolean empty() {
+        return st1.isEmpty() && st2.isEmpty();
+    }
+}
+
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * MyQueue obj = new MyQueue();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.peek();
+ * boolean param_4 = obj.empty();
+ */
