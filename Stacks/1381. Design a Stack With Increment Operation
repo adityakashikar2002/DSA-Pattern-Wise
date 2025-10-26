@@ -71,3 +71,77 @@ class CustomStack {
 // Space: O(MAX)
 -----------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------
+/**
+    brute approach me increment operation O(k) time le raha hai right
+    kya hum usko O(1) me nhi kr skhte ??
+
+    kr skhte Lazy increment krk
+
+    idea yee rahega ki hum ek
+    inc[] lenge jiska size same as apne stack array ka hoga
+    
+    aur jab bhi increment method ko call kiya jaega tab apn 
+    bss inc[] me Math.min((k - 1), top) 
+    me val ++ kr denge..
+
+    aisa kyu taki hume bss pata chale ki kaha se neeche tak apn ko 
+    val add krni hai 
+
+    aur jab apn pop krenge tab pop krte vakht vo inc[] vale array me jo value hogi uss popped element
+    me add krk return kr denge jisse sare operations O(1) me ho jaenge 
+
+*/
+class CustomStack {
+
+    int[] stack;
+    int[] incr;
+
+    int MAX;
+    int top;
+
+    public CustomStack(int maxSize) {
+        MAX = maxSize;
+        stack = new int[MAX];
+        incr = new int[MAX];
+        top = -1;
+    }
+    
+    public void push(int x) {
+        if(top == MAX - 1)
+            return;
+        
+        stack[++top] = x;
+    }
+    
+    public int pop() {
+        if(top == -1)
+            return -1;
+
+        int res = stack[top] +  incr[top];
+
+        if(top > 0) // propogate kr denge neeche me 
+            incr[top - 1] += incr[top];
+        
+        incr[top] = 0; // value add krk incr krne k baad reset kr do
+        top--;
+
+        return res;
+    }
+    
+    public void increment(int k, int val) {
+        if(top != -1) // jab stack empty nhi hai
+        {
+            int index = Math.min(k - 1, top);
+
+            incr[index] += val;
+        }
+    }
+}
+
+/**
+ * Your CustomStack object will be instantiated and called as such:
+ * CustomStack obj = new CustomStack(maxSize);
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * obj.increment(k,val);
+ */
