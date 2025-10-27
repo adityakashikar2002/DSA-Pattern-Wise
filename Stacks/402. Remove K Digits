@@ -1,0 +1,120 @@
+// Time: O(n)
+// Space: O(n)
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+/**
+    socho koi random digits apn ko diye gaye hai
+    say 9 , 4, 3, aur 7
+    okay 
+
+    agar hume kisi ne bola ki bhai muze yee sare digits ko combine krk ek smallest number banake do
+    to kya krenge ??
+
+    apn un digits ko increasing order me arrange kr denge - 3479
+    matlab small digits aage honge at MSB aur 
+    large digits peeche honge at LSB
+
+    same kaam hume yaha krna hai
+
+    hum string ko traverse krte vakht check krenge ki digits increasing order me
+    hai ki nhi 
+
+    if hai to badiya agar nhi hai to digits ko delete kr denge
+
+    ab kyuki apn digits increasing order me store krna chahte hai aur decreasing me jane pr 
+    delete bhi krenge
+
+    to yee kaam similar to push pop, aur monotonic stack jaisa lgta hai
+    jisme stack me apn koi bhi ek order like yaha increasing oder me 
+    digits store krnge
+
+    num = "1432219", k = 3
+
+    Steps:
+
+    1) Stack Empty hai
+    2) 1 mila push kro, top = 1
+    3) 4 mila increasing maintain kr raha hai push kro, top = 4 
+    4) 3 aya lekin kya yee stack k top = 4 se strictly bada hai ??
+       nope decreasing me ja raha so bade vale ko pop kro aur chote ko push kro
+       matlab humne yaha ek baar (k) ki value ko use kiya so k-- kro
+
+       ab k = 2 hoga
+       aur stack me hoga [1 3] top = 3
+
+    5) ab 2 aya phir se decreasing me gaya
+       bade ko pop, chote ko push, k--
+       ab k = 1, stack me [1 2]
+    
+    6) ab phir se 2 aya ye bhi top se bada nhi lekin equal hai (2 == 2 hai apn ko strictly increasing hona)
+       push kro
+       ab k = 1 stack me [1 2 2]
+    
+    7) 1 aya decreasing me gaya 
+       pop top = 2 push 1 k--
+       ab k = 0 ho chuka hai matlab aage agar phirse decreasing me jata hai to hum kuch nhi kr skhte
+
+    8) last me 9 aya push kro
+
+    finally stack me bacha [1 2 1 9] 
+
+    isko string me badalna padega yehi answer hoga
+
+    -----------------------------------------------------
+    EDGE CASES
+    1) LEADING ZEROES
+        iske liye jab stack me push krenge tab hi check kr lenge
+        ki agar stack Empty hai aur ch = '0' hai to push nhi krne ka
+        iske liye
+
+        if(!st.isEmpty() || ch != 0)
+            st.push(ch);
+
+    2) jab digits already sorted ho
+        to bss  last me ek baar check kr lena kya k > 0 hai kya
+        agar hai matlab digits sorted the aur
+        apn stack me se last (k) digits ko pop kr denge
+        jo stack me bacha vo answer  
+*/
+class Solution {
+    public String removeKdigits(String num, int k) {
+        int n = num.length();
+        
+        if(k >= n)
+            return "0";
+
+        StringBuilder res = new StringBuilder("");
+
+        Stack<Character> st = new Stack<>();
+
+        for(char ch : num.toCharArray())
+        {
+            while(!st.isEmpty() && st.peek() - '0' > ch - '0' && k > 0)
+            {
+                st.pop();
+                k--;
+            }
+
+            if (!st.isEmpty() || ch != '0') 
+            {
+                st.push(ch);
+            }
+        }
+
+        while(k > 0 && !st.isEmpty())
+        {
+            st.pop();
+            k--;
+        }
+
+        while(!st.isEmpty())
+        {
+            res.append(st.pop());
+        }
+
+        if (res.length() == 0)
+            return "0";
+
+        return res.reverse().toString();
+    }
+}
