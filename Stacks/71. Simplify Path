@@ -1,0 +1,47 @@
+// Time: O(n)
+// Space: O(n)
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+/**
+    simple idea hai pure string ko (/) k basis pr split kr do
+    phir push pop vala kaam kro
+    finally append kro
+*/
+class Solution {
+    public String simplifyPath(String path) {
+
+        StringBuilder res = new StringBuilder("");
+
+        String[] parts = path.split("/"); // directories ko split kr denge
+
+        int partsLen = parts.length;
+
+        Stack<String> st = new Stack<>();
+
+        for(String str : parts)
+        {
+            if(str.equals(".") || str.equals(""))
+                continue;
+            else if(str.equals("..")) 
+            {
+                if(!st.isEmpty()) // agar prev dir me jaa skhte 
+                   st.pop();
+            }
+            else
+                st.push(str); // nhi to push kro
+        
+        }
+
+        // stack me bache sare ko append kro
+        for(String dir : st)
+        {
+            res.append("/").append(dir);
+        }
+
+        // agar res ki len zero hai matlab stack me kuch nhi tha
+        // root dir (/) ko return kro
+        // nhi to res ko return kro
+        return res.length() == 0 ? "/" : res.toString();
+        
+    }
+}
