@@ -1,0 +1,96 @@
+// Sare Operations in O(1)
+-----------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------
+
+/*
+    sidha kaam hai bhai apn ko ek
+    minimum variable maintain krna hai
+    lekin O(1) me hame getMin() ko implement krna hai to kaise krnge
+    
+    sabse pahle jab pahli baar push krenge to minimum Update krenge
+    aur stack me push kr denge
+    
+    abhi next time agar push krte vakht
+    elementToBePUSHED < minimum hua , to minimum to update hoga
+    lekin stack me push 2 * a - minimum krenge
+    
+    nhi to sada push (a)
+    
+    agar pop krna hai pahle yee check krenge
+    kya top < minimum hai agar hai 
+    matlab minimum ko pop marna tha so kr diya lekin
+    pop krne se pahle naya minimum iss formula se niklega
+    2 * minimum - top
+    hoga magically 🤣 
+    
+    nhi raha to sada pop
+    
+    agar yee sab krne k baad pop k baad agar 
+    stack empty ho gaya, to minimum ko reset krna padega (MAX_VALUE)
+    
+*/
+class GfG {
+    int minimum = Integer.MAX_VALUE;
+    
+    public void push(int a, Stack<Integer> s) {
+        // add code here.
+        if(s.isEmpty())
+        {
+            minimum = a;
+            s.push(a);
+        }
+        else if(a < minimum)
+        {
+            minimum = a;
+            s.push(2 * a - minimum);
+        }
+        else
+        {
+            s.push(a);
+        }
+        
+    }
+
+    public int pop(Stack<Integer> s) {
+        // add code here.
+        if(s.isEmpty())
+            return -1;
+        
+        int top = s.pop();
+        int res;
+        
+        if(top < minimum)
+        {
+            res = minimum;
+            minimum = 2 * minimum - top;
+        }
+        else
+        {
+            res = s.pop();
+        }
+        
+        if(s.isEmpty())
+            minimum = Integer.MAX_VALUE;
+        
+        return res;
+            
+    }
+
+    public int min(Stack<Integer> s) {
+        // add code here.
+        if(s.isEmpty())
+            return -1;
+        
+        return minimum;
+    }
+
+    public boolean isFull(Stack<Integer> s, int n) {
+        // add code here.
+        return s.size() == n;
+    }
+
+    public boolean isEmpty(Stack<Integer> s) {
+        // add code here.
+        return s.isEmpty();
+    }
+}
