@@ -191,3 +191,10 @@
 | **Previous Greater** | peek `<=` curr             | peek `<`  curr                   |
 | **Next Smaller**     | peek `>`  curr             | peek `>=` curr                   |                  
 | **Previous Smaller** | peek `>=` curr             | peek `>=` curr                   |               
+
+36) Agar stack ko bottom to top traverse krna hai
+
+    for(Character ch : st)
+        print(ch)
+
+    yee bottom to up krega
