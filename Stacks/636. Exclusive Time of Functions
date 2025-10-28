@@ -1,0 +1,110 @@
+// Stack Problem 
+// Time: O(logs.size())
+// Space: O(logs.size())
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+/**
+    explain nhi kr skhte simulate krna padega
+
+    simulation k baad pata chalega ki
+
+    1) jab bhi start event ho to pahle
+       stack k top k exclusive time ko update kro
+
+       baad me push kro aur prevTime = currTime set kro aage vale function k liye
+
+    2) jab end event ho 
+       to stack k top ko pop krk uska exclusive time update kro
+       aur prevTime = currTime + 1 kro (+ 1 isliye kyuki yee event pura second khatam hone tak chalta hai)
+
+
+*/
+class Solution {
+    public int[] exclusiveTime(int n, List<String> logs) {
+
+        int[] res = new int[n];
+
+        Stack<Integer> st = new Stack<>();
+
+        int prevTime = 0;
+
+        int curr = -1;
+
+        for(int i = 0; i < logs.size(); i++)
+        {
+            String[] details = logs.get(i).split(":");
+
+            int id = Integer.parseInt(details[0]);
+            String type = details[1];
+            int time = Integer.parseInt(details[2]);
+
+            if(type.equals("start"))
+            {
+                if(!st.isEmpty())
+                {
+                    res[st.peek()] += time - prevTime;
+                }
+
+                st.push(id);
+                prevTime = time;
+            }
+            else
+            {
+                res[st.pop()] += time - prevTime + 1;
+                prevTime = time + 1;
+            }
+        }
+
+        return res;
+    }
+}
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+// Better Faster Than Stack - Using ArrayList
+// Time: O(logs.size())
+// Space: O(logs.size())
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+class Solution {
+    public int[] exclusiveTime(int n, List<String> logs) {
+
+        int[] res = new int[n];
+
+        List<Integer> stack = new ArrayList<>();
+
+        int prevTime = 0;
+
+        int curr = -1;
+
+        for(int i = 0; i < logs.size(); i++)
+        {
+            String[] details = logs.get(i).split(":");
+
+            int id = Integer.parseInt(details[0]);
+            String type = details[1];
+            int time = Integer.parseInt(details[2]);
+
+            if(type.equals("start"))
+            {
+                if(stack.size() > 0)
+                {
+                    res[stack.get(curr)] += time - prevTime;
+                }
+
+                stack.add(id);
+                curr++;
+                prevTime = time;
+            }
+            else
+            {
+                res[stack.get(curr)] += time - prevTime + 1;
+                stack.remove(curr);
+                curr--;
+                prevTime = time + 1;
+            }
+        }
+
+        return res;
+    }
+}
