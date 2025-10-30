@@ -1,0 +1,131 @@
+// Brute Force
+// Time: O(n²)
+// Space: O(n)
+-----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+class Solution {
+    public static boolean moveInDirection(int index, int[] arr, char d)
+    {
+        int n = arr.length;
+
+        int[] zeroArray = new int[n];
+
+        while(index >= 0 && index < n)
+        {
+            if(arr[index] == 0)
+            {
+                if(d == 'l')
+                {
+                    index--;
+                }
+                else
+                {
+                    index++;
+                }
+            }
+            else
+            {
+                arr[index]--;
+
+                if(d == 'l')
+                {
+                    d = 'r';
+                    index++;
+                }
+                else
+                {
+                    d = 'l';
+                    index--;
+                }
+            }
+        }
+
+        return Arrays.equals(arr, zeroArray);
+    }
+
+    public int countValidSelections(int[] nums) {
+        int n = nums.length;
+        int[] arr = nums.clone();
+        char direction;
+
+        int ways = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            if(nums[i] != 0)
+                continue;
+
+            arr = nums.clone();
+            direction = 'l';
+            boolean left = moveInDirection(i, arr, direction);
+
+            if(left)
+                ways++;
+
+            arr = nums.clone();
+            direction = 'r';
+            boolean right = moveInDirection(i, arr, direction);
+
+            if(right)
+                ways++;
+        }   
+
+        return ways;
+    }
+}
+-----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+// Better Readability Brute Force
+
+class Solution {
+    public static boolean moveInDirection(int index, int[] arr, char d)
+    {
+        int n = arr.length;
+
+        int[] zeroArray = new int[n];
+
+        while(index >= 0 && index < n)
+        {
+            if(arr[index] == 0)
+            {
+                index += (d == 'l') ? -1 : 1;
+            }
+            else
+            {
+                arr[index]--;
+
+                d = d == 'l' ? 'r' : 'l';
+                index += (d == 'l') ? -1 : 1;
+
+            }
+        }
+
+        return Arrays.equals(arr, zeroArray);
+    }
+
+    public int countValidSelections(int[] nums) {
+        int n = nums.length;
+        int ways = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            if(nums[i] != 0)
+                continue;
+
+            if(moveInDirection(i, nums.clone(), 'l'))
+                ways++;
+
+            if(moveInDirection(i, nums.clone(), 'r'))
+                ways++;
+        }   
+
+        return ways;
+    }
+}
+-----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O()
+// Space: O()
+-----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
