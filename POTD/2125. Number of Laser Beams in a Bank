@@ -1,0 +1,33 @@
+// Time: (m x n)
+// Space: O(1)
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+class Solution {
+    public int numberOfBeams(String[] bank) {
+        int n = bank.length;
+        int totalLasers = 0;
+
+        int prevLasers = 0;
+        
+
+        for(String row : bank)
+        {
+            int currLasers = 0;
+            
+            for(char ch : row.toCharArray())
+            {
+                if(ch == '1')
+                    currLasers++;
+            }
+
+            totalLasers += currLasers * prevLasers;
+
+            if(currLasers > 0)
+                prevLasers = currLasers;
+
+        }
+
+        return totalLasers;
+    }
+}
