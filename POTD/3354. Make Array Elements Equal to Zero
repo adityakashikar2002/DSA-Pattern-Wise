@@ -1,4 +1,4 @@
-// Brute Force
+// Brute Force - Simulation kro 😅
 // Time: O(n²)
 // Space: O(n)
 -----------------------------------------------------------------------------------------------------------
@@ -125,7 +125,71 @@ class Solution {
 -----------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------
 // Optimal Approach
-// Time: O()
-// Space: O()
+// Time: O(n + n) ~ O(n)
+// Space: O(1)
 -----------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------
+/**
+    better ya optimal tarika kya hoga
+    take this example [1, 0, 2]
+    agar ispr simulate krenge to pata chalta ki right me agar gaye to ans milega
+
+    [2, 0, 2]
+    isme dono directions me ans milega left and right as well
+
+    [1, 0, 2, 0, 3]
+    isme bhi dono directions me ans mila
+
+    observation yee hai: ->>>>>
+
+    agar koi index pr ele zero hai aur
+    1) leftPrefixSum == rightPrefixSum hai
+        ans = ans + 2 kr do (both directions)
+    2) if ABSOLUTE DIFF of (leftPrefixSum - rightPrefixSum) == 1
+        ans = ans + 1 pkka kahi ek direction me jaega
+    
+    to bss har index pr uska leftPrefixSum aur rightPrefixSum nikalna hai
+    okay
+
+    Steps / Algo:
+
+    1) totalPrefixSum nikal lo
+    2) leftPrefixSum banate chalo
+    3) jaha zero aya vaha uss index pr kr leftPrefixSum malum rahega
+        rightPrefixSum = totalPrefixSum - leftPrefixSum nikal jaega
+    4) conditions k anusar answers me add krenge
+
+*/
+
+class Solution {
+    public int countValidSelections(int[] nums) {
+        int n = nums.length;
+
+        int totalPrefixSum = 0;
+        int leftPrefixSum = 0;
+        int rightPrefixSum = 0;
+
+        int selections = 0;
+
+        for(int num : nums)
+            totalPrefixSum += num;
+        
+        for(int num : nums)
+        {
+            if(num == 0)
+            {
+                rightPrefixSum = totalPrefixSum - leftPrefixSum;
+
+                if(leftPrefixSum == rightPrefixSum)
+                    selections += 2;
+                else if(Math.abs(leftPrefixSum -rightPrefixSum) == 1)
+                    selections += 1;
+            }
+
+            leftPrefixSum += num;
+        }
+
+        return selections;
+        
+    }
+}
