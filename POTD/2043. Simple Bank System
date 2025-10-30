@@ -1,0 +1,193 @@
+// Brute Approach
+// Time: O()
+// Space: O()
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+class Bank {
+
+    long[] bankBalance;
+    int n;
+    
+    public Bank(long[] balance) {
+        bankBalance = balance;
+        n = bankBalance.length;
+    }
+    
+    public boolean transfer(int account1, int account2, long money) {
+        if(account1 > 0 && account1 <= n && account2 > 0 && account2 <= n)
+        {
+            if(bankBalance[account1 - 1] >= money)
+            {
+                bankBalance[account2 - 1] += money;
+                bankBalance[account1 - 1] -= money;
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    public boolean deposit(int account, long money) {
+        if(account > 0 && account <= n)
+        {
+            bankBalance[account - 1] += money;
+            return true;
+        }
+
+        return false;   
+    }
+    
+    public boolean withdraw(int account, long money) {
+        if(account > 0 && account <=n)
+        {
+            if(bankBalance[account - 1] >= money)
+            {
+                bankBalance[account - 1] -= money;
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+/**
+ * Your Bank object will be instantiated and called as such:
+ * Bank obj = new Bank(balance);
+ * boolean param_1 = obj.transfer(account1,account2,money);
+ * boolean param_2 = obj.deposit(account,money);
+ * boolean param_3 = obj.withdraw(account,money);
+ */
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+
+// Better Approach - Better Readability
+// Time: O(n)
+// Space: O(n)
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+class Bank {
+
+    long[] bankBalance;
+    int n;
+
+    public boolean isValid(int account)
+    {
+        if(account > 0 && account <= n)
+            return true;
+        
+        return false;
+    }
+
+    public Bank(long[] balance) {
+        bankBalance = balance;
+        n = bankBalance.length;
+    }
+    
+    public boolean transfer(int account1, int account2, long money) {
+        if(isValid(account1) && isValid(account2))
+        {
+            if(bankBalance[account1 - 1] >= money)
+            {
+                bankBalance[account2 - 1] += money;
+                bankBalance[account1 - 1] -= money;
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    public boolean deposit(int account, long money) {
+        if(isValid(account))
+        {
+            bankBalance[account - 1] += money;
+            return true;
+        }
+
+        return false;   
+    }
+    
+    public boolean withdraw(int account, long money) {
+        if(isValid(account))
+        {
+            if(bankBalance[account - 1] >= money)
+            {
+                bankBalance[account - 1] -= money;
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+/**
+ * Your Bank object will be instantiated and called as such:
+ * Bank obj = new Bank(balance);
+ * boolean param_1 = obj.transfer(account1,account2,money);
+ * boolean param_2 = obj.deposit(account,money);
+ * boolean param_3 = obj.withdraw(account,money);
+ */
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+
+// Optimal Approach - - Best Readability 😂
+// Time: O(n)
+// Space: O(n)
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+class Bank {
+
+    long[] bankBalance;
+    int n;
+
+    public boolean isValid(int account)
+    {   
+        return account > 0 && account <= n;
+    }
+
+    public Bank(long[] balance) {
+        bankBalance = balance;
+        n = bankBalance.length;
+    }
+    
+    public boolean transfer(int account1, int account2, long money) {
+        if(!isValid(account1) || !isValid(account2))
+            return false;
+
+        if (bankBalance[account1 - 1] < money) 
+            return false;
+            
+        bankBalance[account1 - 1] -= money;
+        bankBalance[account2 - 1] += money;
+
+        return true;        
+    }
+    
+    public boolean deposit(int account, long money) {
+        if(!isValid(account))
+            return false;
+
+        bankBalance[account - 1] += money;
+
+        return true; 
+    }
+    
+    public boolean withdraw(int account, long money) {
+        if(!isValid(account) || bankBalance[account - 1] < money)
+            return false;
+
+        bankBalance[account - 1] -= money;
+
+        return true;
+    }
+}
+
+/**
+ * Your Bank object will be instantiated and called as such:
+ * Bank obj = new Bank(balance);
+ * boolean param_1 = obj.transfer(account1,account2,money);
+ * boolean param_2 = obj.deposit(account,money);
+ * boolean param_3 = obj.withdraw(account,money);
+ */
