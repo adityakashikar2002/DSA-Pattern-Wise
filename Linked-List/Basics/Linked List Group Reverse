@@ -123,70 +123,92 @@ class Node
     // LL ki len nikalo aur hamesha min(len, k nodes ko reverse kro)
     // bss isse vo har block of size <= k reverse ho jaega
 */
-class Solution {
-    
-    public static Node reverseLL(Node node, int min)
+/*
+class Node
+{
+    int data;
+    Node next;
+    Node(int key)
     {
-        Node curr = node;
+        data = key;
+        next = null;
+    }
+}
+*/
+
+class Solution {
+    public Node getkthNode(Node head, int k)
+    {
+        int c = 1;
+        
+        while(head != null && c != k)
+        {
+            head = head.next;
+            c++;
+        }
+        
+        return head;
+    }
+    
+    public Node reverseLL(Node head)
+    {
+        Node curr = head;
         Node prev = null;
         Node next = null;
         
-        while(curr != null && min > 0)
+        while(curr != null)
         {
             next = curr.next;
             curr.next = prev;
             prev = curr;
             curr = next;
-            min--;
         }
         
-        node.next = curr; // temporary connection to next group 
         return prev;
     }
     
     public Node reverseKGroup(Node head, int k) {
         // code here
-        if(head == null)
-            return null;
+        if(head == null || head.next == null || k == 0)
+            return head;
         
         Node temp = head;
-        int countNodes = 0;
-        
-        while(temp != null)
-        {
-            temp = temp.next;
-            countNodes++;
-        }
-        
-        temp = head;
         Node prevNode = null;
         Node nextNode = null;
-        Node newHead = null;
         
-        while(countNodes > 0)
-        {
-            int min = Math.min(k, countNodes);
+        while(temp != null)
+        {   
+            Node kthNode = getkthNode(temp, k);
             
-            Node groupHead = temp;
-            newHead = reverseLL(groupHead, min);
-            
-            if(temp == head)
-                head = newHead;
-            else
+            if(kthNode == null)
             {
-                if(prevNode != null)
-                {
-                    prevNode.next = newHead;
-                }
+                Node newHead = reverseLL(temp);
                 
+                if(prevNode == null) 
+                    return newHead;
+                    
+                prevNode.next = newHead;
+                break;
             }
             
-            prevNode = groupHead;
-            temp = groupHead.next; // vo jo temp connection establish kiya uska hai
+            nextNode = kthNode.next;
+            kthNode.next = null;
             
-            countNodes -= min;
+            Node newHead = reverseLL(temp);
             
+            if(temp == head)
+            {
+                head = kthNode;
+            }
+            else
+            {
+                prevNode.next = newHead;
+            }
+            
+            prevNode = temp;
+            temp = nextNode;
         }
+        
         
         return head;
     }
