@@ -1,4 +1,93 @@
-// Brute Approach - Assuming there are total N nodes across all 'k' LL
+// Brute Approach Assuming there are total N nodes across all 'k' LL
+// Time Complexity
+
+Let average length of each list be N/k.
+
+First merge: (N/k + N/k) = 2N/k
+
+Second merge: (2N/k + N/k) = 3N/k
+
+Third merge: (3N/k + N/k) = 4N/k
+
+…
+
+Last merge: kN/k = N =O(N x k)
+
+// Time: O(N x k) 
+// Space: O(1)
+-------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+/**
+    dusrsa tarika hai apn 2 - 2 list ko merge krte chalte
+
+*/
+class Solution {
+    public static ListNode mergeTwoLL(ListNode l1, ListNode l2)
+    {
+        ListNode dummy = new ListNode(-1);
+        ListNode temp = dummy;
+
+        while(l1 != null && l2 != null)
+        {
+            if(l1.val <= l2.val)
+            {
+                temp.next = l1;
+                l1 = l1.next;
+            }
+            else
+            {
+                temp.next = l2;
+                l2 = l2.next;
+            }
+
+            temp = temp.next;
+        }
+
+        if(l1 != null)
+            temp.next = l1;
+        
+        if(l2 != null)
+            temp.next = l2;
+
+        return dummy.next;
+    }
+
+    public ListNode mergeKLists(ListNode[] lists) {
+        int n = lists.length;
+
+        if(n == 0)
+            return null;
+
+        if(n == 1)
+            return lists[0];
+             
+        ListNode head = lists[0];
+
+        for(int i = 1; i < n; i++)
+        {
+            ListNode curr = lists[i];
+
+            head = mergeTwoLL(head, curr);
+        } 
+
+        return head;
+    }
+}
+
+-------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+// Better Approach - Assuming there are total N nodes across all 'k' LL
 // Time: (N + NlogN + N) ~ O(NlogN)
 // Space: O(N + N) ~ O(N)
 -------------------------------------------------------------------------------------------------------------------
@@ -52,9 +141,9 @@ class Solution {
         return dummy.next;
     }
 }
-
 -------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------
+// Optimal Approach
 // Time: O(N logk)
 // Space: O(1)
 -------------------------------------------------------------------------------------------------------------------
