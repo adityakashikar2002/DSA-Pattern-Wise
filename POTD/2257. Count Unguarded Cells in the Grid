@@ -1,0 +1,109 @@
+// Brute Approach
+// Time: O(G * (m + n)) [if there are total 'G' guards, for each guard we move (m + n) in total]
+// Space: O(m x n)
+----------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------
+class Solution {
+
+    public static void markGrid(int row, int col, int[][] grid, int m, int n)
+    {
+        // move right
+        // row same, col badlega
+        for(int c = col; c < n; c++)
+        {
+            if(grid[row][c] == 2)
+                break;
+            else if(grid[row][c] == 1 || grid[row][c] == 3)
+                continue;
+            else
+                grid[row][c] = 3;
+        }
+
+        // move left
+        // row same , col badlega
+        for(int c = col; c >= 0; c--)
+        {
+            if(grid[row][c] == 2)
+                break;
+            else if(grid[row][c] == 1 || grid[row][c] == 3)
+                continue;
+            else
+                grid[row][c] = 3;
+        }
+
+        // move up
+        // col same, row badlega
+        for(int r = row; r >= 0; r--)
+        {
+            if(grid[r][col] == 2)
+                break;
+            else if(grid[r][col] == 1 || grid[r][col] == 3)
+                continue;
+            else
+                grid[r][col] = 3;
+        }
+
+        // move down
+        // col same, row badlega
+        for(int r = row; r < m; r++)
+        {
+            if(grid[r][col] == 2)
+                break;
+            else if(grid[r][col] == 1 || grid[r][col] == 3)
+                continue;
+            else
+                grid[r][col] = 3;
+        }
+    }
+
+    public int countUnguarded(int m, int n, int[][] guards, int[][] walls) {
+        int[][] grid = new int[m][n];
+
+        // mark guards
+        for(int[] guard : guards)
+        {
+            int row = guard[0];
+            int col = guard[1];
+
+            grid[row][col] = 1;
+        }
+
+        // mark walls
+        for(int[] wall : walls)
+        {
+            int row = wall[0];
+            int col = wall[1];
+
+            grid[row][col] = 2;
+        }
+
+        for(int r = 0; r < m; r++)
+        {
+            for(int c = 0; c < n; c++)
+            {
+                if(grid[r][c] == 1)
+                {
+                    markGrid(r, c, grid, m, n);
+                }
+            }
+        }
+
+        int unGuardedCells = 0;
+
+        for(int r = 0; r < m; r++)
+        {
+            for(int c = 0; c < n; c++)
+            {
+                if(grid[r][c] == 0)
+                    unGuardedCells++;
+            }
+        }
+
+        return unGuardedCells;
+    }
+}
+----------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------
