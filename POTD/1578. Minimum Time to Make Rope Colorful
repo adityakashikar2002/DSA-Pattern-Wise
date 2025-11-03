@@ -1,0 +1,55 @@
+// Time: O(n)
+// Space: O(1)
+------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------
+
+/**
+ * Simple Approch:
+ * 
+ * Hame rope ko colorful rakhna hai, yani koi do consecutive balloons
+ * ek hi color ke nahi hone chahiye.
+ *
+ * Agar do adjacent balloons same color ke milte hai to unme se
+ * hame ek balloon remove karna padega.
+ *
+ * Optimal tarika:
+ * - Jis balloon ko remove karne ka time (neededTime) kam ho, use remove karo
+ * - Jis balloon ka cost zyada ho, use hum rakh lenge
+ *
+ * Isliye hum "prev" balloon ka track rakhte hai:
+ * prevIndex = pichla balloon jis color ka last accepted hai.
+ *
+ * Jab bhi current balloon ka color prev ke color jaisa hoga:
+ *   - Compare karenge ki kis balloon ko remove karna sasta padega.
+ *   - Jiska cost kam hoga, use remove karenge aur uska cost total me add karenge.
+ *   - Agar current balloon ka cost zyada ho to prevIndex ko current par shift kar denge.
+ */
+class Solution {
+    public int minCost(String colors, int[] neededTime) {
+        int totalTime = 0;
+        int prevIndex = 0;
+
+        for(int i = 1; i < colors.length(); i++) 
+        {
+            if(colors.charAt(i) == colors.charAt(prevIndex)) 
+            {
+                // Remove the one with smaller cost
+                if(neededTime[i] < neededTime[prevIndex]) 
+                {
+                    totalTime += neededTime[i];
+                } 
+                else 
+                {
+                    totalTime += neededTime[prevIndex];
+                    prevIndex = i;  // keep the bigger cost one
+                }
+            } 
+            else 
+            {
+                prevIndex = i; // new segment starts
+            }
+        }
+
+        return totalTime;
+    }
+}
