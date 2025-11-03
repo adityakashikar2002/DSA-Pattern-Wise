@@ -9,11 +9,11 @@ class Solution {
     {
         // move right
         // row same, col badlega
-        for(int c = col; c < n; c++)
+        for(int c = col + 1; c < n; c++)
         {
-            if(grid[row][c] == 2)
+            if(grid[row][c] == 2 || grid[row][c] == 1) // agar wall ya koi guard so vision block
                 break;
-            else if(grid[row][c] == 1 || grid[row][c] == 3)
+            else if(grid[row][c] == 3) // already marked to skip
                 continue;
             else
                 grid[row][c] = 3;
@@ -21,11 +21,11 @@ class Solution {
 
         // move left
         // row same , col badlega
-        for(int c = col; c >= 0; c--)
+        for(int c = col - 1; c >= 0; c--)
         {
-            if(grid[row][c] == 2)
+            if(grid[row][c] == 2 || grid[row][c] == 1)
                 break;
-            else if(grid[row][c] == 1 || grid[row][c] == 3)
+            else if(grid[row][c] == 3)
                 continue;
             else
                 grid[row][c] = 3;
@@ -33,11 +33,11 @@ class Solution {
 
         // move up
         // col same, row badlega
-        for(int r = row; r >= 0; r--)
+        for(int r = row - 1; r >= 0; r--)
         {
-            if(grid[r][col] == 2)
+            if(grid[r][col] == 2 || grid[r][col] == 1)
                 break;
-            else if(grid[r][col] == 1 || grid[r][col] == 3)
+            else if(grid[r][col] == 3)
                 continue;
             else
                 grid[r][col] = 3;
@@ -45,11 +45,11 @@ class Solution {
 
         // move down
         // col same, row badlega
-        for(int r = row; r < m; r++)
+        for(int r = row + 1; r < m; r++)
         {
-            if(grid[r][col] == 2)
+            if(grid[r][col] == 2 || grid[r][col] == 1)
                 break;
-            else if(grid[r][col] == 1 || grid[r][col] == 3)
+            else if(grid[r][col] == 3)
                 continue;
             else
                 grid[r][col] = 3;
@@ -59,7 +59,7 @@ class Solution {
     public int countUnguarded(int m, int n, int[][] guards, int[][] walls) {
         int[][] grid = new int[m][n];
 
-        // mark guards
+        // mark guards with number 1
         for(int[] guard : guards)
         {
             int row = guard[0];
@@ -68,7 +68,7 @@ class Solution {
             grid[row][col] = 1;
         }
 
-        // mark walls
+        // mark walls with number 2
         for(int[] wall : walls)
         {
             int row = wall[0];
@@ -81,14 +81,14 @@ class Solution {
         {
             for(int c = 0; c < n; c++)
             {
-                if(grid[r][c] == 1)
-                {
+                if(grid[r][c] == 1) // agar guard mila to uski nazar tak k blocks ko mark krenge
+                {                   // in all 4 directions
                     markGrid(r, c, grid, m, n);
                 }
             }
         }
 
-        int unGuardedCells = 0;
+        int unGuardedCells = 0; // bache hue cells
 
         for(int r = 0; r < m; r++)
         {
@@ -102,8 +102,3 @@ class Solution {
         return unGuardedCells;
     }
 }
-----------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------
-
-----------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------
