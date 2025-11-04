@@ -1,3 +1,77 @@
+// Brute Approach
+// Time: O(n²)
+// Space: O(128 + 128) ~ O(1)
+-------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------
+/**
+    sabse asan aur simple tarika hoga ki har ek subarray me dekho ki String t k sare characters present hai kya ?
+    agar hai to us window ki length ko maintain kro (apn ko minimum hona)
+    ek aur cheeze ki apn start, end index maintain krenge
+    bss last me jo minimum len vali window hogi usi me ka substring apna anwser hoga 
+
+    Steps asan honge apn har starting index k liye iterate krenge
+    aur String t ka freq map already banake rakhenge
+    kitne char chaiye ??
+    answer hai t.length(); requiredCharacters hai
+
+    agar character match krta hai to uska freq ghataenge aur requiredChar bhi -1 krenge
+    jab requiredChar = 0 hoga tab stop aur minimum window maintain krenge 
+*/
+class Solution {
+    public String minWindow(String s, String t) {
+        int n = s.length();
+        int requiredChars = t.length();
+
+        int[] freq = new int[128];
+
+        for(char x : t.toCharArray())
+            freq[x]++;
+
+        int minLen = Integer.MAX_VALUE;
+        int sIndex = -1;
+        int eIndex = -1;
+
+        for(int i = 0; i <= n - requiredChars; i++)
+        {
+            int countChars = requiredChars;
+            int[] tFreq = freq.clone();
+
+            for(int j = i; j < n; j++)
+            {
+                char ch = s.charAt(j);
+
+                if(tFreq[ch] > 0)
+                {
+                    tFreq[ch]--;
+                    countChars--;
+                }
+
+                if(countChars == 0)
+                {
+                    if(j - i + 1 < minLen)
+                    {
+                        minLen = j - i + 1;
+
+                        sIndex = i;
+                        eIndex = j;
+
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        return sIndex != -1 ? s.substring(sIndex, eIndex + 1) : "";
+    }
+}
+-------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O(n)
+// Space: O(128) ~ O(1)
+-------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------
 class Solution {
     public String minWindow(String s, String t) {
         int m = s.length();
