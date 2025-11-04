@@ -253,3 +253,144 @@ public class queue_array_circular
 }
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// LinkedList Implementation of Queue (Dynamic Size, O(1) operations) 
+public class queue_linked_list
+{
+	class Node
+	{
+		int data;
+		Node next;
+
+		Node(int data)
+		{
+			this.data = data;
+			next = null;
+		}
+	}
+	
+
+	private int size;
+	
+	Node front;
+	Node rear;
+	
+	public queue_linked_list()
+	{
+		size = 0;
+		front = null;
+		rear = null;
+	}
+	
+	public void enQueue(int x)
+	{
+		Node newNode = new Node(x);
+		
+		if(front == null && rear == null)
+		{
+			front = rear = newNode;
+		}
+		else
+		{
+			rear.next = newNode;
+			rear = rear.next;
+		}
+		
+		size++;
+	}
+	
+	public void deQueue()
+	{
+		if(isEmpty())
+			return;
+		
+		System.out.println("Popped Ele is: " + front.data);
+		
+		front = front.next;
+		size--;
+		
+		if(front == null)
+			rear = null;
+
+	}
+	
+	public int getFront()
+	{
+		return isEmpty() ?  -1 : front.data;
+	}
+	
+	public int getRear()
+	{	
+		return isEmpty() ? -1 : rear.data;
+	}
+	
+	public boolean isEmpty()
+	{
+		return size == 0;
+	}
+	
+	public int getSize()
+	{
+		return size;
+	}
+	
+	public void displayQueue()
+	{
+		if(isEmpty())
+		{
+			System.out.println("Queue is Empty");
+			return;
+		}
+		
+		Node temp = front;
+		System.out.print("Queue is: ");
+		while(temp != null)
+		{
+			System.out.print(temp.data + " ");
+			temp = temp.next;
+		}
+		
+		System.out.println();
+	}
+	public static void main(String args[])
+	{
+		queue_linked_list q = new queue_linked_list();
+		
+		q.deQueue();
+		q.displayQueue();
+		System.out.println("Empty ?: " + q.isEmpty());
+		System.out.println("Size of Queue is: " + q.getSize());
+		System.out.println("Front Ele is: " + q.getFront());
+		System.out.println("Rear Ele is: " + q.getRear());
+		
+		q.enQueue(5);
+		q.enQueue(9);
+		q.enQueue(3);
+		q.enQueue(7);
+		q.enQueue(2);
+		q.displayQueue();
+		
+		q.deQueue();
+		q.displayQueue();
+		
+		System.out.println("\nFront Ele is: " + q.getFront());
+		q.displayQueue();
+		
+		q.deQueue();
+		q.displayQueue();
+		
+		q.enQueue(8);
+		q.displayQueue();
+		
+		System.out.println("Empty ?: " + q.isEmpty());
+		System.out.println("Size of Queue is: " + q.getSize());
+		System.out.println("Front Ele is: " + q.getFront());
+		System.out.println("Rear Ele is: " + q.getRear());
+		
+		q.deQueue();
+		q.displayQueue();
+		
+		System.out.println("Rear Ele is: " + q.getRear());
+		q.displayQueue();
+		
+	}
+}
