@@ -1,0 +1,129 @@
+// Array (Fixed Size Implementation) of Queue
+public class queue_array
+{
+	private int queue[];
+	private int capacity;
+	private int size;
+	
+	private int front;
+	private int rear;
+	
+	public queue_array(int capacity)
+	{
+		this.capacity = capacity;
+		size = 0;
+		front = 0;
+		rear = -1;
+		queue = new int[capacity];
+	}
+	
+	public void enQueue(int x)
+	{
+		if(size == capacity)
+		{
+			System.out.println("Queue is Full !!");
+			return;
+		}
+		
+		queue[++rear] = x;
+		size++;
+	}
+	
+	public void deQueue()
+	{
+		if(isEmpty())
+			return;
+		
+		System.out.println("Popped Ele is: " + queue[front]);
+		
+		for(int i = front + 1; i <= rear; i++)
+		{
+			queue[i - 1] = queue[i];
+		}
+		
+		size--;
+		rear--;
+	}
+	
+	public int getFront()
+	{
+		return isEmpty() ?  -1 : queue[front];
+	}
+	
+	public int getRear()
+	{	
+		return isEmpty() ? -1 : queue[rear];
+	}
+	
+	public boolean isEmpty()
+	{
+		return size == 0;
+	}
+	
+	public int getSize()
+	{
+		return size;
+	}
+	
+	public void displayQueue()
+	{
+		if(isEmpty())
+		{
+			System.out.println("Queue is Empty");
+			return;
+		}
+		
+		System.out.print("Queue is: ");
+		for(int i = front; i <= rear; i++)
+		{
+			System.out.print(queue[i] + " ");
+		}
+		
+		System.out.println();
+	}
+	
+	public static void main(String args[])
+	{
+		queue_array q = new queue_array(10);
+		
+		q.deQueue();
+		q.displayQueue();
+		System.out.println("Empty ?: " + q.isEmpty());
+		System.out.println("Size of Queue is: " + q.getSize());
+		System.out.println("Front Ele is: " + q.getFront());
+		System.out.println("Rear Ele is: " + q.getRear());
+		
+		q.enQueue(5);
+		q.enQueue(9);
+		q.enQueue(3);
+		q.enQueue(7);
+		q.enQueue(2);
+		q.displayQueue();
+		
+		q.deQueue();
+		q.displayQueue();
+		
+		System.out.println("\nFront Ele is: " + q.getFront());
+		q.displayQueue();
+		
+		q.deQueue();
+		q.displayQueue();
+		
+		q.enQueue(8);
+		q.displayQueue();
+		
+		System.out.println("Empty ?: " + q.isEmpty());
+		System.out.println("Size of Queue is: " + q.getSize());
+		System.out.println("Front Ele is: " + q.getFront());
+		System.out.println("Rear Ele is: " + q.getRear());
+		
+		q.deQueue();
+		q.displayQueue();
+		
+		System.out.println("Rear Ele is: " + q.getRear());
+		q.displayQueue();
+		
+	}
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
