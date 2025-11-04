@@ -198,3 +198,15 @@
         print(ch)
 
     yee bottom to up krega
+
+37) Circular Queue Array Implementation k liye
+
+    1) rear = (rear + 1) % capacity;
+    2) front = (front + 1) % capacity;
+    3) Travserse krne k liye
+       for(int i = 0; i < size; i++)
+       {
+            print((front + i) % capacity);
+       }
+
+    Modulus capacity har jagah isliye taki out of bounds n chale jaye
