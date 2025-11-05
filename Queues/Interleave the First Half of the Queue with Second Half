@@ -1,0 +1,45 @@
+// Time: O(n)
+// Space: O(n)
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+/*
+    Better Example lo
+    1 2 3 4 5 6 7 8
+    
+    Answer:
+    1 5 2 6 3 7 4 8
+    
+    Pure Queue ko adha - adha array me daalo aur phir vapis queue me alternately dalo
+*/
+class Solution {
+    public void rearrangeQueue(Queue<Integer> q) {
+        // code here
+        
+        int size = q.size();
+        int half = size / 2;
+        
+        int[] firstHalf = new int[half];
+        int[] secondHalf = new int[half];
+        
+        int k = 0;
+        
+        while(!q.isEmpty())
+        {
+            if(k < half)
+                firstHalf[k] = q.remove();
+            else
+                secondHalf[k - half] = q.remove();
+            
+            k++;
+        }
+        
+        for(k = 0; k < half; k++)
+        {
+            
+            q.add(firstHalf[k]);
+            q.add(secondHalf[k]);
+            
+        }
+    }
+}
