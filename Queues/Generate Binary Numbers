@@ -1,0 +1,66 @@
+// Brute Approach - Using Stack and Decimal ---> Binary Conversion
+
+✅ Time Complexity
+For every number up to n, we:
+
+Compute binary → O(log n)
+Push into stack → O(log n)
+Pop and append → O(log n)
+
+So per number → O(log n + log n) = O(log n) each → total O(n log n) time
+
+✅ Space Complexity
+Stack can store at most log n bits → O(log n)
+Result list → stores binaries of size ≈ log n each → total O(n log n) space
+
+// Time: O(n logn)
+// Space: O(n logn)
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+/*
+    simple idea hai
+    Decimal ----> Binary conversion kro for each number
+    Process:
+    1) har number ko 2 se tab tak divide kro jab tak vo 0 nhi banta
+    2) aur sath me rem store krte chalo
+    3) last me sare remainder ki list ko reverse kro vo binary number hoga
+*/
+import java.lang.*;
+class Solution {
+    public ArrayList<String> generateBinary(int n) {
+        // code here
+        Stack<Integer> st = new Stack<>();
+        
+        ArrayList<String> res = new ArrayList<>();
+        
+        
+        for(int i = 1; i <= n; i++)
+        {
+            int num = i;
+            while(num != 0)
+            {
+                int rem = num % 2;
+                st.push(rem);
+                num = num / 2;
+            }
+            
+            StringBuilder str = new StringBuilder("");
+            
+            while(!st.isEmpty())
+            {
+                str.append(Integer.toString(st.pop()));
+            }
+            
+            res.add(str.toString());
+        }
+        
+        return res;
+    }
+}
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+// Optimal Approach - Using Queue
+// Time: O(n)
+// Space: O(n logn)
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
