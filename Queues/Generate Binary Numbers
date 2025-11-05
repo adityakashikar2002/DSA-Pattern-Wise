@@ -60,7 +60,40 @@ class Solution {
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
 // Optimal Approach - Using Queue
-// Time: O(n)
+// Time: O(n logn)
 // Space: O(n logn)
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
+/*
+    simple idea hai
+    Decimal ----> Binary conversion kro for each number
+    Process:
+    1) har number ko 2 se tab tak divide kro jab tak vo 0 nhi banta
+    2) aur sath me rem store krte chalo
+    3) last me sare remainder ki list ko reverse kro vo binary number hoga
+*/
+import java.lang.*;
+class Solution {
+    public ArrayList<String> generateBinary(int n) {
+        // code here
+        
+        ArrayList<String> res = new ArrayList<>();
+        
+        Queue<String> q = new LinkedList<>();
+        q.add("1");
+        
+        while(n > 0)
+        {
+            String bNum = q.remove();
+            
+            res.add(bNum);
+            
+            q.add(bNum + "0");
+            q.add(bNum + "1");
+            
+            n--;
+        }
+        
+        return res;
+    }
+}
