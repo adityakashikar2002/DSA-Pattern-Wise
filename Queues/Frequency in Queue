@@ -1,0 +1,31 @@
+// Time: O(n)
+// Space: O(1)
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+class Geeks {
+    
+    static void enqueue(Queue<Integer> q, int k) {
+        //  code here
+        q.add(k);
+        
+    }
+
+    static int findFrequency(Queue<Integer> q, int k) {
+        
+        int count = 0;
+        
+        int size = q.size();
+        
+        for(int i = 0; i < size; i++)
+        {
+            int num = q.remove();
+            
+            if(num == k)
+                count++;
+                
+            q.add(num);
+        }
+        
+        return count;
+    }
+}
