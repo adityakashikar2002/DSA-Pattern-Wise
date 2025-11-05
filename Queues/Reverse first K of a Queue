@@ -1,0 +1,38 @@
+// Time: O(n + k)
+// Space: O(k)
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+class Solution {
+    public Queue<Integer> reverseFirstK(Queue<Integer> q, int k) {
+        // code here
+        int size = q.size();
+        
+        if(size < k)
+            return q;
+        
+        Stack<Integer> st = new Stack<>();
+        
+        int x = k;
+        
+        while(x > 0)
+        {
+            st.push(q.remove());
+            x--;
+        }
+        
+        while(!st.isEmpty())
+        {
+            q.add(st.pop());
+        }
+        
+        int moves = size - k;
+        
+        while(moves > 0)
+        {
+            q.add(q.remove());
+            moves--;
+        }
+        
+        return q;
+    }
+}
