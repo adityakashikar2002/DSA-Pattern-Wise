@@ -210,3 +210,69 @@
        }
 
     Modulus capacity har jagah isliye taki out of bounds n chale jaye
+
+38) Iterating over a LinkedList in Java can be achieved through several methods:
+
+    1. Using an Iterator:
+    This is the recommended and most efficient way to traverse a LinkedList as it directly utilizes the internal structure.
+    Java
+    
+    import java.util.LinkedList;
+    import java.util.Iterator;
+    
+    public class LinkedListIteration {
+        public static void main(String[] args) {
+            LinkedList<String> list = new LinkedList<>();
+            list.add("Apple");
+            list.add("Banana");
+            list.add("Cherry");
+    
+            Iterator<String> iterator = list.iterator();
+            while (iterator.hasNext()) {
+                String element = iterator.next();
+                System.out.println(element);
+            }
+        }
+    }
+
+    2. Using a For-Each Loop (Enhanced For Loop):
+    This provides a more concise syntax for iterating over collections that implement the Iterable interface, which LinkedList does.
+    Java
+    
+    import java.util.LinkedList;
+    
+    public class LinkedListIteration {
+        public static void main(String[] args) {
+            LinkedList<String> list = new LinkedList<>();
+            list.add("Apple");
+            list.add("Banana");
+            list.add("Cherry");
+    
+            for (String element : list) {
+                System.out.println(element);
+            }
+        }
+    }
+
+    3) The LinkedList class provides a descendingIterator() method, which returns an Iterator that traverses the list in reverse order.
+
+    import java.util.LinkedList;
+    import java.util.Iterator;
+    
+    public class ReverseLinkedListIteration {
+        public static void main(String[] args) {
+            LinkedList<String> linkedList = new LinkedList<>();
+            linkedList.add("Apple");
+            linkedList.add("Banana");
+            linkedList.add("Cherry");
+    
+            // Get a descending iterator
+            Iterator<String> descendingIterator = linkedList.descendingIterator();
+    
+            // Iterate and print elements in reverse order
+            System.out.println("Iterating in reverse order using descendingIterator():");
+            while (descendingIterator.hasNext()) {
+                System.out.println(descendingIterator.next());
+            }
+        }
+    }
