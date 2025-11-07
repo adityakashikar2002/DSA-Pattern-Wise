@@ -1,0 +1,79 @@
+class myDeque {
+
+    int[] deQueue;
+    int front, rear, size, capacity;
+
+    public myDeque(int n) {
+        capacity = n;
+        deQueue = new int[n];
+        front = 0;
+        rear = -1;
+        size = 0;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    public boolean isFull() {
+        return size == capacity;
+    }
+
+    public void insertFront(int x) {
+        if (isFull()) 
+            return;
+
+        if (isEmpty()) 
+        {
+            front = rear = 0;
+        } 
+        else 
+        {
+            front = (front - 1 + capacity) % capacity;
+        }
+        
+        deQueue[front] = x;
+        size++;
+    }
+
+    public void insertRear(int x) {
+        if (isFull()) 
+            return;
+
+        if (isEmpty()) 
+        {
+            front = rear = 0;
+        } 
+        else 
+        {
+            rear = (rear + 1) % capacity;
+        }
+        
+        deQueue[rear] = x;
+        size++;
+    }
+
+    public void deleteFront() {
+        if (isEmpty())
+            return;
+
+        front = (front + 1) % capacity;
+        size--;
+    }
+
+    public void deleteRear() {
+        if (isEmpty()) 
+            return;
+
+        rear = (rear - 1 + capacity) % capacity;
+        size--;
+    }
+
+    public int frontEle() {
+        return isEmpty() ? -1 : deQueue[front];
+    }
+
+    public int rearEle() {
+        return isEmpty() ? -1 : deQueue[rear];
+    }
+}
