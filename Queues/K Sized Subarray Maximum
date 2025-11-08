@@ -27,7 +27,89 @@ class Solution {
 ---------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------
 // Optimal Approach
-// Time: O()
-// Space: O()
+// Time: O(n)
+// Space: O(k)
 ---------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------
+/**
+ * Sliding Window Maximum (k size window me har window ka maximum nikalna)
+ *
+ * Simple intuition:
+ * ----------------
+ * Jaise hi window aage badhti hai, purane elements window se bahar ho jaate hain
+ * aur ek naya element window me aata hai. Par dikkat ye hoti hai ki agar
+ * MAX jo pichli window ka tha, vo window se bahar chala jaye, to nayi window ka
+ * maximum phir se O(k) time me dhoondna padta hai… aur ye sab windows ke liye
+ * karne par O(n*k) = TLE!
+ *
+ * Ab smart socho —
+ *
+ * Hume sirf unhi elements ko memory me rakhna hai jo aage jaake maximum ban sakte hain.
+ * Jinke peeche koi bada element aa chuka, vo kabhi maximum nahi banenge → unko rakhne ka fayda nahi.
+ *
+ * Isi wajah se hum **Deque (Double Ended Queue)** use karte hain.
+ *
+ * Hum Deque me **index** store krenge, aur ensure karenge:
+ *
+ * 1) **Deque hamesha BADA → CHOTA order me rahega** (front pr hamesha maximum)
+ *    Kyun? Kyuki agar koi bada element aa jaye, to usse chhote elements ka
+ *    future me max banne ka chance khatam ho jata hai → unko peeche se hata do.
+ *
+ * 2) Agar koi index window se bahar ho gaya ho (i - k se chhota), to use **front se hata do**.
+ *
+ * 3) Har window ka maximum → **deque ke front par hoga**.
+ *
+ * Example:
+ * ---------
+ * arr = [1, 2, 3, 1, 4], k = 3
+ *
+ * Processing ka idea:
+ * - Deque sirf potential maximum candidates rakhta hai.
+ * - Jo elements "bechare" chhote hain aur unke baad koi bada aagaya,
+ *   wo kabhi maximum nahi ban sakte → unhe queue se bahar kar do.
+ *
+ * End result:
+ * Har element max ek hi baar push/pop hota hai → O(n) time complexity.
+ */
+class Solution {
+    public ArrayList<Integer> maxOfSubarrays(int[] arr, int k) {
+        // code here
+        int n = arr.length;
+        
+        ArrayList<Integer> res = new ArrayList<>();
+        
+        Deque<Integer> dq = new ArrayDeque<>();
+        
+        for(int i = 0; i < k; i++)
+        {
+            while(!dq.isEmpty() && arr[dq.peekLast()] <= arr[i])
+            {
+                dq.removeLast();
+            }
+                
+            dq.addLast(i);
+        }
+        
+        res.add(arr[dq.peekFirst()]);
+        
+        for(int i = k; i < n; i++)
+        {
+            while(!dq.isEmpty() && dq.peekFirst() <= i - k)
+            {
+                dq.removeFirst();
+            }
+            
+                    
+            while(!dq.isEmpty() && arr[dq.peekLast()] <= arr[i])
+            {
+                dq.removeLast();
+            }
+            
+            dq.addLast(i);
+            
+            res.add(arr[dq.peekFirst()]);
+        }
+        
+        return res;
+    }
+}
