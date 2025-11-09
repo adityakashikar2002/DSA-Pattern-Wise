@@ -54,10 +54,88 @@ class Solution {
 
 ------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------
-// Optimal  Accepted
-// Time - O(N^2)
-// Space - O(1)
+// Optimal Approach
+// Time: O(n²)
+// Space: O(1)
+------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------
+/**
+ * Yeh function diye gaye string 's' me se sabse lamba palindromic substring return karta hai.
+ *
+ * Intuition / Soch:
+ * Palindrome woh string hoti hai jo ulta padhne par bhi same hi dikhe.
+ * Har palindrome ka ek "center" hota hai jaha se woh dono taraf (left aur right) barabar failta hai.
+ *
+ * Center do tarah ke ho sakte hain:
+ * 1) Ek single character ke upar (Odd length palindrome jaise "aba", center = 'b')
+ * 2) Do characters ke beech me (Even length palindrome jaise "bb", center = do 'b' ke beech)
+ *
+ * Hum har index par yeh try karte hain ki:
+ * - Is index ko odd palindrome ka center maan kar expand karein.
+ * - Is index aur agle index ke beech ko even palindrome ka center maan kar expand karein.
+ *
+ * Expand ka matlab:
+ * Left-- aur Right++ karte jao jab tak dono same character ho.
+ * Jaha mismatch mile, waha ruk jao. Uss center ke around bana hua palindrome mil gaya.
+ *
+ * Har expansion se longest palindrome ki length nikal kar hum compare karte rehte hain,
+ * jo sabse lamba mile, uski starting position aur length store kar lete hain.
+ *
+ * Example:
+ * s = "babad"
+ * - Center 'a' ke around expand karne par "bab" mil jata hai.
+ * - Center 'b' (middle wala) ke around "aba" mil jata hai.
+ * Dono longest valid answers hain.
+ *
+ * s = "cbbd"
+ * - Beech ke center par expand karne par "bb" milta hai.
+ */
 
+class Solution {
+    public String longestPalindrome(String s) {
+        int n = s.length();
+
+        int maxLen = 0;
+        int startIndex = -1;
+        int endIndex = -1;
+
+        for(int i = 0; i < n; i++)
+        {
+            int len1 = expandAroundCenter(i, i, s, n);
+            int len2 = expandAroundCenter(i, i + 1, s, n);
+            
+            int len = Math.max(len1, len2);
+
+            if(len > maxLen)
+            {
+                maxLen = len;
+                startIndex = i - (len - 1) / 2;
+                endIndex = startIndex + len;
+            }
+        }
+
+        return s.substring(startIndex, endIndex);
+    }
+
+    public int expandAroundCenter(int left, int right, String s, int n)
+    {
+
+        while(left >= 0 && right < n && s.charAt(left) == s.charAt(right))
+        {
+            left--;
+            right++;
+        }
+
+        return right - left - 1;
+    }
+}
+------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------
+// Optimal  Accepted
+// Time - O(n²)
+// Space - O(1)
+------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------
 class Solution {
     public String longestPalindrome(String s) {
         
