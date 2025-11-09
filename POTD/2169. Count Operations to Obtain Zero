@@ -1,6 +1,6 @@
 // Brute Force
-// Time: O()
-// Space: O()
+// Time: O(max(num1, num2))
+// Space: O(1)
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
 class Solution {
@@ -22,5 +22,50 @@ class Solution {
 }
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O(log(max(num1, num2)))
+// Space: O(1)
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
+/**
+     * Hum is problem me basically ye kar rahe hote hain ki
+     * har step par bada number me se chhota number subtract karte rehte hain.
+     *
+     * Example:
+     * num1 = 15, num2 = 4
+     *
+     * Normal repeated subtraction hota:
+     * 15 - 4 = 11
+     * 11 - 4 = 7
+     * 7 - 4 = 3   --> Yaha tak humne 4 ko total 3 baar subtract kiya.
+     *
+     * Division ye kaam ek step me kar deta hai:
+     * 15 / 4 = 3  (kitni baar subtract karna padega)
+     * 15 % 4 = 3  (subtract karne ke baad bacha hua number)
+     *
+     * Isliye operations += num1 / num2 aur num1 = num1 % num2 kar dete hain.
+     * Ye same logic repeat hota hai jab tak koi ek number 0 na ho.
+     *
+     * Time Complexity: O(log(max(num1, num2)))
+     */
+class Solution {
+    public int countOperations(int num1, int num2) {
+        int operations = 0;
+
+        while(num1 != 0 && num2 != 0)
+        {
+            if(num1 >= num2)
+            {
+                operations += num1 / num2;
+                num1 = num1 % num2;
+            }
+            else
+            {
+                operations += num2 / num1;
+                num2 = num2 % num1;
+            }
+        }
+
+        return operations;
+    }
+}
