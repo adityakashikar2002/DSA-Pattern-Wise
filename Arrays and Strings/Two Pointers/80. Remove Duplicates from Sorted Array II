@@ -1,55 +1,41 @@
-// Approach 1 - OverWritting compare i-1, i and keep track of count <= 2 , if ele is different reset count
-// Time- O(N) Space- O(1)
-
+// Time: O(n)
+// Space: O(1)
+--------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
+/**
+ * Problem: Given a sorted array, remove duplicates such that each element appears at most twice.
+ * We must modify the array in-place and return the new length (k).
+ *
+ * Intuition:
+ *  Since array already sorted hai, saare duplicates ek saath milenge.
+ *  Hum ek write-pointer (i) rakhenge jo batayega ki ab tak kitne valid elements rakhe gaye.
+ *  
+ *  Rule:
+ *  - Agar array me abhi tak 0 ya 1 element hi add kiye hain, to current element ko seedha add kar denge.
+ *  - Lekin jab humare paas 2 ya zyada elements ho jaye, tab hume check karna padega:
+ *        Agar current element same hai jaisa 2 position pehle add hua tha (nums[i-2]),
+ *        to iska matlab ye element already 2 baar aa chuka hai → isko skip kar do.
+ *        Warna isko add kar do.
+ *
+ *  Is logic se har element max 2 times hi array me reh payega.
+ */
 class Solution {
     public int removeDuplicates(int[] nums) {
-        int n = nums.length;
-
-        int i = 1;
-        int j = 1;
+        int i = 0; // write pointer
         
-        int count = 1;
+        for(int num : nums) 
+        { 
 
-        for(i = 1;i < n;i++)
-        {
-            if(nums[i] == nums[i-1])
+            // Pehle 2 elements bina soche rakho,
+
+            // uske baad check karo ki current 3rd duplicate to nahi.
+            if(i < 2 || num != nums[i - 2]) 
             {
-                count++;
-            }
-            else
-            {
-                count = 1;
-            }
-
-            if(count<=2)
-            {
-                nums[j] = nums[i];
-                j++;
-            }
-        }
-
-        return j;
-    }
-}
-
-----------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------
-
-// Approach 2 - OverWritting compare i-2, i and keep track of count < 2 , if ele is different increment count else skip
-// Time- O(N) Space- O(1)
-
-class Solution {
-    
-    public int removeDuplicates(int[] nums) {
-        int count = 0;
-        
-        for (int i = 0; i < nums.length; i++) {
-            if (count < 2 || nums[i] != nums[count - 2]) {
-                nums[count] = nums[i];
-                count++;
+                nums[i] = num;
+                i++;
             }
         }
         
-        return count;
+        return i; // i hi valid length (k) dikhata hai
     }
 }
