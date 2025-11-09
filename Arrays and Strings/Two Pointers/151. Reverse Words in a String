@@ -1,50 +1,139 @@
-
-// Approach 1  T- O(N) & S - O(N)
-// Steps:-
-// 1) Reverse String
-// 2) Reverse Individual Words
-// 3) Add the word in answer
-
-import java.util.*;
-
+// Approach 1
+// Time - O(n)
+// Space - O(1) [except for the char[] array conversion] 
+---------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------
+/**
+ * Intuition / How We Reached This Approach:
+ * -----------------------------------------
+ * Jab problem padhe ki "words ka order reverse karna hai",  
+ * to sabse pehla simple idea aata hai: 
+ *    - String ko words me split karo, reverse karo, join karo.
+ * 
+ * Lekin:
+ *   - split() and extra array use karne se extra space lagta hai (O(n)).
+ *   - Problem ke follow-up me bola hai: try in-place, O(1) extra space.
+ *
+ * Ab socha ki "order reverse" matlab hume words ke sequence ko ulta karna hai,
+ * na ki characters ko individually. 
+ * 
+ * Ab yaha ek bohot common trick yaad aati hai:
+ *   → Agar tum poori cheez ko reverse kar do,
+ *     to cheezon ka order ulta ho jata hai.
+ *
+ * Example:
+ *     "the sky is blue"
+ *     Pura reverse → "eulb si yks eht"
+ * 
+ * Yaha ek important observation milti hai:
+ *     - Words ka order ulta ho gaya ✔
+ *     - But har word ke characters bhi ulte ho gaye ❌
+ *
+ * Meaning:
+ *   Agar hum poori string reverse karne ke baad,
+ *   har word ko individually reverse kar de,
+ *   to characters theek ho jaate hain aur order bhi sahi ho jaata hai.
+ *
+ * Iss soch se approach ban gaya:
+ *   1) Pure string ko reverse karo → Words ka order ulta ho gaya.
+ *   2) Ab string ko left→right padho:
+ *         - Jab tak space nahi milta, word build hota rahega.
+ *         - Space milte hi: just finished word ko reverse kar do → Word correct ho gaya.
+ *   3) Last word ke liye bhi ye hi karo.
+ *
+ * Ab bacha spaces ka issue:
+ *   Real life test cases me multiple spaces, starting / ending spaces hote hain.
+ *   Isliye copy karte waqt hum:
+ *         - Non-space characters ko compact form me likhte jaate hain
+ *         - Aur words ke beech me sirf **ek hi space** add karte hain.
+ *
+ * Yahi reason hai ki hum do pointers use karte hain:
+ *
+ *   curr  → original reversed string me read karne ke liye
+ *   right → compact result ko write karne ke liye
+ *   left  → word ke start index ko track karne ke liye
+ *
+ * Ye approach isliye strong hai kyunki:
+ *   - Hum direction change nahi kar rahe, bas smartly read/write kar rahe hain.
+ *   - Har operation in-place hota hai, extra memory nahi lagti.
+ *   - Code clean, predictable aur efficient rehta hai.
+ */
 class Solution {
     public String reverseWords(String s) {
-        int len = s.length();
+        int n = s.length();
 
-        String str = "";
-        String ans="";
+        // Step 1: Reverse the whole String
+        char[] revStr = reverse(s,n);
 
-        // Step 1 Reverse the whole string
-        String sRev = new StringBuilder(s).reverse().toString();
+        int curr = 0;
+        int left = 0;
+        int right = 0;
 
-        // Now Atleast your words are at correct expected poistion but in reverse order so reverse the words
-        // Step 2 Reverse the Words
-
-        
-        for(int i=0;i<len;i++)
+        while(curr < n)
         {
-            String word = "";
-            while(i<len && sRev.charAt(i)!=' ') // to form words with string 
+            if(revStr[curr] != ' ')
             {
-                word=word+sRev.charAt(i);
-                i++;
+                revStr[right] = revStr[curr];
+                right++;
+                curr++;
+            }
+            else
+            {
+                if(left != right)
+                {
+                    reverseWord(left, right - 1, revStr);
+                    revStr[right] = ' ';
+                    right++;
+                    left = right;
+                }
+
+                curr++;
             }
 
-            if(word.length()>0)
-            {
-                // reverse the words here
-                String wordRev = new StringBuilder(word).reverse().toString();
+        }
+        if(left != right)
+            reverseWord(left, right - 1, revStr);
 
-                // once word reversed add it to ans string;
-                ans += " " + wordRev;
-            }
-            
+        if (revStr[right - 1] == ' ') 
+            right--;
+
+        return new String(revStr, 0, right);
+
+    }
+
+    public void reverseWord(int left, int right, char[] word)
+    {
+        while(left < right)
+        {
+            char temp = word[left];
+            word[left] = word[right];
+            word[right] = temp;
+
+            left++;
+            right--;
+        }
+    }
+
+    public char[] reverse(String str, int n)
+    {
+        int left = 0;
+        int right = n - 1;
+
+        char[] arr = str.toCharArray();
+
+        while(left < right)
+        {
+            char temp = arr[left];
+            arr[left] = arr[right];
+            arr[right] = temp;
+
+            left++;
+            right--;
         }
 
-        return ans.trim();
+        return arr;
     }
 }
-
 ---------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------
 
