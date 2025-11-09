@@ -48,8 +48,11 @@ class Solution {
 ---------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------
 
-// Approach 2 T - O(N) & S - O(N)  (EASY APPROACH)
-
+// Approach 2 (EASY APPROACH)
+// Time - O(n)
+// Space - O(n)  
+---------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------
 Use StringBuilder to spilt words in array
 Add words in reverse order
 
@@ -57,13 +60,19 @@ class Solution {
     public String reverseWords(String s) {
         // 1. Trim leading/trailing spaces and split by one or more spaces
         // The regex "\\s+" splits by one or more whitespace characters
+
         String[] words = s.trim().split("\\s+");
 
         // 2. Build the result string in reverse order of words
         StringBuilder reversedString = new StringBuilder();
-        for (int i = words.length - 1; i >= 0; i--) {
+
+        for (int i = words.length - 1; i >= 0; i--) 
+        {
             reversedString.append(words[i]);
-            if (i > 0) { // Add a space between words, but not after the last word
+
+            if (i > 0) 
+            { 
+                // Add a space between words, but not after the last word
                 reversedString.append(" ");
             }
         }
