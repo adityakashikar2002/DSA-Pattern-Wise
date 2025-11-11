@@ -37,14 +37,6 @@
  *      2) Aage traverse karke dekho:
  *            - Agar beech me koi nums[j] < x mila → segment broken.
  *            - Agar broken ke baad nums[j] == x mila → naya segment → operations++.
- *
- * Time Complexity: O(n^2)
- *   (Kyuki har element ke liye array ko dubara traverse kar rahe hain)
- *
- * Space Complexity: O(n)
- *   (set use kar rahe hain taaki same number ko bar-bar process na karein)
- *
- * Yeh ek sahi aur logically strong brute force solution hai jo break condition ko theek se handle karta hai.
  */
 
 class Solution {
@@ -88,7 +80,78 @@ class Solution {
 ----------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------
 // Optimal Approach
-// Time: O()
-// Space: O()
+// Time: O(n)
+// Space: O(n)
 ----------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------
+/**
+ * Yeh function array ke saare elements ko zero banane ke liye minimum operations batata hai.
+ *
+ * Simple Explanation:
+ * -------------------
+ * Har positive number ko zero karne ke liye hume use dheere-dheere reduce karna padta hai.
+ * Lekin agar array me koi number baad me aata hai jo pehle wale number se chhota hai,
+ * to bada number pehle hi ruk jaayega kyunki chhota number zero ho jaata hai.
+ *
+ * Matlab:
+ *   - Agar current number pichhle numbers ke sequence ko "tod" deta hai,
+ *     to hume ek naya operation shuru karna padega.
+ *
+ * Stack ka kaam:
+ * -------------
+ * Stack bas yeh track karta hai ki abhi tak kaunsa reduction sequence chal raha hai.
+ *
+ * - Jab tak stack ka top current number se bada ho:
+ *       iska matlab sequence toot gaya → bada number remove kar do (pop).
+ *
+ * - Agar current number zero ho:
+ *       ignore (zero ka koi reduce operation nahi hota).
+ *
+ * - Agar stack empty ho ya stack ka top current number se chhota ho:
+ *       iska matlab yeh number ek nayi position se apna reduce operation shuru karega → operations++.
+ *       phir current number ko stack me push kar do.
+ *
+ * Example:
+ * --------
+ * nums = [3, 1, 2, 1]
+ *
+ * Step-by-step:
+ *   3  → koi pehle number nahi → ek operation (ops=1), stack = [3]
+ *   1  → 3 > 1 → 3 ko hatao, ab stack empty → new operation (ops=2), stack=[1]
+ *   2  → 1 < 2 → new operation (ops=3), stack=[1,2]
+ *   1  → 2 > 1 → pop 2 → ab stack top = 1, aur current bhi 1 → same sequence → koi naya operation nahi
+ *
+ * Final Answer → 3
+ *
+ * Yeh logic beginners ke liye simple hai:
+ *   "Jab number sequence ko tod de → naya operation.
+ *    Jab sequence continue ho → koi extra operation nahi."
+ */
+
+class Solution {
+    public int minOperations(int[] nums) {
+        int n = nums.length;
+        int operations = 0;
+
+        Stack<Integer> st = new Stack<>();
+
+        for(int num : nums)
+        {
+            while(!st.isEmpty() && st.peek() > num) // agar isse bhi chota mila to pop kro
+            {
+                st.pop();
+            }
+
+            if(num == 0)
+                continue;
+                
+            if(st.isEmpty() || st.peek() < num) // yee isliye kyuki operation tabhi add hoga jab curr minimum
+            {                                   // se bhi koi chota element milega so.. 
+                st.push(num);                   // stack me hamesha >= curr_min vala element rakh skhte
+                operations++;
+            }
+        }
+
+        return operations;
+    }
+}
