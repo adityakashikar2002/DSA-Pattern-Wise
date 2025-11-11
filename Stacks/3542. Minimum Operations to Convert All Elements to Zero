@@ -1,0 +1,94 @@
+// Brute Approach
+// Time: O(n²)
+// Space: O(n)
+----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------
+/**
+ * Yeh function array ke saare elements ko zero banane ke liye minimum operations count karta hai.
+ *
+ * Problem Samajh:
+ * ----------------
+ * Ek operation me hum koi positive number 'x' choose karke,
+ * us array ke continuous (saath-saath) aane wale saare 'x' ko 1 se decrease kar sakte hain.
+ *
+ * Lekin agar beech me koi chhota number aa jaye (nums[j] < x),
+ * to reduction ka flow break ho jaata hai. Kyunki chhota number pehle zero ho jayega
+ * aur baad me bada number reduce hota rahega.
+ *
+ * Isliye:
+ *  - Har unique positive number 'x' ke liye,
+ *  - Hum dekhte hain ki wo kitne "segments" me array me appear hota hai,
+ *  - Aur agar beech me chhota number aata hai, to yeh segment break ho jaata hai,
+ *    aur jab dubara 'x' milta hai → ek naya segment start hota hai → ek naya operation.
+ *
+ * Example:
+ * --------
+ *   nums = [3, 1, 2, 1]
+ *
+ *   For 1:
+ *      Pehla 1 index 1 par
+ *      Fir beech me 2 (2 > 1 hai lekin reduction ke sequence me 1 pehle zero hoga → break consider hoga)
+ *      Fir dusra 1 index 3 par → naya segment → extra operation
+ *
+ * Approach:
+ * ---------
+ * - Har unique number 'x' ke liye:
+ *      1) Pehle uske first segment ke liye operations++.
+ *      2) Aage traverse karke dekho:
+ *            - Agar beech me koi nums[j] < x mila → segment broken.
+ *            - Agar broken ke baad nums[j] == x mila → naya segment → operations++.
+ *
+ * Time Complexity: O(n^2)
+ *   (Kyuki har element ke liye array ko dubara traverse kar rahe hain)
+ *
+ * Space Complexity: O(n)
+ *   (set use kar rahe hain taaki same number ko bar-bar process na karein)
+ *
+ * Yeh ek sahi aur logically strong brute force solution hai jo break condition ko theek se handle karta hai.
+ */
+
+class Solution {
+    public int minOperations(int[] nums) {
+        int n = nums.length;
+        int operations = 0;
+        Set<Integer> seen = new HashSet<>();
+
+        for (int i = 0; i < n; i++) 
+        {
+            int x = nums[i];
+
+            if (x == 0 || seen.contains(x)) 
+                continue;
+
+            seen.add(x);
+            operations++; // first segment for this number
+
+            boolean broken = false;
+
+            for (int j = i + 1; j < n; j++) 
+            {
+                if (nums[j] < x) 
+                {
+                    broken = true;
+                }
+                else if (nums[j] == x) 
+                {
+                    if (broken) 
+                    {
+                        operations++;   // new segment start
+                        broken = false; // reset for next possible break
+                    }
+                }
+            }
+        }
+
+        return operations;
+    }
+}
+----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O()
+// Space: O()
+----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------
