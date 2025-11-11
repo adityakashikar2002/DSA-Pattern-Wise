@@ -1,0 +1,87 @@
+//Brute Approach
+// Time: O(n)
+// Space; O(n)
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+class MovingAverage {
+
+    List<Double> res;
+    List<Integer> arr;
+	int k;
+	
+	int curr = -1;
+	double sum = 0;
+	double avg = 0;
+	
+    public MovingAverage(int size) {
+    
+    	k = size;
+    	res = new ArrayList<>();
+    	arr = new ArrayList<>();
+    	
+    }
+    
+    public double next(int val) {
+    
+    	curr++;
+    	arr.add(val);
+ 
+    	if(curr < k)
+    	{	
+    		sum += arr.get(curr);
+    		avg = sum / (curr + 1);
+    	}
+    	else
+    	{
+    		
+    		sum = sum - arr.get(curr - k) + arr.get(curr);
+    		avg = sum / k;
+    	}
+    	
+    	return avg;
+    }
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+// Optimal Approach
+// Time; O(n)
+// Space; O(k)
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+class MovingAverage {
+
+    // Declare your variables here
+    Deque<Integer> dq;
+  
+	  int k;
+	  double sum = 0;
+
+	
+    public MovingAverage(int size) {
+        // Initialize your data structures here
+    	k = size;
+    	dq = new ArrayDeque<>();
+    	
+    }
+    
+    public double next(int val) {
+        // Write your code logic here
+    	
+    	dq.addLast(val);
+    	sum += dq.peekLast();
+    	
+    	while(!dq.isEmpty() && dq.size() > k)
+		 {
+			  sum -= dq.removeFirst();
+		 }
+
+    	return sum / dq.size();
+    }
+
+
+
+
+
+
+
+
+
