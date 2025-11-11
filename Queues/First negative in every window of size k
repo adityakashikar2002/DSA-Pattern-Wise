@@ -36,7 +36,76 @@ class Solution {
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
 // Optimal Approach
-// Time: O()
-// Space; O()
+// Time: O(n)
+// Space; O(k)
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
+/*
+    brute force to bahut time lega to apna kya kr skhte
+    
+    apn ko dekha jaye to positive numbers window me hona hi nhi right ??
+    
+    to kya apn yaha aisa logic laga skhte hai ??
+    
+    1) agar number > 0 hua skip kro 
+    2) negative mila store kro
+    3) window k baher gaya to aaage se hatana padega jo store kiye hai 
+            elements <= i - k index valo ko remove kro
+    
+    yehi idea ata hai ki agar aage se hatana hai to deque lagega
+    aur har k - size k window me deque ka front hamesha hamara answer rahega
+    
+    just in case agar deque window khatam hone pr bhi empty rahta hai to matlab hai ki
+    sare numbers +ve the aur hame res me 0 add krna padega
+    
+    simple
+*/
+class Solution {
+    static List<Integer> firstNegInt(int arr[], int k) {
+        // write code here
+        
+        int n = arr.length;
+        
+        List<Integer> res = new ArrayList<>();
+        
+        Deque<Integer> dq = new ArrayDeque<>();
+        
+        int firstNeg;
+        
+        // pahle 1st k-sized window k liye answer nikalte
+        for(int i = 0; i < k; i++)
+        {
+            if(arr[i] < 0) // agar -ve hai to apn iska index store krenge
+            {
+                dq.addLast(i);
+            }
+        }
+        
+        firstNeg = dq.isEmpty() ? 0 : arr[dq.peekFirst()]; // empty raha to 0, nhi to frontEle 1st window ka 
+        res.add(firstNeg);                                 // 1st -ve element hoga
+        
+        
+        // ab baki k-sized windows k liye
+        for(int i = k; i < n; i++)
+        {
+            // sabse pahla kaam agar deque me <= i - k index vale elemnts hai
+            // inko remove krna padega, kyuki yee window se baher jaate hai
+            
+            while(!dq.isEmpty() && dq.peekFirst() <= i - k)
+            {
+                dq.removeFirst();
+            }
+            
+            // -ve number ko deque me last me dalo
+            if(arr[i] < 0)
+                dq.addLast(i);
+                
+            // agar koi -ve number nhi hoga to 0 add krna padega
+            // nhi to same deque ka front hamesha hamara curr window ka 1st -ve number hoga
+            firstNeg = dq.isEmpty() ? 0 : arr[dq.peekFirst()];
+            res.add(firstNeg);
+        }
+        
+        return res;
+    }
+}
