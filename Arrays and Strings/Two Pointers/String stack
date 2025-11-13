@@ -1,0 +1,50 @@
+// Time: O(patLen + tarLen)
+// Space: O(1)
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+/*
+    simple idea hai agar hum dono strings ko forward traverse krk simulate krne ki koshish kre to kaam 
+    bhari ho jaega
+    
+    usse achha apn ek kaam kr skhte 
+    
+    dono strings ko peeche se traverse krenge
+    main string me se agar koi match nhi krta usko skip krte jaenge
+    jab match hua to dono ko decrement krenge
+    
+    at last agar second string ka pointer < 0 index gaya 
+    matlab main string ka second string se equal banna possible hai otherwise not
+    
+    apn chahe yee to yee kaam krte vakht stack use krte jisme apn
+    match hue characters ko push krte chalenge
+    
+    last me agar stack k characters ko combine krk bani hui string, aur second string
+    equal hui to true, otherwise false
+    
+    garaj to nhi hai stack ki kyuki 2 pointers se hi ho jaega
+*/
+class Solution {
+    public boolean stringStack(String pat, String tar) {
+        // code here
+        int patLen = pat.length();
+        int tarLen = tar.length();
+        
+        int i = patLen - 1;
+        int k = tarLen - 1;
+        
+        while(i >= 0 && k >= 0)
+        {
+            if(pat.charAt(i) == tar.charAt(k))
+            {
+                i--;
+                k--;
+            }
+            else
+            {
+                i-=2;
+            }
+        }
+        
+        return k < 0;
+    }
+}
