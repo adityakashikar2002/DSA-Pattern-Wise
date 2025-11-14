@@ -1,0 +1,92 @@
+// Brute Approach
+// Time: O(Q x n²)
+// Space: O(n²)
+---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
+class Solution {
+    public int[][] rangeAddQueries(int n, int[][] queries) {
+        
+        int[][] res = new int[n][n];
+
+        for(int i = 0; i < queries.length; i++)
+        {
+            int sr = queries[i][0];
+            int sc = queries[i][1];
+            int er = queries[i][2];
+            int ec = queries[i][3];
+
+            for(int r = sr; r <= er; r++)
+            {
+                for(int c = sc; c <= ec; c++)
+                {
+                    res[r][c]++;
+                }
+            }
+        }
+
+        return res;
+    }
+}
+---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
+// Optimal Approach - use Difference Array simulation of 1D in 2D Array
+// Time: O(Q x n + n²)
+// Space: O(n²)
+---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
+/*
+    brute force to bahut time lega right ?
+
+    kya apn kuch aisa nhi kr skhte yaha hame bss range me add krna hai n
+    to kya hum 1-D Difference Array technique yaha nhi laga skhte ??
+
+    offcourse laga skhte bss 2-D ko 1-D ki tarah treat krenge
+
+    like [1,4,6,7,1,9] yee array hai aur
+    [[0,1,1], [1,1,1]] agar yee queries krni hoti to apn kya krte
+
+    apn starting index pr uss value ko add krte aur endingIndex + 1 pr -ve value ko add krte 
+    if(endingIndex + 1 < n) hai to..
+
+    to bss yehi kaam apn 2-D me krenge
+
+    yaha bss hame startingRow aur endingRow tak iterate krenge
+    aur starting row, col pr value ko add krk update krenge
+
+    aur same kaam agar endingCol + 1 < n hai to yaha -ve value that was added add kr denge
+
+
+    finally sari rows of 2-D ka prefix Sum lete aur answer tayar
+*/
+class Solution {
+    public int[][] rangeAddQueries(int n, int[][] queries) {
+        
+        int[][] res = new int[n][n];
+
+        for(int i = 0; i < queries.length; i++)
+        {
+            int sr = queries[i][0];
+            int sc = queries[i][1];
+            int er = queries[i][2];
+            int ec = queries[i][3];
+
+            for(int r = sr; r <= er; r++)
+            {
+                res[r][sc]++;
+
+                if(ec + 1 < n)
+                    res[r][ec + 1]--;
+            }
+        }
+
+        for(int r = 0; r < n; r++)
+        {
+            for(int c = 1; c < n; c++)
+            {
+                res[r][c] += res[r][c - 1];
+            }
+        }
+
+        return res;
+    }
+}
