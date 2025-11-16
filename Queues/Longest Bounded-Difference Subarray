@@ -52,7 +52,134 @@ class Solution {
 }
 ----------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------
-// Time: O()
-// Space: O()
+// Optimal Approach - Using Sliding Window + Deques
+// Time: O(n)
+// Space: O(n)
 ----------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------
+/*
+
+    Hume ek longest subarray find karna hai jisme:
+        max_element - min_element <= x
+
+    Yani window ke andar maximum aur minimum element ka difference x se zyada nahi hona chahiye.
+
+    Sabse important baat:
+    - Agar hume har subarray ka max aur min nikalna pade brute-force me,
+      to har window ke liye O(n) lagega → Total O(n^2) ho jayega.
+    - Yeh constraints (1e5) ke hisab se bilkul bhi possible nahi hai.
+
+    Isliye hume ek aisi technique chahiye jisse:
+        - Window me max/min O(1) time me mil jaye.
+        - Window ko left se shrink ya right se extend kar sake.
+        - Aur overall time O(n) ho.
+
+    Aur yahi kaam **Monotonic Deques** se hota hai.
+
+
+    ***** Deques Kyu Chahiye? *****
+
+    1) minDeque → isme strictly increasing order me elements ke indices rakhte hain
+       → front of deque = window ka minimum element
+
+    2) maxDeque → isme strictly decreasing order me indices rakhte hain
+       → front of deque = window ka maximum element
+
+    Har naye element (arr[right]) ko include karte waqt:
+       - minDeque se last ke sare elements hata dete hain jo
+         arr[last] >= arr[right]  (kyunki unki koi importance nahi bachi)
+       - maxDeque se last ke sare elements hata dete hain jo
+         arr[last] <= arr[right]
+
+    Is tarah dono Deques ka front hamesha current window ka TRUE min aur TRUE max deta hai,
+    woh bhi O(1) time me.
+
+
+    ***** Sliding Window Logic *****
+
+    - Right pointer (right) ko badhate jao aur elements ko deques me sorted form me maintain karo.
+    - Ab check karo:
+            maxDeque.front - minDeque.front <= x
+      agar yeh valid hai to window ko expand kar sakte ho.
+
+    - Agar condition break ho jaye (difference > x),
+      to left pointer ko badhate jao (window shrink karo) until condition valid ho jaye.
+
+    Jab left badh raha hoga,
+       agar minDeque ya maxDeque ka front index == left ho,
+       to usko bhi pop karna padega (kyunki woh window se bahar chala gaya).
+
+
+    ***** Result Track Karna *****
+    
+    - Har valid window (difference allowed) me window ki length check karo.
+    - Agar length sabse badi ho, to sIndex aur eIndex update kar do.
+
+
+    ***** Time & Space Complexity *****
+        Time: O(n) → har element at most 1 baar push aur pop hota hai.
+        Space: O(n) → Deques + result array.
+
+
+
+    Yeh approach ekdum optimal aur standard hai iss type ki problems ke liye,
+    jaha hume sliding window me max/min track karna ho.
+*/
+
+class Solution {
+    public ArrayList<Integer> longestSubarray(int[] arr, int x) {
+        // code here
+        
+        int n = arr.length;
+        int maxLen = 0;
+        
+        int sIndex = 0;
+        int eIndex = 0;
+        
+        ArrayList<Integer> res = new ArrayList<>();
+        
+        Deque<Integer> minDeque = new ArrayDeque<>();
+        Deque<Integer> maxDeque = new ArrayDeque<>();
+        
+        int left = 0;
+        for(int right = 0; right < n; right++)
+        {
+            while(!minDeque.isEmpty() && arr[minDeque.peekLast()] >= arr[right])
+            {
+                minDeque.removeLast();
+            }
+            
+            while(!maxDeque.isEmpty() && arr[maxDeque.peekLast()] <= arr[right])
+            {
+                maxDeque.removeLast();
+            }
+            
+            minDeque.addLast(right);
+            maxDeque.addLast(right);
+            
+            while(arr[maxDeque.peekFirst()] - arr[minDeque.peekFirst()] > x)
+            {
+                if(left == maxDeque.peekFirst())
+                    maxDeque.removeFirst();
+                if(left == minDeque.peekFirst())
+                    minDeque.removeFirst();
+                left++;
+            }
+            
+            if(maxLen < right - left + 1)
+            {
+                maxLen = right - left + 1;
+                sIndex = left;
+                eIndex = right; 
+            }
+            
+        }
+        
+        for(int i = sIndex; i <= eIndex; i++)
+        {
+            res.add(arr[i]);
+        }
+        
+        return res;
+    }
+}
