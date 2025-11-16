@@ -1,0 +1,156 @@
+// Brute Approach
+// Time: O(n²)
+// Space: O(1)
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+class Solution {
+    public int numSub(String s) {
+        int mod = 1_000_000_007;
+        int n = s.length();
+        long res = 0;
+
+        for (int i = 0; i < n; i++) 
+        {
+            // agar start hi '1' nahi hai to substring banana ka faayda nahi
+            if (s.charAt(i) == '1') 
+            {
+                // jaha tak continuous '1' milti rahe, substring valid hai
+                for (int j = i; j < n; j++) 
+                {
+                    if (s.charAt(j) == '1') 
+                    {
+                        res++;
+                    } 
+                    else 
+                    {
+                        break;  // zero mil gaya, chain toot gayi
+                    }
+                }
+            }
+        }
+
+        return (int)(res % mod);
+    }
+}
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O(n)
+// Space: O(1)
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+/*
+
+    Hume ek binary string s diya hai, aur hume count karna hai:
+        "Kitne substrings sirf '1' se bane hue hain?"
+
+    Example:
+        s = "111"
+        Substrings with only 1s:
+            "1" (index 0)
+            "11" (0-1)
+            "111" (0-2)
+            "1" (1)
+            "11" (1-2)
+            "1" (2)
+        Total = 6
+
+    Is problem ka sabse bada observation yeh hai:
+    → Agar tum consecutive 1s ka ek segment lete ho jiska length = L ho,
+      to usme sirf 1 wale substrings ki total count hoti hai:
+
+               L * (L + 1) / 2
+
+
+    ***** Lekin hum kaise O(n) me ye kar sakte hain? *****
+
+    String traverse karte waqt ek "count" rakh lo:
+        - Agar character '1' hai → count++
+        - Agar '0' mil gaya → count = 0 reset kar do
+
+    Ab har step pe:
+        - res += count
+
+    Yeh kyun kaam karta hai?
+
+    ***** Visualization *****
+
+    For example s = "11101"
+
+    Index:  0 1 2 3 4
+            1 1 1 0 1
+
+    Traverse karte hain:
+
+    i = 0 → '1'
+        count = 1
+        possible substrings ending here = 1
+        res = 1
+
+        Substrings: ["1"]
+
+    i = 1 → '1'
+        count = 2
+        possible substrings ending here = 2
+        res = 3
+
+        New substrings born by extending:
+           ["1"], ["11"]
+
+    i = 2 → '1'
+        count = 3
+        res = 6
+
+        New substrings:
+           ["1"], ["11"], ["111"]
+
+    i = 3 → '0'
+        count = 0   (poora chain toot gayi)
+
+    i = 4 → '1'
+        count = 1
+        res = 7
+
+        Substring: ["1"]
+
+
+    ***** Yeh Kaise Work Karta Hai? (Intuition Breakdown) *****
+
+    Jaise hi consecutive '1's ka chain banta hai:
+
+       For chain length L:
+         - Last index par end hone wale substrings ki value = L hoti hai
+
+    Example:
+        s = "111"
+        counts sequence: 1, 2, 3
+
+        res = 1 + 2 + 3 = 6
+        jo ki same hai:
+              L*(L+1)/2 = 3*4/2 = 6
+
+
+    ***** Modulo *****
+        Result bahut bada ho sakta hai, isliye har step par
+        res = (res + count) % mod
+*/
+class Solution {
+    public int numSub(String s) {
+        int mod = 1_000_000_000 + 7;
+
+        int res = 0;
+        int count = 0;
+
+        for(char ch : s.toCharArray())
+        {
+            if(ch == '1')
+                count++;
+            else
+                count = 0;
+            
+            res = (res + count) % mod;
+        }
+
+        return res;
+    }
+}
