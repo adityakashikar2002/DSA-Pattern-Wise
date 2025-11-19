@@ -1,4 +1,4 @@
-// Approach - 1
+// Approach - 1 (Using Deque)
 // Time: O(n)
 // Space: O(n)
 ----------------------------------------------------------------------------------------------------
@@ -36,8 +36,42 @@ class Solution {
 }
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
-// Approach - 2
-// Time: O()
-// Space: O()
+// Approach - 2 (Using Two Pointers)
+// Time: O(n/k)
+// Space: O(1)
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
+class Solution {
+    public static int distributeTicket(int n, int k) {
+        // code here
+        if(n == k)
+            return n;
+        
+        int low = 1;
+        int high = n;
+        
+        boolean firstDist = true;
+
+        while (low <= high) 
+        {
+            if (firstDist) 
+            {
+                if(low + k > high) 
+                    return high;
+        
+                low += k;
+            } 
+            else 
+            {
+                if (high - k < low) 
+                    return low;
+                    
+                high -= k;
+            }
+            
+            firstDist = !firstDist;
+        }
+    
+        return 0;
+    }
+}
