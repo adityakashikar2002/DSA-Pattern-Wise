@@ -1,0 +1,237 @@
+// Brute Approach
+// Time: O(n²)
+// Space: O(n)
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+/*
+    ------------------------------------------------------------
+                 Brute Force Approach 
+    ------------------------------------------------------------
+
+  
+    Hume ek string di hoti hai, jo stream ki tarah aa rahi hoti hai.
+    Har character aate hi hume yeh batana hota hai ki:
+
+        "Abhi tak stream me kaunsa character aisa hai
+         jiska frequency == 1 ho
+         AUR vo sabse pehle aaya ho?"
+
+    Agar aisa koi character nahi hai → '#' print karna hai.
+
+
+    ------------------------------------------------------------
+                     🧠 Brute Force Ki Simple Soch
+    ------------------------------------------------------------
+
+    1) Ek STREAM banao (StringBuilder), jisme ab tak aaye hue 
+       saare characters ko store karo.
+
+    2) Saath me ek FREQ array rakho (size 26):
+            freq[ch - 'a']++
+       ye batayega ki character kitni baar aaya.
+
+    3) Har naye character par:
+       
+       👉 STREAM ko 0 se last tak scan karo  
+          Aur pehla character dhundo jiska:
+                   freq == 1 ho
+
+       👉 Agar mil gaya → usko result me add kar do  
+       👉 Nahi mila → result me '#' add kar do
+
+
+    ------------------------------------------------------------
+                       🔥 Example: "aaabccd"
+    ------------------------------------------------------------
+
+     i | stream  | freq          | first non-repeating | result
+    ------------------------------------------------------------
+     0 | a       | a=1           | a                   | a
+     1 | aa      | a=2           | # (no unique)       | a#
+     2 | aaa     | a=3           | #                   | a##
+     3 | aaab    | a=3, b=1      | b                   | a##b
+     4 | aaabc   | c=1, b= 1     | b                   | a##bb
+     5 | aaabcc  | c=2, b = 1    | b                   | a##bbb
+     6 | aaabccd | d=1, b = 1    | b                   | a##bbbb
+
+    ------------------------------------------------------------
+                   ⏳ Time & Space Complexity
+    ------------------------------------------------------------
+    Time:  O(n²) 
+        — Har i par stream ko O(i) tak scan karna padta hai.
+
+    Space: O(n) 
+        — Stream store karne ke liye.
+
+*/
+
+class Solution {
+    public String firstNonRepeating(String s) {
+        // code here
+        int n = s.length();
+        
+        StringBuilder stream = new StringBuilder("");
+        StringBuilder res = new StringBuilder("");
+        int[] freq = new int[26];
+        
+        for(int i = 0; i < n; i++)
+        {
+            char ch = s.charAt(i);
+            
+            stream.append(ch);
+            freq[ch - 'a']++;
+            
+            boolean uniqueFound = false;
+            
+            for(int j = 0; j < stream.length(); j++)
+            {
+                char curr = stream.charAt(j);
+                
+                if(freq[curr - 'a'] == 1)
+                {
+                    uniqueFound = true;
+                    res.append(curr);
+                    break;
+                }
+            }
+            
+            if(!uniqueFound)
+            {
+                res.append('#');
+            }
+        }
+        
+        return res.toString();
+    }
+}
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O(n)
+// Space: O(1)
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+/*
+    ====================================================================
+        OPTIMAL APPROACH - INTUTION + LOGIC
+    ====================================================================
+
+    🎯 Problem:
+        Ek string ko stream ki tarah character-by-character read karna hai.
+        Har index i par batana hai ki:
+
+            "Prefix s[0..i] me PEHLA character kaunsa hai
+                 jo sirf 1 baar aaya hai?"
+
+        Agar koi nahi → '#'.
+
+    --------------------------------------------------------------------
+                       ⭐ Intuition: Aakhir karna kya hai?
+    --------------------------------------------------------------------
+
+        → Hume ORDER bhi maintain karna hai
+        → Aur FREQUENCY bhi track karni hai
+
+        Pehla non-repeating chahiye → Order important
+        Non-repeating check karna → Frequency important
+
+        To perfect data structures:
+            ✔ Queue → order maintain rakhti hai (FIFO)
+            ✔ freq[26] → repeat kya ho raha turant pta chalta
+
+    --------------------------------------------------------------------
+                       ⭐ Queue perfect kyu fit hoti hai?
+    --------------------------------------------------------------------
+
+        Queue hamesha "jo pehle aaya, woh pehle check hoga" follow karti hai.
+
+        → Agar queue ke front ka freq == 1
+              → woh hi pehla non-repeating hai.
+
+        → Agar freq > 1
+              → woh repeat ho chuka, future me kabhi unique nahi hoga
+              → Queue se hata do (remove)
+
+        Yahi reason hai ki queue me sirf "valid candidates" bache rehte hain.
+
+        Ye line pura magic karti hai:
+            while (!q.isEmpty() && freq[q.peek()] > 1)
+                q.remove();
+
+    --------------------------------------------------------------------
+                       ⭐ Stream jaise processing hoti kaise?
+    --------------------------------------------------------------------
+
+        Har naye char par:
+            1) usko queue me add karo
+            2) uski frequency badhao
+            3) queue ke front ko clean karo (agar repeat ho chuka ho)
+            4) front hi answer (ya '#')
+
+        Yaani stream ke saath-saath hum first non-repeating update karte chalte.
+
+    --------------------------------------------------------------------
+                       ⭐ (Short Dry Run) Example: "aaabccd"
+    --------------------------------------------------------------------
+
+        char : a  a  a  b  c  c  d
+        freq : 1  2  3  1  1  2  1
+        q    : a  a,a a   b  b,c b,c  b,c,d
+        ans  : a  #  #  b  b  b  b
+
+        Queue hamesha front me sahi answer rakhti hai.
+
+
+    --------------------------------------------------------------------
+                       ⭐ Final Summary
+    --------------------------------------------------------------------
+
+        ✔ Queue → order maintain hota hai  
+        ✔ freq[] → repeat instantly pta chalta  
+        ✔ Repeated characters ko queue se hata do  
+        ✔ Queue ka front = pehla non-repeating  
+
+        Ye dono structures milkar O(n) solution dete hain
+        jo is problem ka MOST OPTIMAL approach hai.
+
+    ====================================================================
+    ====================================================================
+*/
+
+class Solution {
+    public String firstNonRepeating(String s) {
+        // code here
+        int n = s.length();
+        
+        if(n == 1)
+            return s;
+        
+        StringBuilder res = new StringBuilder("");
+        Queue<Character> q = new LinkedList<>();
+        
+        int[] freq = new int[26];
+        
+        for(int i = 0; i < n; i++)
+        {
+            char ch = s.charAt(i);
+            freq[ch - 'a']++;
+            q.add(ch);
+            
+            while(!q.isEmpty() && freq[q.peek() - 'a'] > 1)
+            {
+                q.remove();
+            }
+            
+            if(q.isEmpty())
+            {
+                res.append('#');
+            }
+            else
+            {
+                res.append(q.peek());
+            }
+        }
+        
+        return res.toString();
+    }
+}
