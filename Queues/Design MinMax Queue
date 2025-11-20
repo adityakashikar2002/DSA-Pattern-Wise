@@ -1,0 +1,192 @@
+/*
+ * -------------------------------------------------------------
+ *                  🌟 SPECIAL QUEUE (MIN–MAX QUEUE)
+ * -------------------------------------------------------------
+ *
+ *  👉 Problem ka main idea:
+ *     Normal queue jaise hi kaam karega, 
+ *     lekin hume:
+ *
+ *          ✔ getMin()  → O(1) me minimum
+ *          ✔ getMax()  → O(1) me maximum
+ *
+ *     bhi chahiye.
+ *
+ *     Yani:
+ *          🔥 Queue ki order bhi maintain karni hai
+ *          🔥 Min aur Max ko bina pure queue scan kiye nikalna hai
+ *
+ * -------------------------------------------------------------
+ * 🌟 Intuition: Kaha se idea aaya?
+ * -------------------------------------------------------------
+ *
+ *   Jab hume kisi stream/queue me:
+ *         "max element maintain karna ho"
+ *
+ *   to hamesha ek hi data structure dimaag me aata hai:
+ *
+ *        👉 Monotonic Deque (Decreasing)
+ *
+ *   Aur agar:
+ *         "min element maintain karna ho"
+ *
+ *   to:
+ *
+ *        👉 Monotonic Deque (Increasing)
+ *
+ * -------------------------------------------------------------
+ * 🌟 Monotonic Deque kya hota hai?
+ * -------------------------------------------------------------
+ *
+ *   1) maxDq → decreasing order me elements rakhta hai
+ *
+ *         Front ----> Max ... smaller values at back
+ *
+ *      Isse:
+ *          maxDq.peekFirst()  hamesha  CURRENT MAX deta hai.
+ *
+ *
+ *   2) minDq → increasing order me elements rakhta hai
+ *
+ *         Front ----> Min ... larger values at back
+ *
+ *      Isse:
+ *          minDq.peekFirst()  hamesha  CURRENT MIN deta hai.
+ *
+ *
+ * -------------------------------------------------------------
+ * 🌟 enqueue(x) ka intuition:
+ * -------------------------------------------------------------
+ *
+ *   Queue me to seedha add kar do.
+ *
+ *   Lekin:
+ *
+ *   1) maxDq me jab x aayega:
+ *
+ *          Jab tak LAST < x
+ *          tab tak removeLast()
+ *
+ *      Kyun?
+ *          Kyunki agar x bada hai,
+ *          to chhote elements future me max kabhi nahi ban sakte.
+ *
+ *
+ *   2) minDq me jab x aayega:
+ *
+ *          Jab tak LAST > x
+ *          tab tak removeLast()
+ *
+ *      Kyun?
+ *          Kyunki agar x chhota hai,
+ *          to bade elements kabhi min nahi ban sakte.
+ *
+ *
+ *   Ye dono operations amortized O(1) me hote hain.
+ *
+ * -------------------------------------------------------------
+ * 🌟 dequeue() ka intuition:
+ * -------------------------------------------------------------
+ *
+ *   Queue se jo front remove ho raha hai:
+ *
+ *     agar woh hi maxDq ka front ho → usse bhi nikaalo
+ *     agar woh hi minDq ka front ho → usse bhi nikaalo
+ *
+ *   Dono independent IF honge,
+ *   kyunki element ek hi waqt MIN aur MAX dono ho sakta hai (queue size = 1).
+ *
+ *
+ * -------------------------------------------------------------
+ * 🌟 Time Complexity:
+ * -------------------------------------------------------------
+ *
+ *      enqueue():   O(1) amortized
+ *      dequeue():   O(1)
+ *      getMin():    O(1)
+ *      getMax():    O(1)
+ *      getFront():  O(1)
+ *
+ *
+ * -------------------------------------------------------------
+ * 🌟 Final Summary:
+ * -------------------------------------------------------------
+ *
+ *   → Queue normal elements store karta hai.
+ *   → maxDq largest candidates ko monotonic decreasing order me rakhta hai.
+ *   → minDq smallest candidates ko monotonic increasing order me rakhta hai.
+ *
+ *   Isse hum bina scanning:
+ *        ✔ current minimum
+ *        ✔ current maximum
+ *   O(1) time me nikal lete hain.
+ *
+ * -------------------------------------------------------------
+ */
+
+class SpecialQueue {
+    
+    Queue<Integer> q;
+    Deque<Integer> maxDq;
+    Deque<Integer> minDq;
+    
+    public SpecialQueue() {
+        // Define Data Structures
+        q = new LinkedList<>();
+        maxDq = new ArrayDeque<>();
+        minDq = new ArrayDeque<>();
+        
+    }
+
+    public void enqueue(int x) {
+        // Insert element into the queue
+        q.add(x);
+        
+        while(!minDq.isEmpty() && minDq.peekLast() > x)
+        {
+            minDq.removeLast();
+        }
+        minDq.addLast(x);
+        
+        while(!maxDq.isEmpty() && maxDq.peekLast() < x)
+        {
+            maxDq.removeLast();
+        }
+        maxDq.addLast(x);
+        
+    }
+
+    public void dequeue() {
+        // Remove element from the queue
+        if(q.isEmpty())
+            return;
+        
+        int temp = q.remove();
+            
+        if(temp == maxDq.peekFirst())
+        {
+            maxDq.removeFirst();
+        }
+            
+        if(temp == minDq.peekFirst())
+        {
+            minDq.removeFirst();
+        }
+        
+    }
+
+    public int getFront() {
+        // Get front element
+        return q.isEmpty() ? -1 : q.peek();
+    }
+
+    public int getMin() {
+        // Get minimum element
+        return q.isEmpty() ? -1 : minDq.peekFirst();
+    }
+
+    public int getMax() {
+        // Get maximum element
+        return q.isEmpty() ? -1 : maxDq.peekFirst();
+    }
+}
