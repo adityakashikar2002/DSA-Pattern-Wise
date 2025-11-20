@@ -1,0 +1,197 @@
+// Time: O(n)
+// Space: O(n)
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+/*
+ * ---------------------------------------------------------------
+ *                 LONGEST SUBARRAY LENGTH (HARD LOGIC)
+ * ---------------------------------------------------------------
+ *
+ * 🔥 PROBLEM:
+ * Hume arr[] ka sabse lamba aisa subarray chahiye jisme:
+ *
+ *      “subarray ke sabhi elements ≤ subarray ki length” 
+ *
+ * Agar subarray ka size = L hai,
+ * to uske har element ka value ≤ L honi chahiye.
+ *
+ * ---------------------------------------------------------------
+ * 🔥 SOCH KA PUNCH POINT (INTUITION):
+ *
+ * Kisi bhi subarray ka “limit” uska maximum element hota hai.
+ * Kyuki agar max element > length hai → condition fail ho jayegi.
+ *
+ * To har index i ke element arr[i] ko (maan lo ye hi subarray ka max hai)
+ * hume yeh check karna hai:
+ *
+ *     "arr[i] kitna lamba interval cover kar sakta hai
+ *      jisme isse bada element na ho?"
+ *
+ * Agar hum arr[i] ke around maximum span (left + right)
+ * nikal lein jahan tak koi element arr[i] se bada nahi hai,
+ * to wahi uska possible subarray hai jisme arr[i] maximum hai.
+ *
+ * ---------------------------------------------------------------
+ * 🔥 YEH INTERVAL KAHAAN SE AYEGA?
+ *
+ *   → PGE[i] = Previous Greater Element (left boundary)
+ *   → NGE[i] = Next Greater Element (right boundary)
+ *
+ * Yeh dono boundaries batati hain:
+ *
+ *   PGE[i] + 1   ----->   i   ----->   NGE[i] - 1
+ *
+ * Is pure range me koi element arr[i] se bada nahi hota.
+ *
+ * To max possible subarray length jaha arr[i] maximum hai:
+ *
+ *      len = NGE[i] - PGE[i] - 1
+ *
+ * ---------------------------------------------------------------
+ * 🔥 AB CONDITION:
+ *
+ * Agar arr[i] ≤ len
+ * to yeh subarray valid hai.
+ *
+ * Yahi condition har element ke liye check karte hain
+ * aur max length answer ban jati hai.
+ *
+ * ---------------------------------------------------------------
+ * 🔥 KAISE SOCHA JAATA HAI? (REAL INTUITION)
+ *
+ * 1) Condition “all elements ≤ length” ka matlab:
+ *      max_element ≤ length
+ *
+ * 2) To har index i ko maximum maan lo.
+ *
+ * 3) Ab yeh dekho ki arr[i] ke left/right me
+ *    kab tak isse bade elements aate hain.
+ *
+ * 4) Jitna lambaa interval mile:
+ *         woh subarray ka length ho sakta hai.
+ *
+ * 5) Final check:
+ *         arr[i] ≤ interval_length
+ *
+ * ---------------------------------------------------------------
+ * 🔥 EXAMPLE WALKTHROUGH:
+ *
+ *      arr = [1, 2, 3]
+ *
+ * For 3:
+ *   PGE = -1 (pehle koi bada nahi)
+ *   NGE = 3  (aage koi bada nahi)
+ *
+ *   len = 3 - (-1) - 1 = 3
+ *
+ *   arr[i] = 3 ≤ 3 → valid
+ *
+ * Answer = 3
+ *
+ * ---------------------------------------------------------------
+ *
+ *      arr = [6, 4, 2, 5]
+ *
+ * For 6:
+ *   PGE = -1
+ *   NGE = 3 (arr[3] = 5 is NOT > 6 → oh sorry no, next greater doesn’t exist)
+ *   Actually NGE = 4
+ *
+ *   len = 4 - (-1) - 1 = 4
+ *   6 ≤ 4 ❌ FAIL
+ *
+ * For 4:
+ *   Its possible length = 3
+ *   4 ≤ 3 ❌ FAIL
+ *
+ * For 2:
+ *   Its possible length = 3
+ *   2 ≤ 3 → valid but max length = 3
+ *   But check actual array:
+ *     subarray [4,2,5] has max = 5 → breaks
+ *
+ * Using PGE/NGE correct logic:
+ *   No element satisfies arr[i] ≤ its span length.
+ *
+ * Answer = 0
+ *
+ * ---------------------------------------------------------------
+ * TIME COMPLEXITY:
+ *   PGE + NGE calculation = O(n)
+ *   Final scan = O(n)
+ *   Overall = O(n)
+ *
+ * SPACE:
+ *   Arrays + stack = O(n)
+ *
+ * ---------------------------------------------------------------
+ */
+
+class Solution {
+    public static int[] prevGEle(int[] a, int n)
+    {
+        int[] res = new int[n];
+        
+        Stack<Integer> st = new Stack<>();
+        
+        for(int i = 0; i < n; i++)
+        {
+            while(!st.isEmpty() && a[st.peek()] <= a[i])
+            {
+                st.pop();
+            }
+            
+            res[i] = !st.isEmpty() ? st.peek() : -1;
+            
+            st.push(i);
+        }
+        
+        return res;
+    }
+    
+    public static int[] nextGEle(int[] a, int n)
+    {
+        int[] res = new int[n];
+        
+        Stack<Integer> st = new Stack<>();
+        
+        for(int i = 0; i < n; i++)
+        {
+            while(!st.isEmpty() && a[st.peek()] < a[i])
+            {
+                res[st.pop()] = i;
+            }
+            
+            st.push(i);
+        }
+        
+        while(!st.isEmpty())
+        {
+            res[st.pop()] = n;
+        }
+        
+        return res;
+    }
+    
+    public static int longestSubarray(int[] arr) {
+        // code here
+        int n = arr.length;
+        
+        int[] PGE = prevGEle(arr, n);
+        int[] NGE = nextGEle(arr, n);
+        
+        int maxLen = 0;
+        
+        for(int i = 0; i < n; i++)
+        {
+            int len = NGE[i] - PGE[i] - 1;
+            
+            if(len > maxLen && len >= arr[i])
+            {
+                maxLen = len;
+            }
+        }
+        
+        return maxLen;
+    }
+}
