@@ -1,0 +1,19 @@
+class Solution {
+    public static void rotateDeque(Deque<Integer> dq, int type, int k) {
+        // code here
+        
+        while(!dq.isEmpty() && k > 0)
+        {
+            if(type == 1)
+            {
+                dq.addFirst(dq.removeLast());
+            }
+            else if(type == 2)
+            {
+                dq.addLast(dq.removeFirst());
+            }
+            
+            k--;
+        }
+    }
+}
