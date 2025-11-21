@@ -162,7 +162,90 @@ class Solution {
 ---------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------
 // Optimal Approach
-// Time: O()
-// Space: O()
+// Time: O(n)
+// Space: O(k)
 ---------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------
+/*
+ *  ✔ Problem:
+ *    Hume har index par yeh check karna hota hai ki
+ *    "iss bit par ab tak kitne flips ka effect lag chuka hai?"
+ *
+ *  ✔ Key Idea:
+ *    Flip ka effect **k continuous bits** par lagta hai.
+ *    Iska matlab:
+ *
+ *        i par start hua flip → effect ends at i + k - 1
+ *
+ *  ✔ Agar hum har flip ko store karte hain, to ek time par
+ *    maximum **k flips active** ho sakte hain.
+ *
+ * -------------------------------------------------------------
+ *         ❓ Circular Index / Modulo Indexing kyu?
+ * -------------------------------------------------------------
+ *
+ *    → Kyunki hum har iteration me sirf:
+ *       1. purana flip effect remove karte hain
+ *       2. naya flip add karte hain
+ *
+ *    → flip ka effect sirf *k steps* tak chalta hai.
+ *
+ *    → Isliye ek simple array of size k enough hai.
+ *
+ *    Example:
+ *        index = (index + 1) % k
+ *
+ *    Yeh bilkul waise hi kaam karta hai jaise clock:
+ *        0 → 1 → 2 → ... → k-1 → 0 → 1 → 2 ...
+ *
+ *    🔥 Benefit:
+ *       • Memory = O(k)
+ *       • Access = O(1)
+ *       • No extra objects
+ */
+
+class Solution {
+    public int kBitFlips(int[] arr, int k) {
+        int n = arr.length;
+
+        int flipCount = 0;
+        int ans = 0;
+
+        // int[] isFlipped = new int[n]; // marks where flip starts
+        int[] window = new int[n];
+        int index = 0;
+
+        for (int i = 0; i < n; i++) {
+
+            // Remove old flip effect
+            if (i >= k) 
+            {
+                flipCount -= window[index];
+            }
+
+            int current = arr[i];
+            
+            // Apply effect of flips
+            if (flipCount % 2 == 1) // flip count odd hai matlab bit 0 / 1 koi bhi change to hone vala hai hi
+                current ^= 1;
+
+            if (current == 0) // agar ab yee effective bit 0 hai to isko bhi flip krna padega
+            {
+                if (i + k > n) 
+                    return -1;
+
+                ans++; 
+                flipCount++;
+                window[index] = 1;
+            }
+            else
+            {
+                window[index] = 0;
+            }
+            
+            index = (index + 1) % k;
+        }
+
+        return ans;
+    }
+}
