@@ -141,15 +141,15 @@ class Solution {
             int current = arr[i];
             
             // Apply effect of flips
-            if (flipCount % 2 == 1) 
+            if (flipCount % 2 == 1) // flip count odd hai matlab bit 0 / 1 koi bhi change to hone vala hai hi
                 current ^= 1;
 
-            if (current == 0) 
+            if (current == 0) // agar ab yee effective bit 0 hai to isko bhi flip krna padega
             {
                 if (i + k > n) 
                     return -1;
 
-                ans++;
+                ans++; 
                 flipCount++;
                 isFlipped[i] = 1;
             }
