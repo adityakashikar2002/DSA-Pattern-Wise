@@ -35,14 +35,132 @@ class Solution {
 ---------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------
 // Better Approach
-// Time: O()
-// Space: O()
+// Time: O(n)
+// Space: O(n)
 ---------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------
+/*
+ * -------------------------------------------------------------
+ *                MINIMUM K CONSECUTIVE BIT FLIPS
+ * -------------------------------------------------------------
+ *
+ * 💡 INTUITION (Problem ko samajhne ka asli tareeka):
+ *
+ * Hume poora array sirf 1's se bharna hai.
+ * Ek operation me hum sirf K consecutive bits flip kar sakte hain.
+ *
+ * Sabse critical baat:
+ *     👉 Agar hum index i par hai aur arr[i] ko 1 banana hi hai,
+ *        toh agar woh effective bit 0 dikhta hai,
+ *        toh YAHI PAR flip karna compulsory hai.
+ *
+ * Kyon?
+ * - Kyunki future me jaake tum is bit ko flip nahi kar sakte
+ *   (flip window hamesha aage hi badhti hai, peeche nahi).
+ * - Aur past ke flips ko tum undo nahi kar sakte.
+ *
+ * Isi wajah se yeh GREEDY choice ban jaati hai:
+ *          "Jahan 0 dikhe, wahi flip start karo."
+ *
+ * -------------------------------------------------------------
+ * 💡 PROBLEM KA REAL CHALLENGE:
+ * 
+ * Direct flip karne se O(n*k) time lagta hai,
+ * kyunki har flip me k bits toggle honge.
+ *
+ * Hume fast me yeh jaan-na hai:
+ *
+ *      “Is index par bit ka REAL value kya hai?
+ *       (past flips ko consider karke)”
+ *
+ * -------------------------------------------------------------
+ * 💡 SOLUTION KA CORE IDEA:
+ * 
+ * 1) Lazy Propagation / Difference-Array Technique:
+ *    Hum K-size flip ke ASAR ko direct apply nahi karte.
+ *    Bas yeh track karte hain ki:
+ *        - Kahan flip start hua,
+ *        - Aur kitne flips abhi tak active chal rahe hain.
+ *
+ * 2) flipCount:
+ *    - Kitne flips currently iss index par effect daal rahe hain.
+ *    - Agar flipCount odd → bit inverted.
+ *    - Agar flipCount even → bit same hai.
+ *
+ * 3) isFlipped[]:
+ *    - yeh track karta hai ki "iss index se flip start kiya tha".
+ *    - Jaisi sliding window out hoti hai (i - k), hum flipCount-- kar dete hain.
+ *
+ * 4) Effective bit calculation:
+ *    Effective bit matlab curr bit ko vo value after considering all flip operations
+ *
+ *        effectiveBit = arr[i] ^ (flipCount % 2)
+ *
+ *    Agar effectiveBit == 0:
+ *        → mandatory flip yahin se
+ *        → warna array kabhi 1's nahi ban sakta.
+ *
+ * -------------------------------------------------------------
+ * 💡 GREEDY PROOF (Yeh approach optimal kyon hai?):
+ *
+ * Agar current bit effective 0 hai:
+ *    - Agar tum yahan flip nahi karte, toh aage jaa kar
+ *      koi bhi flip is bit tak wapas nahi aa sakta.
+ *    - Isliye flip yahin karna forced hai.
+ *
+ * Hum sirf forced flips kar rahe hain → minimum flips guarantee.
+ *
+ * -------------------------------------------------------------
+ * ⏱ TIME COMPLEXITY: O(n)
+ *    - Har index ko ek hi baar process kiya jaata hai.
+ *
+ * -------------------------------------------------------------
+ * ⏳ SPACE COMPLEXITY: O(n)
+ *    - isFlipped array ke liye.
+ *
+ * -------------------------------------------------------------
+ */
+
+class Solution {
+    public int kBitFlips(int[] arr, int k) {
+        int n = arr.length;
+
+        int flipCount = 0;
+        int ans = 0;
+
+        int[] isFlipped = new int[n]; // marks where flip starts
+
+        for (int i = 0; i < n; i++) {
+
+            // Remove old flip effect
+            if (i >= k) 
+            {
+                flipCount -= isFlipped[i - k];
+            }
+
+            int current = arr[i];
+            
+            // Apply effect of flips
+            if (flipCount % 2 == 1) 
+                current ^= 1;
+
+            if (current == 0) 
+            {
+                if (i + k > n) 
+                    return -1;
+
+                ans++;
+                flipCount++;
+                isFlipped[i] = 1;
+            }
+        }
+
+        return ans;
+    }
+}
 
 ---------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------
-
 // Optimal Approach
 // Time: O()
 // Space: O()
