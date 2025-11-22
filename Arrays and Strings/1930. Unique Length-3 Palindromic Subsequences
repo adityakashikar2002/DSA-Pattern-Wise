@@ -38,8 +38,83 @@ class Solution {
 }
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
-// Better Approach
-// Time: O()
-// Space: O()
+// Better Approach - 1 
+// Time: O(n + (26 x (n + n))) ~ O(n)
+// Space: O(n + n) ~ O(n)
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+/*
+    Brute Approach to bohot time lega, cubic me j raha kya use achha koi way nhi ??
+
+    main gist of question hai "3-length palindrome"
+
+    3-length palindrome ki khasiyat hai ki 1st aur last char hamehsa same hote hai,
+    beech k character ka koi lena dena nhi
+
+    X Y X 
+
+    right ??
+
+    ab question me bola hai ki palindromes repeat nhi hone chaiye
+
+    apn ek kaam kr skte, har ek distinct char in string, uska 1st aur last occurence nikal lenge
+    kyuki hame X Y X me X ka 1st aur last occurence chaiye
+
+    phir Y yani middle element jitne honge betwwen 1st and last occurence vo palindrome me contribute krenge
+    bss yee middle characters bhi unique hone chaiye
+
+    jaha unique ki baat hai vaha set use krenge 
+*/
+class Solution {
+    public int countPalindromicSubsequence(String s) {
+        int n = s.length();
+        int ans = 0;
+
+        Set<Character> uniqueChar = new HashSet<>();
+
+        for(char ch : s.toCharArray())
+            uniqueChar.add(ch);
+
+        int[] first = new int[26];
+        int[] last = new int[26];
+
+        Arrays.fill(first, -1);
+        Arrays.fill(last, -1);
+
+        for(char ch : uniqueChar)
+        {
+            for(int i = 0; i < n; i++)
+            {
+                char curr = s.charAt(i);
+
+                if(curr == ch)
+                {
+                    if(first[ch - 'a'] == -1)
+                    {
+                        first[ch - 'a'] = i;
+                    }
+
+                    last[ch - 'a'] = i;
+                }
+            }
+
+            Set<Character> distChar = new HashSet<>();
+
+            for(int middle = first[ch - 'a'] + 1; middle < last[ch - 'a']; middle++)
+            {
+                distChar.add(s.charAt(middle));
+            }
+
+            ans += distChar.size();
+        }
+
+        return ans;
+    }
+}
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+// Better Approach - 1 
+// Time: O(n + (26 x (n + n))) ~ O(n)
+// Space: O(n + n) ~ O(n)
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
