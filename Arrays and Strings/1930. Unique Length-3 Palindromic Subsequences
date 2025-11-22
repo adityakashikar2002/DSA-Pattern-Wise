@@ -1,0 +1,45 @@
+// Brute Approach
+// Time: O(n³)
+// Space: O(26 x 26) ~ O(1)
+
+Space Complexity is 26 x 26 as O(1) because palindrome of size 3 is of form
+---> X Y X 
+
+for each X there are 26 choices a - z, and for Y also same 26 choices so total in worst case can be 26 x 26 
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+/*
+    Brute approach hoga, sare subsequences check kro of size 3, agar palindrome hai 
+    1st char = 3rd char, to set me add kro, set duplicates handle krta hi hai 
+*/
+class Solution {
+    public int countPalindromicSubsequence(String s) {
+        int n = s.length();
+        Set<String> set = new HashSet<>();
+
+        for (int i = 0; i < n - 2; i++) 
+        {
+            for (int j = i + 1; j < n - 1; j++) 
+            {
+                for (int k = j + 1; k < n; k++) 
+                {    
+                    // palindrome of length 3 means first == last
+                    if (s.charAt(i) == s.charAt(k)) 
+                    {
+                        String str = "" + s.charAt(i) + s.charAt(j) + s.charAt(k);
+                        set.add(str);
+                    }
+                }
+            }
+        }
+
+        return set.size();
+    }
+}
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+// Better Approach
+// Time: O()
+// Space: O()
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
