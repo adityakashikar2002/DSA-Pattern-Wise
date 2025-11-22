@@ -40,7 +40,7 @@ class Solution {
 ------------------------------------------------------------------------------------------------------------------------------
 // Better Approach - 1 
 // Time: O(n + (26 x (n + n))) ~ O(n)
-// Space: O(n + n) ~ O(n)
+// Space: O(26 + 26) ~ O(1)
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
 /*
@@ -113,8 +113,113 @@ class Solution {
 }
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
-// Better Approach - 1 
-// Time: O(n + (26 x (n + n))) ~ O(n)
-// Space: O(n + n) ~ O(n)
+// Better Approach - 2 
+// Time: O((26 x (n + n)) ~ O(n)
+// Space: O(26) ~ O(1)
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
+/*
+    kaam vohi krenge lekin apn ko malum hai 
+    characters to a - z tak hi rahenge right so kyu unique nikalo phir store kro and all space kam kr skhte apn
+*/
+class Solution {
+    public int countPalindromicSubsequence(String s) {
+        int n = s.length();
+        int ans = 0;
+
+        for(char ch = 'a'; ch <= 'z'; ch++) // direct har char ka 1st, last occur nikalenge
+        {
+
+            int first = -1;
+            int last = -1;
+
+            for(int i = 0; i < n; i++)
+            {
+                char curr = s.charAt(i);
+
+                if(curr == ch)
+                {
+                    if(first == -1)
+                    {
+                        first = i;
+                    }
+
+                    last = i;
+                }
+            }
+
+            if(first == -1) // agar char string me aya hi nhi to skip maar do
+                continue;
+            
+            Set<Character> distChar = new HashSet<>(); // first aur last occur k bich k chars
+
+            for(int middle = first + 1; middle < last; middle++)
+            {
+                distChar.add(s.charAt(middle));
+            }
+
+            ans += distChar.size();
+        }
+
+        return ans;
+    }
+}
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+// Optimal Approach - Set ko completely remove krk boolean array use kro for counting dist. chars
+// Time: O((26 x (n + n))) ~ O(n)
+// Space: O(26) ~ O(1)
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+/*
+    last me distCharacters ko apn set me daal rahe right, usse achha vaha ek boolean array use kr skhte hai
+    hi bss vo character already dekha hai ya nhi ??
+*/ 
+class Solution {
+    public int countPalindromicSubsequence(String s) {
+        int n = s.length();
+        int ans = 0;
+
+        for(char ch = 'a'; ch <= 'z'; ch++) // direct har char ka 1st, last occur nikalenge
+        {
+
+            int first = -1;
+            int last = -1;
+
+            for(int i = 0; i < n; i++)
+            {
+                char curr = s.charAt(i);
+
+                if(curr == ch)
+                {
+                    if(first == -1)
+                    {
+                        first = i;
+                    }
+
+                    last = i;
+                }
+            }
+
+            if(first == -1 || last == first) // agar char string me aya hi nhi to skip maar do
+                continue;
+            
+            boolean[] seen = new boolean[26]; // set ki jagah apn boolean array use krenge
+
+            for(int middle = first + 1; middle < last; middle++)
+            {
+                seen[s.charAt(middle) - 'a'] = true; // char aya to true 
+            }
+
+            for(boolean val : seen)
+            {
+                if(val)
+                {
+                    ans++; // jo true hai vo distinct characters honge
+                }
+            }
+        }
+
+        return ans;
+    }
+}
