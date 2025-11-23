@@ -44,7 +44,80 @@ class Solution {
 ------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------
 // Optimal Approach
-// Time: O()
-// Space: O()
+// Time: O(n)
+// Space: O(n)
 ------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------
+/*
+ * Finds the maximum possible sum of any contiguous subarray whose length is 
+ * between 'a' and 'b' (inclusive).
+ *
+ * Problem Summary:
+ * ----------------
+ * Given an integer array arr[] and two integers a and b, we must choose a 
+ * subarray such that:
+ *      - Its length is at least 'a'
+ *      - Its length is at most 'b'
+ *      - Among all such valid subarrays, we return the maximum sum.
+ *
+ * Approach:
+ * ---------
+ * This solution uses:
+ *      - Prefix Sum Array
+ *      - Monotonic Deque (to maintain minimum prefix sum in a sliding window)
+ *
+ * Key Logic:
+ * ----------
+ * Sum of subarray (i..j) = prefix[j] - prefix[i]
+ *
+ * For each ending index 'j':
+ *      1. Valid starting index 'i' must lie in range:
+ *             j - b <= i <= j - a
+ *
+ *      2. We maintain a deque that always stores the minimum prefix sum 
+ *         within this valid range — allowing O(1) query for best candidate.
+ *
+ *      3. Deque stores indices, kept in increasing order of prefix values.
+ */
+
+class Solution {
+    public int maxSubarrSum(int[] arr, int a, int b) {
+
+        int n = arr.length;
+        int[] prefix = new int[n + 1];   // prefix[0] = 0
+
+        for (int i = 1; i <= n; i++) 
+        {
+            prefix[i] = prefix[i - 1] + arr[i - 1];
+        }
+
+        Deque<Integer> dq = new ArrayDeque<>();
+        int maxSum = Integer.MIN_VALUE;
+
+        for (int j = a; j <= n; j++) {
+
+            // remove indices < j - b
+            while (!dq.isEmpty() && dq.peekFirst() < j - b)
+                dq.removeFirst();
+
+            // valid left index starts from j - a
+            if (j - a >= 0) 
+            {
+
+                // insert j - a into deque (min deque based on prefix value)
+                while (!dq.isEmpty() && prefix[dq.peekLast()] >= prefix[j - a])
+                    dq.removeLast();
+
+                dq.addLast(j - a);
+            }
+
+            // compute best sum ending at j
+            if (!dq.isEmpty()) 
+            {
+                maxSum = Math.max(maxSum, prefix[j] - prefix[dq.peekFirst()]);
+            }
+        }
+
+        return maxSum;
+    }
+}
