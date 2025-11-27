@@ -1,0 +1,110 @@
+// Brute Approach
+// Time: O(n²)
+// Space: O(1)
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+class Solution {
+    public long maxSubarraySum(int[] nums, int k) {
+        int n = nums.length;
+
+        long maxSum = Long.MIN_VALUE;
+
+        for(int i = 0; i < n; i++)
+        {
+            long sum = 0;
+
+            for(int j = i; j < n; j++)
+            {
+                sum += nums[j];
+                int len = j - i + 1;
+
+                if(len % k == 0)
+                {
+                    maxSum = Math.max(maxSum, sum);
+                }
+            }
+        }
+
+        return maxSum;
+    }
+}
+
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O(n)
+// Space: O(n)
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+/**
+ * Maximum subarray sum nikalta hai jiska length k se completely divisible ho.
+ *
+ * Intuition:
+ * Subarray sirf tab valid hoga jab uska length k se divisible ho.
+ * Iska matlab possible valid subarrays aise honge:
+ *     start = 0, phir 0+k, phir 0+2k, phir 0+3k ...
+ *     start = 1, phir 1+k, phir 1+2k, phir 1+3k ...
+ *     start = 2, phir 2+k, phir 2+2k, phir 2+3k ...
+ * Matlab hum array ko k different starting index groups me tod dete hain
+ * based on (index % k). Har group apne aap me saare valid subarray lengths cover kar leta hai.
+ *
+ * Logic:
+ * Har starting point x (0 se k−1 tak) ke liye:
+ *     indices lenge: x, x+k, x+2k, x+3k, ...
+ *     inke beech ka subarray sum prefix sum se O(1) me nikalenge
+ *     aur modified Kadane's algorithm use karke maximum sum track karenge
+ *     (jo valid-length subarrays ke liye kaam kare)
+ *
+ * Kyu sirf 0 se k−1 tak start points check karte hain?
+ * Kyunki jis subarray ka length k se divisible hai, uska start index hamesha
+ * ek fixed modulo class me hota hai.
+ * Example: k = 3
+ *     indices % 3 = 0 → [0, 3, 6, 9, ...]
+ *     indices % 3 = 1 → [1, 4, 7, 10, ...]
+ *     indices % 3 = 2 → [2, 5, 8, 11, ...]
+ * 3 ke baad phir wahi pattern repeat hota hai, so 0, 1, 2 start points hi
+ * saare cases cover kar dete hain—na koi case chhutta hai, na duplicate hota hai.
+ *
+ * Time Complexity: O(n + k × (n / k)) ≈ O(n)
+ * Space Complexity: O(n) (prefix sum array ki wajah se)
+ */
+class Solution {
+    public long maxSubarraySum(int[] nums, int k) {
+        int n = nums.length;
+
+        long maxSum = Long.MIN_VALUE;
+
+        long sum = 0;
+
+        long[] prefixSum = new long[n];
+        prefixSum[0] = nums[0];
+
+        for(int i = 1; i < n; i++)
+        {
+            prefixSum[i] = prefixSum[i - 1] + nums[i];
+        }
+
+        
+        for(int x = 0; x < k; x++)
+        {
+            int i = x;
+            sum = 0;
+
+            while(i < n && i + k - 1 < n)
+            {
+                int j = i + k - 1;
+
+                long subSum = prefixSum[j] - (i > 0 ? prefixSum[i - 1] : 0);
+
+                sum = Math.max(subSum, sum + subSum);
+                maxSum = Math.max(maxSum, sum); 
+
+                i = i + k;
+            }
+
+            
+        }
+
+        return maxSum;
+    }
+}
