@@ -1,0 +1,79 @@
+// Approach 1 - Works But Messy 
+// Time: O(n²)
+// Space: O(1)
+---------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------
+// Simulation hi ek lauta upay hai doubly nhi hai so 
+// phirse aage se scan krna padega
+// try out 
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode insertionSortList(ListNode head) {
+
+        if(head.next == null)
+            return head;
+
+        ListNode curr = head;
+        ListNode prev = null;
+        ListNode next = null;
+
+        curr = curr.next;
+
+        while(curr != null)
+        {
+            prev = head;
+
+            while(prev.next != curr)
+                prev = prev.next;
+
+            next = curr.next;
+
+
+            ListNode temp = head;
+            ListNode prevTemp = null;
+
+            while(temp != curr)
+            {
+                if(curr.val < temp.val)
+                {
+                    prev.next = next;
+                    curr.next = temp;
+
+                    if(temp == head)
+                        head = curr;
+
+                    if(prevTemp != null)
+                        prevTemp.next = curr;
+
+                    break;
+                }
+
+                prevTemp = temp;
+                temp = temp.next;
+            }
+
+            curr = next;
+        }
+
+        return head;
+    }
+}
+---------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------
+
+// Approach 2 - Works, Clean, Readable, Uses Sentinel Node 😎 
+// Time: O(n²)
+// Space: O(1)
+---------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------
