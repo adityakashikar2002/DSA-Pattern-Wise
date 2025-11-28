@@ -1,0 +1,54 @@
+// Time: O(n²)
+// Space: O(1)
+--------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------
+/*
+    same as sorting playing cards in hand
+    
+    example
+    arr = [5, 9, 3, 4, 1, 6]
+    
+    isme apn sabse pahle assume krte ki 1st ele already sorted hai
+    ab 2nd element se suru krte hai..
+    
+    2nd ele ko uske prev elements se compare krte hai 
+    
+    is 9 < 5 nope matlab 2nd brobar jagah pr hai koi shift / move krne ki garaj nhi ab.. 1st two cards are sorted
+    ab is 3 < 9 yes, so 9 ko ek block aage shift kro, phir 3 < 5, same 5 ko shift kro, phir kuch nhi hai
+    so.. 3 ko sabse pahle place kro
+    
+    ab tak arr = [3, 5, 9, 4, 1, 6]
+    
+    ab 4 < 9 yes shift 9, 4 < 5 yes, shift 5 to right, 4 < 3 nope place kro stop
+    arr = [3, 4, 5, 9, 1, 6]
+    
+    ab 1 < 9, 1 < 5, 1 < 4, 1 < 3 sabko shift kiya 1 sabse aage
+    
+    arr = [1, 3, 4, 5, 9, 6]
+    
+    last me 6 bhi apni jagah pr pahuch gaya
+    arr = [1, 3, 4, 5, 6, 9]
+    
+    finally humne array ko insertion sort se sort kr liya
+*/
+class Solution {
+    // Please change the array in-place
+    public void insertionSort(int arr[]) {
+        // code here
+        int n = arr.length;
+        
+        for(int i = 1; i < n; i++)
+        {
+            int curr = arr[i];
+            int prevIndex = i - 1;
+            
+            while(prevIndex >= 0 && curr < arr[prevIndex])
+            {
+                arr[prevIndex + 1] = arr[prevIndex];
+                prevIndex--;
+            }
+            
+            arr[prevIndex + 1] = curr; // hamehsa prevIndex + 1 pr hi curr ko dalna
+        }
+    }
+}
