@@ -77,3 +77,59 @@ class Solution {
 // Space: O(1)
 ---------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------
+/*
+ * Normally insertion sort me "prev" pointer ka bahut zhamela hota hai,
+ * kyunki hame sahi jagah par insert karne k liye node ke peeche ka pointer bhi track rakhna padta hai.
+ *
+ * Is problem ko clean banane k liye hum ek "dummy / sentinel node" use karte hai.
+ * Dummy ka advantage ye hai ki agar naya element list ke bilkul beginning me bhi insert karna pade,
+ * to koi special case handle karne ki jarurat nahi.
+ *
+ * Basic flow:
+ * ------------------------------------
+ * 1) curr pointer se original list ko traverse kro
+ * 2) curr ko sorted list (dummy se start hoti hai) me sahi jagah pe insert karo
+ *
+ * Smart Trick:
+ * ------------------------------------
+ * inner loop me hum ye check karte rehte hai:
+ *      temp.next.val < curr.val
+ * matlab jab tak sorted list ka next node curr se chota hai,
+ * temp ko aage badhate jao.
+ *
+ * jab condition false ho jaye => sahi jagah mil gayi
+ * iska matlab curr ko temp aur temp.next ke beech insert krna hai.
+ *
+ * 
+ * No zalhema of storing "prev" pointer because:
+ * dummy + temp pointer se insertion spot easily mil jati hai.
+ */
+
+class Solution {
+    public ListNode insertionSortList(ListNode head) {
+
+        if (head == null || head.next == null)
+            return head;
+
+        ListNode dummy = new ListNode(-5001); // sentinel node
+        ListNode curr = head;
+
+        while (curr != null) {
+            ListNode next = curr.next;  // store next for continuing traversal later
+
+            ListNode temp = dummy;
+            // find correct spot in sorted part
+            while (temp.next != null && temp.next.val < curr.val) {
+                temp = temp.next;
+            }
+
+            // insert curr between temp and temp.next
+            curr.next = temp.next;
+            temp.next = curr;
+
+            curr = next; // move to next node from original list
+        }
+
+        return dummy.next;
+    }
+}
