@@ -1,0 +1,72 @@
+// Time: O(n)
+// Space: O(n)
+---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
+/**
+ * Hume nums array me se ek smallest subarray remove karna hai taki
+ * remaining elements ka sum p se divisible ho jaye.
+ *
+ * Suppose:
+ * totalSum % p = k
+ * Agar totalSum already divisible hai (k == 0) -> koi subarray remove karne ki zarurat nahi.
+ *
+ * Ab problem ban jati hai:
+ *  => Find smallest subarray jiska sum % p = k
+ * Because agar hum aisa subarray remove kar denge jiska sum k ke barabar remainder produce karta hai,
+ * toh (totalSum - subarraySum) p se divisible ho jayega.
+ *
+ * Approach (Prefix Sum + HashMap):
+ * -----------------------------------
+ * 1) Total sum ka remainder calculate karo (k).
+ * 2) Prefix sum ko iterate karo and har step pr prefixSum % p compute karo.
+ * 3) Hume aisa prefixSum[j] aur prefixSum[i] dhundna hai jaha:
+ *      prefixSum[j] - prefixSum[i] ≡ k (mod p)
+ *      => prefixSum[i] ≡ prefixSum[j] - k (mod p)
+ * 4) Isliye hum HashMap me har remainder ki last seen index store karte hain.
+ * 5) Jab bhi expected remainder mile → potential subarray length update karte hain.
+ *
+ * Same idea hai Subarray Sum Divisible by K vala
+ * Why HashMap works:
+ * -----------------------------------
+ * Prefix sums ke remainders repeatedly milte rehte hain.
+ * Agar ek remainder pehle bhi dekha hua hai, iska matlab beech ka subarray divisible condition ko satisfy karega.
+ * Note:
+ * Whole array remove nahi kar sakte, isliye agar milne wala minLen == nums.length -> return -1.
+ */
+class Solution {
+    public int minSubarray(int[] nums, int p) {
+        int n = nums.length;
+
+        int totalSum = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            totalSum = (totalSum + nums[i]) % p;
+        }
+
+        int k = totalSum % p;
+
+        if(k == 0)
+            return 0;
+
+        int sum = 0;
+        int minLen = Integer.MAX_VALUE;
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1);
+
+        for(int i = 0; i < n; i++)
+        {
+            sum = (sum + nums[i]) % p;
+            int prevSum = (sum - k + p) % p;
+
+            if(map.containsKey(prevSum))
+                minLen = Math.min(minLen, i - map.get(prevSum));
+            
+            map.put(sum, i);
+
+        }
+
+        return minLen == n ? -1 : minLen;  
+    }
+}
