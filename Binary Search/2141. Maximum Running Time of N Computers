@@ -1,0 +1,108 @@
+// Time: O(m log m + m log(totalMinutes / n)) where m = no. of batteries
+// Space: O(1)
+------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------
+
+/**
+ * Hume n computers ko ek hi time par continuously chalana hai jitne zyada time tak possible ho,
+ * using the given batteries. Ek computer me ek time par sirf ek battery lag sakti hai,
+ * lekin hum battery ko remove / swap kisi bhi time par kar sakte hain (without time cost).
+ *
+ * So ultimately battery swapping ka matlab ye hua:
+ *      poori batteries ki energy ek shared pool ki tarah kaam karegi.
+ *
+ * Hum directly ye calculate nahi kar sakte ki maximum runtime kitna hoga,
+ * isliye hum Binary Search use karte hain.
+ *
+ * Binary Search Target (mid):
+ * ---------------------------
+ * Hum assume karte hain ki shayad sab computers ko 'mid' minutes tak chalaya jaa sakta hai.
+ *
+ * Agar ye possible hua → mid ko badhao (answer increase karna chahte hain)
+ * Agar ye possible nahi → mid ko ghatao
+ *
+ * isse hum maximum runtime find kar lenge.
+ *
+ *
+ * possibleRun() Explanation:
+ * --------------------------
+ * Yahan hum check karte hain ki kya 'val' (binary search ka mid) minutes tak
+ * n computers ko chalana POSSIBLE hai ya nahi.
+ *
+ * Har battery sirf min(batteryCapacity, val) hi contribute karegi.
+ * Kyun?
+ * Because ek battery ek computer ko continuous 'val' minutes se zyada nahi chala sakti —
+ * for example:
+ * agar val = 5 aur battery = 10 → wo 10 nahi, sirf 5 minutes ka hi effective contribution degi,
+ * kyunki val minutes ke baad wo battery swap hi ho jayegi.
+ *
+ * To total contribution = Σ min(batteries[i], val)
+ * Aur yahi check karna hai:
+ *    totalContribution >= n * val
+ *
+ * Agar totalContribution enough ho → hum sab computers ko simultaneously 'val' minutes chala sakte hain.
+ *
+ *
+ * Searching Range:
+ * ----------------
+ * right = totalBatteryPower / n
+ * Because theoretical max time = total energy ko equally n computers me divide kar diya jaye.
+ *
+ * left = batteries[0] (smallest battery) se start karne ki bhi guarantee nahi hoti,
+ * but aapne start yahan se kiya — still binary search sahi chalega because
+ * small battery koi runtime restrict nahi karegi mid adjust hone se.
+ *
+ * Final Goal:
+ * -----------
+ * Binary search ke through maximum 'val' find karna jisme possibleRun(val) true ho.
+ */
+class Solution {
+    public boolean possibleRun(long val, int[] arr, int n)
+    {
+        long requiredMinutes = n * val;
+        long currMinutes = 0;
+
+        for(int minutes : arr)
+        {
+            currMinutes += Math.min((long) minutes, val);
+
+            if(currMinutes >= requiredMinutes)
+                return true;
+        }
+
+        return false;
+    }
+
+    public long maxRunTime(int n, int[] batteries) {
+        int countBatteries = batteries.length;
+
+        long totalMinutes = 0;
+
+        Arrays.sort(batteries);
+
+        for(int b : batteries)
+            totalMinutes += b;
+
+        long left = batteries[0];
+        long right = totalMinutes / n;
+        long ans = 0;
+
+        while(left <= right)
+        {
+            long mid = (left + right) / 2;
+
+            if(possibleRun(mid, batteries, n))
+            {
+                ans = mid;
+                left = mid + 1;
+            }
+            else
+            {
+                right = mid - 1;
+            }            
+            
+        }
+
+        return ans;
+    }
+}
