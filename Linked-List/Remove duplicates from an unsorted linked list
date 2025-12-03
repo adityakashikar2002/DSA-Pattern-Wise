@@ -1,0 +1,84 @@
+// Use Set to Store if ele appeared before
+
+// Time - O(N)
+// Space - O(N)
+--------------------------------------------------
+---------------------------------------------------
+
+/* The structure of linked list is the following
+class Node
+{
+    int data;
+    Node next;
+    Node(int d) {
+        data = d;
+        next = null;
+    }
+}
+*/
+
+import java.util.*;
+
+class Solution {
+    // Function to remove duplicates from unsorted linked list.
+    public Node removeDuplicates(Node head) {
+        // Your code here
+        
+        Set<Integer> set = new HashSet<>();
+        
+        if(head == null)
+            return head;
+        
+        Node prev = null;
+        Node curr = head;
+        
+        while(curr != null)
+        {
+            if(set.contains(curr.data))
+                prev.next = curr.next;
+            else
+            {
+                set.add(curr.data);
+                prev = curr;
+            }
+            
+            curr = curr.next;
+        }
+        
+        return head;
+        
+    }
+}
+
+----------------------------------------------------------------------------------
+----------------------------------------------------------------------------------
+// Uses One Pointer
+class Solution {
+    // Function to remove duplicates from unsorted linked list.
+    public Node removeDuplicates(Node head) {
+        // Your code here
+        
+        Set<Integer> set = new HashSet<>();
+        
+        if(head == null)
+            return head;
+        
+        Node curr = head;
+        set.add(curr.data);
+        
+        while(curr != null && curr.next != null)
+        {
+            if(set.contains(curr.next.data))
+                curr.next = curr.next.next;
+            else
+            {
+                set.add(curr.next.data);
+                curr = curr.next;
+            }
+        }
+        
+        return head;
+        
+    }
+}
+
