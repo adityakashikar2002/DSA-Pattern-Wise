@@ -1,0 +1,76 @@
+// Brute Approach - Simulation (Accepts)
+// Time: O(n)
+// Space: O(n)
+------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------
+/*
+    Sabse asan cheez hogi simulate krna bss kuch rules ko follow krna hoga
+    1) Continuous Left L, L, L... no collision
+    2) Continuous Right R, R, R... no collision
+    3) R hitting L or L hitting R same thing +2 collisions
+    4) R hitting S (stationary) +1 collision
+    5) L hitting S +1 collision
+    6) S hitting S no collision
+
+    After collision between any two cars currCar will become S
+    kyuki car thokne k baad ruk jati hai (stationary)
+
+    ab logic yee hai 
+        R x L ---> collision currCar = S
+        R x S ---> collision currCar = S
+        L x S ---> collision currCar = S
+    
+    hame prevCar ka track rakhna hai so kya kaam aa skhta kyuki hum push pop vala kaam kr rahe so stack
+
+    bss yehi simulate krna hai seedhe basha me bola jaye to prevCar kabhi bhi 'L' nhi ho skhti
+    vo 'R' ya 'S' hi hogi
+
+    'R' hai to sidha push kro chalne do
+    agar 'L' ya 'S' hai to shayad yee collide ho so ekdam push mat kro 'R' se so uske cases handle kro
+*/
+class Solution {
+    public int countCollisions(String directions) {
+        Stack<Character> st = new Stack<>();
+        int collisions = 0;
+
+        for (char car : directions.toCharArray()) 
+        {
+            // For 'R' just push
+            if (car == 'R') 
+            {
+                st.push(car);
+            } 
+            else // car == 'L' or 'S'
+            { 
+                // Collisions happen while stack has cars that can hit this car
+                while (!st.isEmpty() && st.peek() == 'R') 
+                {
+                    st.pop();        // R will collide
+                    collisions++;    // R collided once with car == S
+                    if (car == 'L')  // If L came toward R
+                        collisions++; // add one more (2 collisions)
+                    car = 'S';       // After any collision, result becomes stationary
+                }
+
+                // If stationary car on stack and new L comes toward it
+                if (!st.isEmpty() && st.peek() == 'S' && car == 'L') 
+                {
+                    collisions++;    // L hits stationary → 1 collision
+                    car = 'S';       // becomes stationary
+                }
+
+                st.push(car);
+            }
+        }
+        
+        return collisions;
+    }
+}
+------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------
+
+// Optimal Approach - Two Pointers
+// Time: O(n)
+// Space: O(1)
+------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------
