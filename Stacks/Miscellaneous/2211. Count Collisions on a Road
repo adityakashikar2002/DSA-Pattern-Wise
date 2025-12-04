@@ -74,3 +74,57 @@ class Solution {
 // Space: O(1)
 ------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------
+/*
+    Ab rules to malum hai 
+    ek chota sa example lete hai
+
+    Ex:- LLRSLRR
+
+    isko dekho collisions = 2 hai R x S and L x S bss matlab RSL itna hi string valid answer me contribute kiya
+
+    kyuki continous left in beginning kabhi contribute nhi krta so trim
+    same goes for continous series of R in the ending
+    so aise cases me trim kr do
+
+    abhi LLRSLRR me S nhi bhi hota to bhi answer 2 hi hota LLRLRR LL, RR trim kr diye,
+    bacha RL jo valid rahenga 
+
+    yee example lete
+    Ex:- RLRSLL
+
+    isme trim ki garaj nhi 
+    to apn pure string ko scan marenge aur R,L aya to collisions ka count badaenge
+    R-L collisions += 2 (vaise bhi do hi cars hai so 2 hi rahega)
+    S ko skip maar skhte kyuki R ne S ko thoka phir L se S ko thoka
+    usse achha R ne sidha L to thoka thoda futuristic 😂
+
+    bss two pointers lagana hai
+*/
+class Solution {
+    public int countCollisions(String directions) {
+        int collisions = 0;
+
+        int n = directions.length();
+
+        int left = 0;
+        int right = n - 1;
+
+        // Ignore left-going cars on left border
+        while (left < n && directions.charAt(left) == 'L')
+            left++;
+
+        // Ignore right-going cars on right border
+        while (right >= 0 && directions.charAt(right) == 'R')
+            right--;
+
+        for(int x = left; x <= right; x++)
+        {
+            char ch = directions.charAt(x);
+
+            if(ch != 'S')
+                collisions++;
+        }
+
+        return collisions;
+    }
+}
