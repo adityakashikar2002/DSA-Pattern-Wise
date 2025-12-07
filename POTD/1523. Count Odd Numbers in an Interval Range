@@ -1,0 +1,25 @@
+/**
+ * Count how many odd numbers exist between low and high (inclusive).
+ *
+ * Intuition:
+ *  - In any continuous range, roughly half the numbers are odd.
+ *  - Base count = (high - low) / 2
+ *
+ *  But we must check if there is an extra odd due to range boundaries:
+ *    Case 1: low is even AND high is even  → no extra odd
+ *    Case 2: otherwise (low or high is odd) → +1 odd
+ *
+ * Example:
+ *    low = 3, high = 7
+ *    high - low = 7 - 3 = 4
+ *    4 / 2 = 2  (base odds)
+ *    Since low and high are both odd → add +1
+ *    Final answer = 3 odds → [3, 5, 7]
+ *
+ */
+public int countOdds(int low, int high) {
+    if (low % 2 == 0 && high % 2 == 0)
+        return (high - low) / 2;
+    
+    return (high - low) / 2 + 1;
+}
