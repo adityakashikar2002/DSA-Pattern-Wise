@@ -30,6 +30,13 @@ class Solution {
 // Space: O(1)
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------
+/*
+    simple idea ye hoga ki agar hum observe kre to hume bss yee sare a, b pairs ko check krna hai
+
+    ki kya sqrt{a^2 + b^2} <= n hai kya aur sqrt{a^2 + b^2} ek int hai kya ??
+
+    matlab floor_val == curr_val bss
+*/
 class Solution {
     public int countTriples(int n) {
         int count = 0;
