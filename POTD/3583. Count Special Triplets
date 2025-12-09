@@ -1,0 +1,98 @@
+// Brute Approach
+// Time: O(n³)
+// Space: O(1)
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+class Solution {
+    public int specialTriplets(int[] nums) {
+        int n = nums.length;
+
+        int count = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = i + 1; j < n; j++)
+            {
+                for(int k = j + 1; k < n; k++)
+                {
+                    if(nums[i] == nums[k] && nums[i] == nums[j] * 2)
+                        count++;
+                }
+            }
+        }
+
+        return count;
+    }
+}
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O(n)
+// Space: O(n)
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+/**
+ * We want to count triplets (i, j, k) such that:
+ *     i < j < k  AND  nums[i] = nums[j] * 2  AND  nums[k] = nums[j] * 2
+ *
+ * So, nums[j] is the center value, aur uske left aur right dono sides par
+ * nums[j] * 2 value honi chahiye.
+ *
+ * Trick:
+ * -------
+ * - Ek map `left` maintain karte hain jo j ke LEFT me aane wale numbers ki frequency rakhta hai
+ * - Ek map `right` maintain karte hain jo j ke RIGHT me aane wale numbers ki frequency rakhta hai
+ *
+ * Process:
+ * --------
+ * 1) Pehle poori array ka frequency right map me daal do
+ * 2) Fir har index j par:
+ *      - current ko right se minus karo (takki right only index > j ho)
+ *      - target = 2 * nums[j]
+ *      - left[target] * right[target] triplets add karo
+ *      - current ko left me add karo (future ke liye)
+ *
+ */
+class Solution {
+    public int specialTriplets(int[] nums) {
+        int n = nums.length;
+
+        long mod = 1_000_000_007L;
+        long count = 0L;
+
+        // Long keys isliye use kiye hai kyuki multiplication (2 * value) mismatch na kare
+        HashMap<Long, Long> left = new HashMap<>();
+        HashMap<Long, Long> right = new HashMap<>();
+
+        // Step 1: Pehle poori array ka frequency right map me daal do
+        for (int v : nums) 
+        {
+            long k = v;
+            right.put(k, right.getOrDefault(k, 0L) + 1L);
+        }
+
+        // Step 2: Har index j ko as center treat karo
+        for (int j = 0; j < n; j++) 
+        {
+
+            long curr = nums[j];      // current element
+            long target = curr * 2L;  // j ke left aur right dono jagah ye number chahiye
+
+            // right se current ko minus karo -> ab right me sirf i > j wale elements bache
+            right.put(curr, right.get(curr) - 1L);
+
+            // check karo left me kitne 'target' hai & right me kitne 'target' hai
+            long leftCount = left.getOrDefault(target, 0L);
+            long rightCount = right.getOrDefault(target, 0L);
+
+            // jitne left * right utne valid triplets
+            count = (count + (leftCount * rightCount) % mod) % mod;
+
+            // current element ko left me add kar do future ke centers (j) ke liye
+            left.put(curr, left.getOrDefault(curr, 0L) + 1L);
+        }
+
+        return (int) count;
+    }
+}
