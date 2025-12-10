@@ -1,0 +1,17 @@
+// Time: O(n)
+// Space: O(n) (recursion stack)
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+
+class Solution {
+    static void printTillN(int N) 
+    {
+        // code here
+        if (N == 0) 
+            return;
+    
+        printTillN(N - 1); // Recursive call
+    
+        System.out.print(N + " ");
+    }
+}
