@@ -1,0 +1,62 @@
+// Approach 1 - Using Recursion
+// Time: O(n)
+// Space: O(n)
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+class Solution {
+    public int reverseExponentiation(int n) {
+        // code here
+        int num = n;
+        
+        int rev = 0;
+        
+        while(num > 0)
+        {
+            int rem = num % 10;
+            rev = rev * 10 + rem;
+            num = num / 10;
+        }
+        
+        return findPow((long) n, rev, n);
+    }
+    
+    public int findPow(long num, int p, int n)
+    {
+        if(p == 1)
+            return (int) num;
+        
+        return findPow(num * n, p - 1, n);
+    }
+}
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+// Approach 2 - Without Recursion
+// Time: O(n)
+// Space: O(1)
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+class Solution {
+    public int reverseExponentiation(int n) {
+        // code here
+        int num = n;
+        
+        int rev = 0;
+        
+        while(num > 0)
+        {
+            int rem = num % 10;
+            rev = rev * 10 + rem;
+            num = num / 10;
+        }
+        
+        long ans = n;
+        
+        while(rev > 1)
+        {
+            ans = ans * n;
+            rev--;
+        }
+        
+        return (int) ans;
+    }
+}
