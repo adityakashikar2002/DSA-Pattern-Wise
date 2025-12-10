@@ -1,0 +1,58 @@
+// Approach 1 - With Recursion
+// Time: O(n)
+// Space: O(n)
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+class Solution {
+    boolean isPalindrome(String s) {
+        // code here
+        int n = s.length();
+        
+        return palinCheck(s, 0, n - 1);
+    }
+    
+    boolean palinCheck(String str, int l, int r)
+    {
+        if(l >= r)
+            return true;
+        
+        if(str.charAt(l) == str.charAt(r))
+        {
+            return palinCheck(str, l + 1, r - 1);
+        }
+        
+        return false;
+    }
+}
+
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+// Approach 2 - Two Pointers
+// Time: O(n)
+// Space: O(1)
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+class Solution {
+    boolean isPalindrome(String s) {
+        // code here
+        int n = s.length();
+        
+        int left = 0;
+        int right = n - 1;
+        
+        while(left <= right)
+        {
+            if(s.charAt(left) == s.charAt(right))
+            {
+                left++;
+                right--;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+}
