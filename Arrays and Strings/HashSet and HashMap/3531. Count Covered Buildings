@@ -1,0 +1,57 @@
+// Brute Approach
+// Time: O(m²)
+// Space: O(1)
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+class Solution {
+    public int countCoveredBuildings(int n, int[][] buildings) {
+        int count = 0;
+
+        int m = buildings.length;
+
+        for(int i = 0; i < m; i++)
+        {
+            int x = buildings[i][0];
+            int y = buildings[i][1];
+
+            boolean left = false;
+            boolean right = false;
+            boolean above = false;
+            boolean below = false;
+
+            for(int j = 0; j < m; j++)
+            {
+                if(j == i)
+                    continue;
+                
+                int x1 = buildings[j][0];
+                int y1 = buildings[j][1];
+
+                if (x1 < x && y1 == y)
+                    left = true;
+
+                if (x1 > x && y1 == y)
+                    right = true;
+
+                if (y1 < y && x1 == x)
+                    below = true;
+
+                if (y1 > y && x1 == x)
+                    above = true;
+            }
+
+            if(left && right && above && below)
+                    count++;
+        }
+
+        return count;
+    }
+}
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+
+// Optimal Approach
+// Time: O(m + m) ~ O(m)
+// Space: O(m)
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
