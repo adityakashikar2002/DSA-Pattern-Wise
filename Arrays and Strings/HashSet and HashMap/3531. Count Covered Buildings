@@ -55,3 +55,86 @@ class Solution {
 // Space: O(m)
 --------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------
+/**
+ * Problem ka simple funda yeh hai:
+ * 
+ * Hame check karna hai ki koi building-point (x, y)
+ * 4-taraf se covered hai ya nahi.
+ *
+ * Covered hone ka matlab:
+ *   - uss point ke left me koi building honi chahiye  (same y par: min-x)
+ *   - uss point ke right me koi building honi chahiye (same y par: max-x)
+ *   - uss point ke niche koi building honi chahiye    (same x par: min-y)
+ *   - uss point ke upar koi building honi chahiye     (same x par: max-y)
+ *
+ * Isliye hum 2 HashMap use karte hai:
+ *
+ * 1) xToMinMaxY:
+ *      - Key: x-coordinate
+ *      - Value: int[]{minY, maxY}
+ *      - Matlab: iss x-line par lowest aur highest y konse hai?
+ *
+ * 2) yToMinMaxX:
+ *      - Key: y-coordinate
+ *      - Value: int[]{minX, maxX}
+ *      - Matlab: iss y-line par lowest aur highest x konse hai?
+ *
+ * First pass:
+ *      – Saare points scan karke hum unka min/max update kar dete hain.
+ *
+ * Second pass:
+ *      – Har point ke liye check:
+ *
+ *          minX < x < maxX
+ *          minY < y < maxY
+ *
+ *        Agar ye dono conditions true hain,
+ *        matlab building 4-side se covered hai
+ */
+class Solution {
+    public int countCoveredBuildings(int n, int[][] buildings) {
+        int m = buildings.length;
+        int count = 0;
+
+        HashMap<Integer, int[]> xToMinMaxY = new HashMap<>();
+        HashMap<Integer, int[]> yToMinMaxX = new HashMap<>();
+
+        for(int i = 0; i < m; i++)
+        {
+            int x = buildings[i][0];
+            int y = buildings[i][1];
+
+            if(!xToMinMaxY.containsKey(x))
+            {
+                xToMinMaxY.put(x, new int[]{Integer.MAX_VALUE, Integer.MIN_VALUE});
+            }
+
+            if(!yToMinMaxX.containsKey(y))
+            {
+                yToMinMaxX.put(y, new int[]{Integer.MAX_VALUE, Integer.MIN_VALUE});
+            }
+
+            int[] x_arr = xToMinMaxY.get(x);
+            x_arr[0] = Math.min(x_arr[0], y);
+            x_arr[1] = Math.max(x_arr[1], y);
+
+            int[] y_arr = yToMinMaxX.get(y);
+            y_arr[0] = Math.min(y_arr[0], x);
+            y_arr[1] = Math.max(y_arr[1], x);
+        }
+
+        for(int i = 0; i < m; i++)
+        {
+            int x = buildings[i][0];
+            int y = buildings[i][1];
+            
+            int[] xArr = yToMinMaxX.get(y);
+            int[] yArr = xToMinMaxY.get(x);
+
+            if (xArr[0] < x && x < xArr[1] && yArr[0] < y && y < yArr[1])
+                count++;
+        }
+
+        return count;
+    }
+}
