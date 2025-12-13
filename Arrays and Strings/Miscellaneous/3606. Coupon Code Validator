@@ -1,0 +1,77 @@
+// Time: O(n * k + n log n)
+// Space: O(n)
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+class Solution {
+
+    public boolean checkValidCode(String code) {
+        if (code == null || code.isEmpty()) {
+            return false;
+        }
+
+        for (char ch : code.toCharArray()) {
+            if (!Character.isLetterOrDigit(ch) && ch != '_') {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public List<String> validateCoupons(String[] code, String[] businessLine, boolean[] isActive) {
+        int n = code.length;
+        List<String> res = new ArrayList<>();
+
+        Set<String> category = new HashSet<>();
+        category.add("electronics");
+        category.add("grocery");
+        category.add("pharmacy");
+        category.add("restaurant");
+
+
+        List<String> e = new ArrayList<>();
+        List<String> g = new ArrayList<>();
+        List<String> p = new ArrayList<>();
+        List<String> r = new ArrayList<>();
+        
+        for(int i = 0; i < n; i++)
+        {
+            String currStr = code[i];
+            String currCat = businessLine[i];
+
+            if(isActive[i] == true && category.contains(currCat) && checkValidCode(currStr))
+            {
+                switch(currCat)
+                {
+                    case "electronics":
+                        e.add(currStr);
+                        break;
+
+                    case "grocery":
+                        g.add(currStr);
+                        break;
+                    
+                    case "pharmacy":
+                        p.add(currStr);
+                        break;
+                    
+                    case "restaurant":
+                        r.add(currStr);
+                        break;
+                }
+            }
+        }
+
+        Collections.sort(e);
+        Collections.sort(g);
+        Collections.sort(p);
+        Collections.sort(r);
+
+        res.addAll(e);
+        res.addAll(g);
+        res.addAll(p);
+        res.addAll(r);
+
+        return res;
+    }
+}
