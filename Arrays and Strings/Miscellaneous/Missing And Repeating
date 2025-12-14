@@ -1,0 +1,102 @@
+// Brute Approach
+// Time: O(n)
+// Space: O(n)
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+/*
+    sabse simple tarika hoga,
+    ek freqArr banate hai jisme jiska count == 2 hua vo repeated ele hai
+    dursa given array k sare eles ko set me daalte hai, jo set me nhi mila vo missing
+*/
+class Solution {
+    ArrayList<Integer> findTwoElement(int arr[]) {
+        // code here
+        int n = arr.length;
+        ArrayList<Integer> res = new ArrayList<>();
+        
+        int[] freq = new int[n + 1];
+        Set<Integer> set = new HashSet<>();
+        
+        for(int num : arr)
+        {
+            freq[num]++;
+            set.add(num);
+        }
+        
+        for(int i = 0; i < n + 1; i++)
+        {
+            if(freq[i] == 2)
+                res.add(i);
+        }
+        
+        for(int i = 1; i <= n; i++)
+        {
+            if(!set.contains(i))
+                res.add(i);
+        }
+        
+        return res;
+    }
+}
+
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+// Optimal Approach 
+// Time: O(n)
+// Space: O(1)
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+/*
+    Array me numbers 1 se n hone chahiye.
+
+    👉 Iska matlab:
+    
+    har number x ka natural index hota hai → x - 1
+    
+    agar sab numbers sahi hote → har index ek hi baar visit hota
+    
+    Problem me kya issue hai?
+    
+    ek number repeat ho raha hai
+    
+    ek number missing hai
+    
+    Toh:
+    
+    repeat hone wale number ka index 2 baar visit hoga
+    
+    missing number ka index kabhi visit hi nahi hoga
+    
+    Bas isi property ko hum exploit kar rahe hain 😎
+    
+    Iska tarika hoga ki apn repeating / duplicate negative marking trick se nikal le
+    
+    aur 2nd scan me jis index ka ele +ve bachta hai uss (index + 1) yee missing hoga
+*/
+class Solution {
+    ArrayList<Integer> findTwoElement(int arr[]) {
+        // code here
+        int n = arr.length;
+        ArrayList<Integer> res = new ArrayList<>();
+    
+        
+        for(int i = 0; i < n; i++)
+        {
+            int idx = Math.abs(arr[i]) - 1;
+            
+            if(arr[idx] < 0)
+                res.add(Math.abs(arr[i]));
+            else
+                arr[idx] = - arr[idx];
+                
+        }
+        
+        for(int i = 0; i < n; i++)
+        {
+            if(arr[i] > 0) // index i never visited so i + 1 missing no. hai
+                res.add(i + 1);
+        }
+        
+        return res;
+    }
+}
