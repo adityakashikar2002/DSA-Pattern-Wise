@@ -1,0 +1,26 @@
+// Time: O(n)
+// Space: O(1)
+-----------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
+class Solution {
+    public void swapDiagonal(int[][] mat) {
+        // code here
+        int n = mat.length;
+        
+        int r = 0;
+        int c1 = 0;
+        int c2 = n - 1;
+        
+        while(r < n && c1 < n && c2 >= 0)
+        {
+            int temp = mat[r][c1];
+            mat[r][c1] = mat[r][c2];
+            mat[r][c2] = temp;
+            
+            r++;
+            c1++;
+            c2--;
+            
+        }
+    }
+}
