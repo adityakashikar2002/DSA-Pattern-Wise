@@ -1,0 +1,59 @@
+// Time: O(n x m + q)
+// Space: O(n x m)
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+class Solution {
+    public ArrayList<Integer> prefixSum2D(int[][] mat, int[][] queries) {
+        // code here
+        int n = mat.length;
+        int m = mat[0].length;
+        
+        // Construct prefix sum matrix
+        int[][] prefix = new int[n + 1][m + 1];
+
+        for (int i = 1; i < n + 1; i++) {
+            for (int j = 1; j < m + 1; j++) {
+
+                // Start with original value
+                prefix[i][j] = mat[i - 1][j - 1];
+
+                // Add value from top cell if it exists
+                prefix[i][j] += prefix[i - 1][j];
+
+                // Add value from left cell if it exists
+                prefix[i][j] += prefix[i][j - 1];
+
+                // Subtract overlap from top-left diagonal if it exists
+                prefix[i][j] -= prefix[i - 1][j - 1];
+            }
+        }
+
+        // Result list
+        ArrayList<Integer> result = new ArrayList<>();
+
+        // Process each query using inclusion-exclusion
+        for (int i = 0; i < queries.length; i++) {
+            int r1 = queries[i][0];
+            int c1 = queries[i][1];
+            int r2 = queries[i][2];
+            int c2 = queries[i][3];
+
+            // Start with original value
+            int total = prefix[r2 + 1][c2 + 1];
+            
+            // Add value from top cell if it exists
+            total -= prefix[r1][c2 + 1];
+            
+            // Add value from left cell if it exists
+            total -= prefix[r2 + 1][c1];
+            
+            // Subtract overlap from top-left diagonal if it exists
+            total += prefix[r1][c1];
+
+            result.add(total);
+        }
+
+        return result;
+        
+    }
+}
