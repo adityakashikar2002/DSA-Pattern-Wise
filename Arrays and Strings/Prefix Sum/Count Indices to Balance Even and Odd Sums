@@ -1,0 +1,130 @@
+// Brute Approach
+// Time: O(n²)
+// Space: O(1)
+-------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------
+class Solution {
+    public int cntWays(int[] arr) {
+        // code here
+        int n = arr.length;
+        int count = 0;
+        
+        for(int i = 0; i < n; i++)
+        {
+            int evenSum = 0;
+            int oddSum = 0;
+            
+            int index = 0;
+            
+            for(int j = 0; j < n; j++)
+            {
+                if(j == i)
+                    continue;
+                
+                if(index % 2 == 0)
+                    evenSum += arr[j];
+                else
+                    oddSum += arr[j];
+                
+                index++;
+                
+            }
+            
+            if(evenSum == oddSum)
+                    count++;
+        }
+        
+        return count;
+    }
+}
+-------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O(n)
+// Space: O(1)
+-------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------
+/*
+ * Problem:
+ * --------
+ * Hume un indices ka count nikalna hai jinko delete karne ke baad,
+ * array me EVEN index elements ka sum == ODD index elements ka sum ho jaye.
+ *
+ * Key Observation (IMPORTANT):
+ * ----------------------------
+ * Jab hum kisi index 'i' ka element delete karte hain:
+ *
+ * 1. Jo elements index 'i' se PEHLE hote hain:
+ *    - Unke indices change nahi hote
+ *    - Even index even hi rehta hai
+ *    - Odd index odd hi rehta hai
+ *
+ * 2. Jo elements index 'i' ke BAAD hote hain:
+ *    - Unke indices ek step LEFT shift ho jate hain
+ *    - Is wajah se PARITY FLIP hoti hai:
+ *        - Jo pehle even index par tha, wo odd ban jata hai
+ *        - Jo pehle odd index par tha, wo even ban jata hai
+ *
+ * Approach (One Pass):
+ * -------------------
+ * 1. Pehle se calculate kar lo:
+ *    - rightEvenSum → right side ke even indices ka sum
+ *    - rightOddSum  → right side ke odd indices ka sum
+ *
+ * 2. Sath me maintain karo:
+ *    - leftEvenSum → left side ke even indices ka sum
+ *    - leftOddSum  → left side ke odd indices ka sum
+ *
+ * 3. Har index 'i' ke liye:
+ *    - arr[i] ko rightEvenSum ya rightOddSum se hata do
+ *    - Deletion ke baad:
+ *        NewEvenSum = leftEvenSum + rightOddSum
+ *        NewOddSum  = leftOddSum  + rightEvenSum
+ *
+ *    - Agar NewEvenSum == NewOddSum ho jaye,
+ *      to ye index VALID hai
+ *
+ * 4. Fir arr[i] ko uski parity ke hisaab se
+ *    leftEvenSum ya leftOddSum me add kar do,
+ *    taaki next iteration ke liye ready rahe
+ */
+
+class Solution {
+    public int cntWays(int[] arr) {
+        // code here
+        int n = arr.length;
+        int count = 0;
+        
+        int rEvenSum = 0;
+        int rOddSum = 0;
+        int lEvenSum = 0;
+        int lOddSum = 0;
+        
+        for(int i = 0; i < n; i++)
+        {
+            if(i % 2 == 0)
+                rEvenSum += arr[i];
+            else
+                rOddSum += arr[i];
+        }
+        
+        for(int i = 0; i < n; i++)
+        {
+            if(i % 2 == 0)
+                rEvenSum -= arr[i];
+            else
+                rOddSum -= arr[i];
+                
+            
+            if(lEvenSum + rOddSum == lOddSum + rEvenSum)
+                count++;
+            
+            if(i % 2 == 0)
+                lEvenSum += arr[i];
+            else
+                lOddSum += arr[i];
+        }
+        
+        return count;
+    }
+}
