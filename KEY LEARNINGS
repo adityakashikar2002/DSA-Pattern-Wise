@@ -276,3 +276,7 @@
             }
         }
     }
+
+39) When asked to sort a 2-D matrix
+
+    Arrays.sort(matrix, Comparator.comparingInt(a -> a[0]));
