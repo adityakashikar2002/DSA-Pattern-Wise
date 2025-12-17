@@ -1,0 +1,36 @@
+// Time: O(n logn)
+// Space: O(1)
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+class Solution {
+    public ArrayList<int[]> mergeOverlap(int[][] arr) {
+        Arrays.sort(arr, Comparator.comparingInt(a -> a[0]));
+
+        ArrayList<int[]> res = new ArrayList<>();
+
+        int start = arr[0][0];
+        int end = arr[0][1];
+
+        for (int i = 1; i < arr.length; i++) 
+        {
+            // overlap
+            if (arr[i][0] <= end) 
+            {
+                end = Math.max(end, arr[i][1]);
+            } 
+            // no overlap
+            else 
+            {
+                res.add(new int[]{start, end});
+                start = arr[i][0];
+                end = arr[i][1];
+            }
+        }
+
+        // add last interval
+        res.add(new int[]{start, end});
+
+        return res;
+    }
+}
