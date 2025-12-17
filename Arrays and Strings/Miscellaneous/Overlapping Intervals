@@ -2,7 +2,44 @@
 // Space: O(1)
 ----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
-
+/*
+ * Merges all overlapping intervals.
+ *
+ * INTUITION:
+ * Har interval ek range ko represent karta hai: [start, end].
+ * Agar do intervals overlap karte hain, to unko ek single interval me merge
+ * kiya ja sakta hai.
+ *
+ * Overlap condition:
+ * nextInterval.start <= currentInterval.end
+ *
+ * IMPORTANT OBSERVATION:
+ * Agar intervals ko unke start value ke basis par sort kar diya jaye,
+ * to overlapping intervals hamesha paas-paas (adjacent) milte hain.
+ * Is wajah se merging ek single traversal me ho jati hai.
+ *
+ * LOGIC / APPROACH:
+ * 1. Intervals ko start ke ascending order me sort karo.
+ * 2. Pehla interval current interval maan lo:
+ *      start = arr[0][0]
+ *      end   = arr[0][1]
+ * 3. Baaki intervals ke liye loop chalao:
+ *    - Agar current interval aur next interval overlap karte hain
+ *      (arr[i][0] <= end), to end ko extend karo:
+ *          end = max(end, arr[i][1])
+ *    - Agar overlap nahi hai, to current interval complete ho chuka hai.
+ *      Use result me add karo aur naya interval start karo.
+ * 4. Loop ke baad last interval ko result me add karna zaroori hai.
+ *
+ * WHY THIS WORKS:
+ * Sorting ensure karta hai ki ek baar overlap break ho gaya,
+ * to future intervals previous interval se kabhi overlap nahi karenge.
+ *
+ * EXAMPLE:
+ * Input:  [[1,3], [2,6], [8,10], [9,12]]
+ * Output: [[1,6], [8,12]]
+ */
+ 
 class Solution {
     public ArrayList<int[]> mergeOverlap(int[][] arr) {
         Arrays.sort(arr, Comparator.comparingInt(a -> a[0]));
@@ -34,3 +71,4 @@ class Solution {
         return res;
     }
 }
+
