@@ -1,0 +1,109 @@
+// Time : O(n)
+// Space: O(n)
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+
+/**
+ * ======================= PROBLEM INTUITION =======================
+ *
+ * Hume har din ka profit pata hai:
+ *   profit[i] = strategy[i] * prices[i]
+ *
+ * Total profit = sum of all daily profits.
+ *
+ * Ab hume AT MOST ek baar strategy ko modify karna hai, jisme:
+ *  - k consecutive days choose karne hain
+ *  - pehle k/2 days -> HOLD (0)
+ *  - last k/2 days -> SELL (1)
+ *
+ * Important baat:
+ *  - Budget ya stock ownership ka koi constraint nahi hai
+ *  - Isliye ye pure math / prefix sum problem ban jata hai
+ *
+ *
+ * ======================= KEY OBSERVATION =========================
+ *
+ * Jab hum kisi window [i ... i+k-1] ko modify karte hain:
+ *
+ * 1) Us window ka PURANA contribution hata denge
+ *    oldWindowProfit = sum(strategy[x] * prices[x]) for x in window
+ *
+ * 2) Naya contribution add karenge:
+ *    - Pehle k/2 days ka contribution = 0
+ *    - Sirf last k/2 days ka contribution = prices[x]
+ *
+ *    newWindowProfit = sum(prices[x]) for x in [i + k/2 ... i + k - 1]
+ *
+ * Final profit banega:
+ *    modifiedProfit = totalProfit - oldWindowProfit + newWindowProfit
+ *
+ *
+ * ======================= APPROACH ================================
+ *
+ * Step 1:
+ *  - strategy * prices ka prefix sum bana lo
+ *    stratPrefix[i] = sum(strategy[x] * prices[x]) till index i
+ *
+ * Step 2:
+ *  - prices ka prefix sum bana lo
+ *    pricesPrefix[i] = sum(prices[x]) till index i
+ *
+ * Step 3:
+ *  - Har possible window [i ... i+k-1] ko slide karo
+ *  - O(1) me old window profit nikaalo
+ *  - O(1) me new window profit nikaalo
+ *  - Modified profit calculate karke max maintain karo
+ *
+ *
+ * ======================= WHY PREFIX SUM? =========================
+ *
+ * Prefix sum se:
+ *  - kisi bhi subarray ka sum O(1) me mil jata hai
+ *  - warna har window O(k) leta, total O(n*k) ho jata
+ *
+ * Yahan hum O(n) me solve kar rahe hain
+ *
+ * ======================= EDGE CASES ==============================
+ *
+ * - Ho sakta hai best answer bina koi modification ke ho
+ * - Isliye initial maxProfit = totalProfit se start karte hain
+ *
+ */
+class Solution {
+    public long maxProfit(int[] prices, int[] strategy, int k) {
+        int n = prices.length;
+
+        long[] stratPrefix = new long[n];
+        stratPrefix[0] = (long) prices[0] * strategy[0];
+
+        long[] pricesPrefix = new long[n];
+        pricesPrefix[0] = prices[0];
+
+        for(int i = 1; i < n; i++)
+        {
+            stratPrefix[i] = stratPrefix[i - 1] + ((long) prices[i] * strategy[i]);
+            pricesPrefix[i] = pricesPrefix[i - 1] + prices[i]; 
+        }
+
+        long totalProfit = stratPrefix[n - 1];
+
+        long maxProfit = totalProfit;
+
+        for (int i = 0; i <= n - k; i++) 
+        {
+            int j = i + k - 1;
+            int half = k / 2;
+            int secondHalf = i + half;
+
+            long oldWindowProfit = stratPrefix[j] - ((i > 0) ? stratPrefix[i - 1] : 0);
+
+            long newWindowProfit = pricesPrefix[j] - ((secondHalf > 0) ? pricesPrefix[secondHalf - 1] : 0);
+
+            long modProfit = totalProfit - oldWindowProfit + newWindowProfit;
+
+            maxProfit = Math.max(maxProfit, modProfit);
+        }
+
+        return maxProfit;
+    }
+}
