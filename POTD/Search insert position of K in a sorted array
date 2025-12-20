@@ -1,0 +1,28 @@
+// Time: O(log n)
+// Space: O(1)
+------------------------------------------------------------------
+------------------------------------------------------------------
+class Solution {
+    public int searchInsertK(int arr[], int k) {
+        // code here
+        int n = arr.length;
+        
+        int low = 0;
+        int high = n - 1;
+        
+        while(low <= high)
+        {
+            int mid = (low + high) / 2;
+            
+            if(k == arr[mid])
+                return mid;
+            
+            if(k < arr[mid])
+                high = mid - 1;
+            else
+                low = mid + 1;
+        }
+        
+        return low;
+    }
+}
