@@ -1,0 +1,147 @@
+// Brute Approach
+// Time: O(q x n)
+// Space: O(1)
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+class Solution {
+    public ArrayList<Integer> countXInRange(int[] arr, int[][] queries) {
+        // code here
+        ArrayList<Integer> res = new ArrayList<>();
+        
+        int n  = arr.length;
+        int q = queries.length;
+        
+        for(int i = 0; i < q; i++)
+        {
+            int count = 0;
+            
+            for(int j = queries[i][0]; j <= queries[i][1]; j++)
+            {
+                if(arr[j] == queries[i][2])
+                    count++;
+            }
+            
+            res.add(count);
+        }
+        
+        return res;
+    }
+}
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+
+// Optimal Approach - Using Binary Search
+// Time: O(q x log n)
+// Space: O(1)
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+/*
+    iska ek achha solution yee hai 
+    array sorted hai aur baat search ki hai to dimag me binary-search jarror 
+    khtakna chaiye 😂
+    
+    simple idea hai
+    hame bss query me diye gaye target value ka first, last occurence nikalna hai
+    aisa kyu ??
+    
+    arr sorted hai to sare occurences grouped honge kisi bhi element k
+    
+    like 1 222 4 555 aisa
+    
+    aur bss first <= end hona chaiye
+    
+    phir hum query me diye gaye range me asani se count find out kr skhte
+    
+    actualStart = Math.max(start, first); // yee isliye kyuki hame maxFirstIndex hona
+    actualEnd = Math.min(end, last); // hame minLastIndex hona range me
+                
+    if (actualStart <= actualEnd) 
+        count = actualEnd - actualStart + 1;
+*/
+class Solution {
+    public ArrayList<Integer> countXInRange(int[] arr, int[][] queries) {
+        // code here
+        ArrayList<Integer> res = new ArrayList<>();
+        
+        int n  = arr.length;
+        int q = queries.length;
+        
+        for(int i = 0; i < q; i++)
+        {
+            int count = 0;
+            
+            int target = queries[i][2];
+            
+            int start = queries[i][0];
+            int end = queries[i][1];
+            
+            int first = binarySearchFirst(arr, target, n); 
+            int last =  binarySearchLast(arr, target, n);
+            
+            if(first != -1 && last != -1)
+            {
+                int actualStart = Math.max(start, first);
+                int actualEnd = Math.min(end, last);
+                
+                if (actualStart <= actualEnd) 
+                    count = actualEnd - actualStart + 1;
+                
+            }
+            
+            res.add(count);
+        }
+        
+        return res;
+    }
+    
+    public int binarySearchFirst(int[] arr, int x, int len)
+    {
+        int first = -1;
+        
+        int low = 0;
+        int high = len - 1;
+        
+        while(low <= high)
+        {
+            int mid = (low + high) / 2;
+            
+            if(arr[mid] >= x)
+            {
+                first = mid;
+                high = mid - 1;
+            }
+            else
+            {
+                low = mid + 1;
+            }
+
+        }
+        
+        return first;
+    }
+    
+    public int binarySearchLast(int[] arr, int x, int len)
+    {
+        int last = -1;
+        
+        int low = 0;
+        int high = len - 1;
+        
+        while(low <= high)
+        {
+            int mid = (low + high) / 2;
+            
+            if(arr[mid] <= x)
+            {
+                last = mid;
+                low = mid + 1;
+            }
+            else
+            {
+                high = mid - 1;
+            }
+        }
+        
+        return last;
+    }
+}
