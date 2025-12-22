@@ -1,0 +1,45 @@
+// Brute Force
+// Time: O(n x m)
+// Space: O(1)
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+class Solution {
+    public int rowWithMax1s(int arr[][]) {
+        // code here
+        int n = arr.length;
+        int m = arr[0].length;
+        
+        int maxOnesIndex = -1;
+        int countMaxOnes = 0;
+        
+        
+        for(int r = 0; r < n; r++)
+        {
+            int countOnes = 0;
+            
+            for(int c = 0; c < m; c++)
+            {
+                if(arr[r][c] == 1)
+                    countOnes++;
+                
+            }
+            
+            if(countOnes > countMaxOnes)
+            {
+                countMaxOnes = countOnes;
+                maxOnesIndex = r; 
+            }
+            
+        }
+        
+        return maxOnesIndex;
+    }
+}
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+
+// Better Approach - Using Binary Search (First-Last Occurence) 
+// Time: O(n x log m)
+// Space: O(1)
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
