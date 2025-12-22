@@ -1,0 +1,169 @@
+// Brute Force
+// Time: O(n x m)
+// Space: O(1)
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+class Solution {
+    public int rowWithMax1s(int arr[][]) {
+        // code here
+        int n = arr.length;
+        int m = arr[0].length;
+        
+        int maxOnesIndex = -1;
+        int countMaxOnes = 0;
+        
+        
+        for(int r = 0; r < n; r++)
+        {
+            int countOnes = 0;
+            
+            for(int c = 0; c < m; c++)
+            {
+                if(arr[r][c] == 1)
+                    countOnes++;
+                
+            }
+            
+            if(countOnes > countMaxOnes)
+            {
+                countMaxOnes = countOnes;
+                maxOnesIndex = r; 
+            }
+            
+        }
+        
+        return maxOnesIndex;
+    }
+}
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+
+// Better Approach - Using Binary Search (First-Last Occurence) 
+// Time: O(n x log m)
+// Space: O(1)
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+// User function Template for Java
+
+class Solution {
+    public int rowWithMax1s(int arr[][]) {
+        // code here
+        int n = arr.length;
+        int m = arr[0].length;
+        
+        int maxOnesIndex = -1;
+        int countMaxOnes = 0;
+        int index = 0;
+        
+        
+        for(int[] row : arr)
+        {
+            int first = binarySearchFirst(row, m);
+            int last = m - 1;
+            int countOnes = 0;
+            
+            if(first != -1)
+            {
+                countOnes = last - first + 1;
+            }
+            
+            if(countOnes > countMaxOnes)
+            {
+                countMaxOnes = countOnes;
+                maxOnesIndex = index;
+            }
+            
+            index++;
+            
+        }
+        
+        return maxOnesIndex;
+    }
+    
+    public int binarySearchFirst(int[] nums, int len)
+    {
+        int first = -1;
+        
+        int low = 0;
+        int high = len - 1;
+        
+        while(low <= high)
+        {
+            int mid = (low + high) / 2;
+            
+            if(nums[mid] >= 1)
+            {
+                first = mid;
+                high = mid - 1;
+            }
+            else
+            {
+                low = mid + 1;
+            }
+        }
+        
+        return first;
+    }
+    
+}
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+
+// Optimal Approach - StairCase Approach top-right corner se left-down
+// Time: O(n + m)
+// Space: O(1)
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+// User function Template for Java
+/*
+ * (Optimized Staircase Approach).
+ * * Visualization of the "Staircase" Movement:
+ * Column:   0  1  2  3  
+ * Row 0:  [0, 0, 1, 1]  <-- Start Top-Right (r=0, c=3) se karenge
+ * ^
+ * |      If 1: Move Left (Better candidate mil gaya)
+ * Row 1:  [0, 1, 1, 1]  <-- Update maxOnesIndex = current row
+ * ^     
+ * |             If 0: Move Down (Ye row ab aur 1s nahi de sakti)
+ * Row 2:  [1, 1, 1, 1]
+ * * Logic in Simple Words:
+ *
+ * 1. Hum Top-Right corner (0, M-1) se apni journey start karte hain.
+ * 2. Agar humein 1 dikhta hai, iska matlab ye row "Max 1s" ki candidate ho sakti hai.
+ * Isliye hum row index save karte hain aur Left (c--) jaate hain aur 1s dhoondne.
+ * 3. Agar 0 dikhta hai, toh humein pata hai ki is row mein peeche sab 0 hi honge.
+ * Isliye hum niche (r++) move kar jaate hain next row check karne.
+ * * Time Complexity: O(N + M) - Kyunki pointer max N steps niche aur M steps left jayega.
+ * * Space Complexity: O(1) - Koi extra storage use nahi ki.
+ */
+class Solution {
+    public int rowWithMax1s(int arr[][]) {
+        // code here
+        int n = arr.length;
+        int m = arr[0].length;
+        
+        int maxOnesIndex = -1;
+        int maxCountOnes = 0;
+        
+        int r = 0;
+        int c = m - 1;
+        
+        while(r < n && c >= 0)
+        {
+            
+            if(arr[r][c] == 1)
+            {
+                maxOnesIndex = r;
+                c--;
+            }
+            else
+            {
+                r++;
+            }
+        }
+        
+        return maxOnesIndex;
+    }
+    
+    
+}
