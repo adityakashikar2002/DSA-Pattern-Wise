@@ -43,3 +43,74 @@ class Solution {
 // Space: O(1)
 ---------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------
+// User function Template for Java
+
+class Solution {
+    public int rowWithMax1s(int arr[][]) {
+        // code here
+        int n = arr.length;
+        int m = arr[0].length;
+        
+        int maxOnesIndex = -1;
+        int countMaxOnes = 0;
+        int index = 0;
+        
+        
+        for(int[] row : arr)
+        {
+            int first = binarySearchFirst(row, m);
+            int last = m - 1;
+            int countOnes = 0;
+            
+            if(first != -1)
+            {
+                countOnes = last - first + 1;
+            }
+            
+            if(countOnes > countMaxOnes)
+            {
+                countMaxOnes = countOnes;
+                maxOnesIndex = index;
+            }
+            
+            index++;
+            
+        }
+        
+        return maxOnesIndex;
+    }
+    
+    public int binarySearchFirst(int[] nums, int len)
+    {
+        int first = -1;
+        
+        int low = 0;
+        int high = len - 1;
+        
+        while(low <= high)
+        {
+            int mid = (low + high) / 2;
+            
+            if(nums[mid] >= 1)
+            {
+                first = mid;
+                high = mid - 1;
+            }
+            else
+            {
+                low = mid + 1;
+            }
+        }
+        
+        return first;
+    }
+    
+}
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+
+// Optimal Approach - 
+// Time: O(n + m)
+// Space: O(1)
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
