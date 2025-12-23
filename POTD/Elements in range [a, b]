@@ -40,3 +40,87 @@ class Solution {
 // Space: O(1)
 --------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------
+class Solution {
+    public ArrayList<Integer> cntInRange(int[] arr, int[][] queries) {
+        // code here
+        ArrayList<Integer> res = new ArrayList<>();
+        
+        Arrays.sort(arr);
+        
+        int n  = arr.length;
+        int q = queries.length;
+        
+        for(int i = 0; i < q; i++)
+        {
+            
+            int start = queries[i][0];
+            int end = queries[i][1];
+            
+            int first = binarySearchFirst(arr, start, n); 
+            int last = binarySearchLast(arr, end, n);
+            
+            if (first != -1 && last != -1 && first <= last) 
+            {
+                res.add(last - first + 1);
+            } 
+            else 
+            {
+                res.add(0);
+            }
+            
+        }
+        
+        return res;
+    }
+    
+    public int binarySearchFirst(int[] arr, int x, int len)
+    {
+        int first = -1;
+        
+        int low = 0;
+        int high = len - 1;
+        
+        while(low <= high)
+        {
+            int mid = (low + high) / 2;
+            
+            if(arr[mid] >= x)
+            {
+                first = mid;
+                high = mid - 1;
+            }
+            else
+            {
+                low = mid + 1;
+            }
+
+        }
+        
+        return first;
+    }
+    
+    public int binarySearchLast(int[] arr, int x, int len)
+    {
+        int last = -1;
+        
+        int low = 0;
+        int high = len - 1;
+        
+        while(low <= high)
+        {
+            int mid = (low + high) / 2;
+            
+            if(arr[mid] <= x)
+            {
+                last = mid;
+                low = mid + 1;
+            }
+            else
+            {
+                high = mid - 1;
+            }
+        }
+        
+        return last;
+    }
+}
