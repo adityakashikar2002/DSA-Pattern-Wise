@@ -1,0 +1,47 @@
+// Time: O(n)
+// Space: O(n)
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+/**
+    simple sa idea hai 3 cases bante hai
+
+    Case 1:
+        number 9 se end nhi ho raha
+    Case 2: 
+        number 9 se end ho raha
+    Case 3:
+        all digits are 9
+    
+    approach yee hoga ki agar, kahi pr bhi
+    1) currDigit < 9 hua usko +1 kro aur digits ko return kr do
+
+    2) nhi to agar vo digit 9 hai to usko 0 kr do (kyuki 9 + 1 = 10 '0' ayega)
+
+    3) jaha sare digits 9 hai vaha to kuch nhi ek naya array define kr lenge n + 1 size ka
+       bss jiska 1st digit 1 hoga 
+
+    all cases are handled
+*/
+class Solution {
+    public int[] plusOne(int[] digits) {
+        int n = digits.length;
+
+        for(int i = n - 1; i >= 0; i--)
+        {
+            if(digits[i] < 9)
+            {
+                digits[i] += 1;
+                return digits; 
+            }
+            else
+            {
+                digits[i] = 0;
+            }
+        }
+
+        digits = new int[n + 1];
+        digits[0] = 1;
+
+        return digits;
+    }
+}
