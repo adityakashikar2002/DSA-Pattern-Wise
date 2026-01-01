@@ -1,0 +1,62 @@
+// Time: O(n)
+// Space: O(1)
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+
+/*
+class Node {
+    int data;
+    Node next;
+
+    Node(int d) {
+        data = d;
+        next = null;
+    }
+}*/
+
+/*
+    Simple idea hai,
+    1) Find Middle of LL
+    2) Middle k baad vale pure portion ko reverse ko
+    3) Ab dono list ko traverse maro jaha same nhi vo palindrome nhi
+*/
+class Solution {
+    public boolean isPalindrome(Node head) {
+        // code here
+        
+        Node slow = head;
+        Node fast = head;
+        
+        while(fast.next != null && fast.next.next != null)
+        {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        
+        Node curr = slow.next;
+        Node prev = null;
+        Node next = null;
+        
+        while(curr != null)
+        {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        
+        Node head2 = prev;
+        Node head1 = head;
+         
+        while(head1 != null && head2 != null)
+        {
+            if(head1.data != head2.data)
+                return false;
+            
+            head1 = head1.next;
+            head2 = head2.next;
+        } 
+        
+        return true;
+    }
+}
