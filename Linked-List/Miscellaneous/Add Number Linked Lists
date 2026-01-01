@@ -1,0 +1,88 @@
+// Time: O(n + m)
+// Space: O(1)
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+
+/*
+class Node {
+    int data;
+    Node next;
+
+    Node(int d) {
+        data = d;
+        next = null;
+    }
+}
+*/
+
+/*
+    same as Leetcode's 2. Add Two Numbers
+    carry vala concept, bss yaha ek cheez hai ki pahle zeroes ko trim kro
+    aur phir reverse krk add krna hai
+*/
+
+class Solution {
+    public Node addTwoLists(Node head1, Node head2) {
+        // code here
+        Node temp1 = trimZeros(head1);
+        Node temp2= trimZeros(head2);
+        
+        Node newHead1 = reverseLL(temp1);
+        Node newHead2 = reverseLL(temp2);
+        
+        Node dummy = new Node(-1);
+        Node temp = dummy;
+        
+        int carry = 0;
+        while(newHead1 != null || newHead2 != null || carry != 0)
+        {
+            int val1 = newHead1 != null ? newHead1.data : 0;
+            int val2 = newHead2 != null ? newHead2.data : 0;
+            
+            int sum = val1 + val2 + carry;
+            carry = sum / 10;
+                
+            Node newNode = new Node(sum % 10);
+            temp.next = newNode;
+            temp = temp.next;
+            
+            if(newHead1 != null)
+                newHead1 = newHead1.next;
+                
+            if(newHead2 != null)    
+            newHead2 = newHead2.next;
+            
+        }
+        
+        Node res = reverseLL(dummy.next);
+        
+        return res;
+    }
+    
+    public Node reverseLL(Node head)
+    {
+        Node curr = head;
+        Node prev = null;
+        Node next = null;
+        
+        while(curr != null)
+        {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        
+        return prev;
+    }
+    
+    public Node trimZeros(Node head) 
+    {
+        while (head != null && head.data == 0 && head.next != null) 
+        {
+            head = head.next;
+        }
+        
+        return head;
+    }
+}
