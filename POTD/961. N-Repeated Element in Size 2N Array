@@ -1,0 +1,61 @@
+// Approach 1: Using HashMap and Iterating Over it (Slow)
+// Time: O(n)
+// Space: O(n)
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+class Solution {
+    public int repeatedNTimes(int[] nums) {
+        int len = nums.length;
+        int n = len / 2;
+        HashMap<Integer, Integer> freq = new HashMap<>();
+
+        int ans = 0;
+
+        for(int x : nums)
+        {
+            if(freq.containsKey(x))
+            {
+                freq.put(x, freq.get(x) + 1);
+            }
+            else
+            {
+                freq.put(x, 1);
+            }
+        }
+
+        for(Map.Entry<Integer,Integer> entry : freq.entrySet())
+        {
+            if(entry.getValue() == n)
+            {
+                ans = entry.getKey();
+                break;
+            }
+        }
+
+        return ans;
+        
+    }
+}
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+// Approach 2: Using HashSet (Fast)
+// Time: O(n)
+// Space: O(n)
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+class Solution {
+    public int repeatedNTimes(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+
+        for(int x : nums)
+        {
+            if(!set.contains(x))
+                set.add(x);
+            else
+                return x;
+        }
+
+        return -1;
+        
+    }
+}
