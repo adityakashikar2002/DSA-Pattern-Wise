@@ -1,0 +1,113 @@
+// Brute Approach
+// Time: O(n x m) + O((n x m) log(n x m))
+// Space: O(log(n x m))
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+/*
+class Node {
+    int data;
+    Node next;
+    Node bottom;
+
+    Node(int x) {
+        data = x;
+        next = null;
+        bottom = null;
+    }
+}
+*/
+/*
+    seedha approach yee hoga ek head-node ko pakdo,
+    uske bottom tak jao,
+    ab iss bottom node ko curr head node k next node pr point krao
+    
+    aisa krk hame ek bottom pointer se linked hui SLL milegi
+    usko merge sort se sort kr do
+*/
+class Solution {
+    public Node flatten(Node root) {
+        // code here
+        if(root == null)
+            return root;
+        
+        Node curr = root;
+        
+        while(curr != null)
+        {
+            Node next = curr.next;
+            Node temp = curr;
+            
+            while(temp.bottom != null)
+            {
+                temp = temp.bottom;
+            }
+            
+            temp.bottom = next;
+            curr = next;
+        }
+        
+        return mergeSort(root);
+    }
+    
+    public Node mergeSort(Node head)
+    {
+        if(head.bottom == null)
+            return head;
+            
+        Node mid = findMid(head);
+        Node midNext = mid.bottom;
+        mid.bottom = null;
+        
+        Node left = mergeSort(head);
+        Node right = mergeSort(midNext);
+        
+        return merge(left, right);
+    }
+    
+    public Node merge(Node head1, Node head2) 
+    {
+        Node temp1 = head1;
+        Node temp2 = head2;
+        
+        Node dummy = new Node(-1);
+        Node temp = dummy;
+        
+        while(temp1 != null && temp2 != null)
+        {
+            if(temp1.data < temp2.data)
+            {
+                temp.bottom = temp1;
+                temp1 = temp1.bottom;
+            }
+            else
+            {
+                temp.bottom = temp2;
+                temp2 = temp2.bottom;
+            }
+            
+            temp = temp.bottom;
+        }
+        
+        if(temp1 != null)
+            temp.bottom = temp1;
+        
+        if(temp2 != null)
+            temp.bottom = temp2;
+        
+        return dummy.bottom;
+    }
+    
+    public Node findMid(Node head)
+    {
+        Node slow = head;
+        Node fast = head;
+        
+        while(fast.bottom != null && fast.bottom.bottom != null)
+        {
+            slow = slow.bottom;
+            fast = fast.bottom.bottom;
+        }
+        
+        return slow;
+    }
+}
