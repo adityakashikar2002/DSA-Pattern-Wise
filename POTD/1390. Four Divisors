@@ -1,0 +1,63 @@
+// Time: O(n x √m)
+// Space: O(1)
+-----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+/**
+ * Intuition (Asli logic kya hai?):
+ *
+ * Kisi bhi number ke divisors hamesha 'pairs' mein aate hain. 
+ * Agar 'i' ek divisor hai, toh 'num / i' uska partner divisor hoga.
+
+ * Example: Agar num = 21 hai aur i = 3 mil gaya, toh 21 / 3 = 7 uska partner hai.
+
+ * Humein pura loop 1 se num tak chalane ki zarurat nahi hai. 
+ * Hum sirf sqrt(num) tak check karenge aur wahan se partner nikal lenge.
+ * 
+ * Approach (Kaise solve kiya?):
+ * 1. Pura array iterate karo.
+ * 2. Har 'num' ke liye, loop chalao 1 se lekar sqrt(num) tak.
+ * 3. Agar 'i' divide karta hai:
+ *      - 'i' ko sum mein add karo aur count badhao.
+ *      - Uska 'partner' (num/i) nikalo. 
+ *      - Agar partner aur 'i' alag-alag hain, toh partner ko bhi sum aur count mein add karo.
+ * 4. Agar beech mein hi count > 4 ho jaye, toh break kar do (time bachaane ke liye).
+ * 5. Last mein check karo, agar count EXACTLY 4 hai, toh uske divisorSum ko total result mein add karo.
+
+ */
+class Solution {
+    public int sumFourDivisors(int[] nums) {
+        int totalSum = 0;
+
+        for (int num : nums) {
+            totalSum += getSumIfFourDivisors(num);
+        }
+
+        return totalSum;
+    }
+
+    public int getSumIfFourDivisors(int num) {
+        int count = 0;
+        int divisorSum = 0;
+
+        for (int i = 1; i * i <= num; i++) {
+            if (num % i == 0) {
+                // Add the first divisor
+                count++;
+                divisorSum += i;
+
+                // Add the partner if it's different
+                if (i * i != num) // Same as (num / i) != i
+                {
+                    count++;
+                    divisorSum += num / i;
+                }
+            }
+            
+            // Optimization: If we exceed 4, this number is invalid
+            if (count > 4) 
+                return 0;
+        }
+
+        return (count == 4) ? divisorSum : 0;
+    }
+}
