@@ -47,8 +47,52 @@ class Solution {
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
 
-// Approach - 2 
+// Approach - 2 Using oddCountAtMost(k) - oddCountAtMost(k - 1)
 // Time: O(n)
-// Space: O(n)
+// Space: O(1)
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
+/*
+    Dursa tarika hoga apn ko exact subarrays with odd count k hona
+    
+    Iske liye apn HashMap ko use krne se acha, apn Sliding Window use krenge
+    
+    ek for oddCountAtMost(K), ek for oddCountAtMost(k - 1) vale subarrays
+    
+    AtMost(k) - AtMost(k - 1) = count of subarrays with odd count k
+*/
+class Solution {
+    public int countSubarrays(int[] arr, int k) {
+        // code here
+        return countAtMost(arr, k) - countAtMost(arr, k - 1);
+    }
+    
+    public int countAtMost(int[] arr, int x)
+    {
+        int n = arr.length;
+        
+        int ans = 0;
+        
+        int odd = 0;
+        
+        int left = 0;
+        
+        for(int right = 0; right < n; right++)
+        {
+            if(arr[right] % 2 == 1)
+                odd++;
+            
+            while(odd > x)
+            {
+                if(arr[left] % 2 == 1)
+                    odd--;
+                left++;
+            }
+            
+            // the number of subarrays ending at right is (right - left + 1)
+            ans += right - left + 1;  
+        }
+        
+        return ans;
+    }
+}
