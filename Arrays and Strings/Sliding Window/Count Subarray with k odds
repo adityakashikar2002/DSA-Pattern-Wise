@@ -1,0 +1,98 @@
+// Approach - 1 Reducing Problem to Find the number of subarrays whose sum is exactly k
+// Time: O(n)
+// Space: O(n)
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+/*
+    Simple Idea yee hoga, ki sare odds ko 1, evens ko 0 kr do
+    
+    phir hame bss un subarrays ko dhoondna hai jisme sum k hai
+    
+    Problem reduces to : Find the number of subarrays whose sum is exactly k
+*/
+class Solution {
+    public int countSubarrays(int[] arr, int k) {
+        // code here
+        int n = arr.length;
+        int count = 0;
+        
+        HashMap<Integer, Integer> map = new HashMap<>();
+        
+        for(int i = 0; i < n; i++)
+        {
+            if(arr[i] % 2 == 0)
+                arr[i] = 0;
+            else
+                arr[i] = 1;
+        }
+        
+        int sum = 0;
+        
+        for(int i = 0; i < n; i++)
+        {
+            sum += arr[i];
+            
+            if(sum == k)
+                count++;
+            
+            if(map.containsKey(sum - k))
+                count += map.get(sum - k);
+            
+            map.put(sum, map.getOrDefault(sum, 0) + 1);
+        }
+        
+        return count;
+    }
+}
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+
+// Approach - 2 Using oddCountAtMost(k) - oddCountAtMost(k - 1)
+// Time: O(n)
+// Space: O(1)
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+/*
+    Dursa tarika hoga apn ko exact subarrays with odd count k hona
+    
+    Iske liye apn HashMap ko use krne se acha, apn Sliding Window use krenge
+    
+    ek for oddCountAtMost(K), ek for oddCountAtMost(k - 1) vale subarrays
+    
+    AtMost(k) - AtMost(k - 1) = count of subarrays with odd count k
+*/
+class Solution {
+    public int countSubarrays(int[] arr, int k) {
+        // code here
+        return countAtMost(arr, k) - countAtMost(arr, k - 1);
+    }
+    
+    public int countAtMost(int[] arr, int x)
+    {
+        int n = arr.length;
+        
+        int ans = 0;
+        
+        int odd = 0;
+        
+        int left = 0;
+        
+        for(int right = 0; right < n; right++)
+        {
+            if(arr[right] % 2 == 1)
+                odd++;
+            
+            while(odd > x)
+            {
+                if(arr[left] % 2 == 1)
+                    odd--;
+                left++;
+            }
+            
+            // the number of subarrays ending at right is (right - left + 1)
+            ans += right - left + 1;  
+        }
+        
+        return ans;
+    }
+}
