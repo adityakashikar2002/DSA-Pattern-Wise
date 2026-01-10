@@ -49,3 +49,48 @@ class Solution {
 // Space: O(1)
 ----------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------
+class Solution {
+    public int countSubstr(String s, int k) {
+        //  code here
+        
+        char[] arr = s.toCharArray();
+        
+        return countAtMost(arr, k) - countAtMost(arr, k - 1); 
+    }
+    
+    public int countAtMost(char[] arr, int x)
+    {
+        int n = arr.length;
+        
+        int count = 0;
+        int distinctCount = 0;
+        
+        int[] freq = new int[26];
+        
+        int l = 0;
+        
+        for(int r = 0; r < n; r++)
+        {
+            int ch = arr[r] - 'a';
+            
+            freq[ch]++;
+            if(freq[ch] == 1)
+                distinctCount++;
+            
+            while(distinctCount > x)
+            {
+                int leftCh = arr[l] - 'a';
+                freq[leftCh]--;
+            
+                if(freq[leftCh] == 0)
+                    distinctCount--;
+                
+                l++;
+            }
+            
+            count += r - l + 1; 
+        }
+        
+        return count;
+    }
+}
