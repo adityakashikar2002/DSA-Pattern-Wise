@@ -1,0 +1,83 @@
+// Time: O(h² + v²)
+// Space: O(v²)
+-----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
+
+/**
+ * APPROACH: "Gap Finding" Strategy
+ * * INTUITION:
+
+ * Ek square tabhi banta hai jab horizontal fences ke beech ka distance (gap) 
+ * aur vertical fences ke beech ka distance (gap) EXACTLY SAME ho.
+
+ * * Hum saare possible horizontal distances aur vertical distances nikalenge, 
+ * aur jo sabse bada "Common Distance" hoga, wahi hamara square ka side (maxSide) banega.
+
+ * * STEPS:
+ * 1. Boundary aur Inner Fences ko Combine karna: 
+ *    Hume field ki boundaries (1 aur m/n) ko arrays mein add karna hoga kyunki wo fixed hain.
+
+ * * 2. All Possible Widths (Vertical gaps):
+ *      Do vertical fences ke har pair ka difference nikal kar 'width' Set mein store kar lo.
+ *      (Set isliye taaki duplicate gaps handle ho jayein aur search fast ho).
+
+ * * 3. All Possible Heights (Horizontal gaps):
+ *      Ab horizontal fences ke har pair ka difference nikal kar check karo ki kya wo 
+ *      difference hamare 'width' Set mein pehle se maujood hai?
+
+ * * 4. Maximize Side:
+ *      Agar height 'width' mein mil gayi, toh uska matlab square possible hai. 
+ *      Bas 'maxSide' ko update karte raho taaki end mein largest value mile.
+
+ * * 5. Final Area:
+ *      Side milne ke baad area (side * side) calculate karo. 
+ *      Yahan 1L use karke long mein convert karna zaroori hai taaki overflow na ho, 
+ *      aur phir MOD apply karke return kar do.
+ */
+class Solution {
+    public int maximizeSquareArea(int m, int n, int[] hFences, int[] vFences) {
+        int MOD = 1_000_000_007;
+        int  maxSide = -1;
+
+        List<Integer> hFen = new ArrayList<>();
+        List<Integer> vFen = new ArrayList<>();
+
+        hFen.add(1);
+        hFen.add(m);
+
+        for(int x : hFences)
+            hFen.add(x);
+
+        vFen.add(1);
+        vFen.add(n);
+
+        for(int x : vFences)
+            vFen.add(x);
+
+        Set<Integer> width = new HashSet<>();
+
+        for(int i = 0; i < vFen.size(); i++)
+        {
+            for(int j = i + 1; j < vFen.size(); j++)
+            {
+                width.add(Math.abs(vFen.get(i) - vFen.get(j)));
+            }
+        }
+
+        for(int i = 0; i < hFen.size(); i++)
+        {
+            for(int j = i + 1; j < hFen.size(); j++)
+            {
+                int height = Math.abs(hFen.get(i) - hFen.get(j));
+
+                if(width.contains(height))
+                {
+                    maxSide = Math.max(maxSide, height);
+                }
+                
+            }
+        }
+
+        return maxSide == -1 ? -1 : (int) ((1L * maxSide * maxSide) % MOD);
+    }
+}
