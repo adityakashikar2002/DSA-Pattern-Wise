@@ -1,0 +1,43 @@
+// Time: O(n²)
+// Space: O(1)
+------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------
+/*
+    To find the intersection of two rectangles, you need to find the "highest" bottom-left corner 
+    and the "lowest" top-right corner.
+
+    bss yahi dyan me rahkna hai baki pura visualization se samzega
+
+    vo bhi hai intersection valid hona chaiye x1 < x2 && y1 < y2
+
+    phir intersection rectangle k co-ordinates milenge uski sabse chote side ka square is our ans
+*/
+class Solution {
+    public long largestSquareArea(int[][] bottomLeft, int[][] topRight) {
+        int n = bottomLeft.length;
+        long maxSide = 0;
+
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                // Find the boundaries of the intersection rectangle
+                int intersectX1 = Math.max(bottomLeft[i][0], bottomLeft[j][0]);
+                int intersectY1 = Math.max(bottomLeft[i][1], bottomLeft[j][1]);
+                int intersectX2 = Math.min(topRight[i][0], topRight[j][0]);
+                int intersectY2 = Math.min(topRight[i][1], topRight[j][1]);
+
+                // Check if there is a valid intersection
+                if (intersectX1 < intersectX2 && intersectY1 < intersectY2) {
+                    // The width and height of the intersection rectangle
+                    long width = intersectX2 - intersectX1;
+                    long height = intersectY2 - intersectY1;
+                    
+                    // The largest square side we can fit is the smaller of the two dimensions
+                    long side = Math.min(width, height);
+                    maxSide = Math.max(maxSide, side);
+                }
+            }
+        }
+
+        return maxSide * maxSide;
+    }
+}
