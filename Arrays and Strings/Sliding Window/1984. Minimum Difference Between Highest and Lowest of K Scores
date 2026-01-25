@@ -1,0 +1,27 @@
+// Time: O(n logn)
+// Space: O(1)
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+/*
+    sabse asan tarika hoga array ko sort kr do, kyuki
+    aisa krne se hame highest aur lowest scores asani se milenge
+
+    uske baad k scores select krne hai to bss sliding-window se har window
+    me highest aur lowest scores ka diff track krenge
+*/
+class Solution {
+    public int minimumDifference(int[] nums, int k) {
+        int n = nums.length;
+
+        Arrays.sort(nums);
+
+        int minDiff = nums[k - 1] - nums[0];
+
+        for(int i = k; i < n; i++)
+        {
+            minDiff = Math.min(minDiff, nums[i] - nums[i - k + 1]);
+        }
+
+        return minDiff;
+    }
+}
