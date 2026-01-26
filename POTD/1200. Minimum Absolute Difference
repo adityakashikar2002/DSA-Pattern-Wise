@@ -1,0 +1,44 @@
+// Brute Approach - Sorting + HashMap
+// Time: O(n logn)
+// Space: O(n)
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+class Solution {
+    public List<List<Integer>> minimumAbsDifference(int[] arr) {
+        int n = arr.length;
+
+        Arrays.sort(arr);
+
+        HashMap<Integer, List<List<Integer>>> map = new HashMap<>();
+
+        int minDiff = Integer.MAX_VALUE;
+
+        for(int i = 0; i < n - 1; i++)
+        {
+            int diff = Math.abs(arr[i] - arr[i + 1]);
+
+            List<List<Integer>> list;
+
+            if(map.containsKey(diff))
+                list = map.get(diff);       
+            else
+                list = new ArrayList<>();
+        
+            List<Integer> val = new ArrayList<>(Arrays.asList(arr[i], arr[i + 1]));
+            list.add(val);
+                
+            map.put(diff, list);
+
+            minDiff = Math.min(minDiff, diff);
+        }
+
+        return map.get(minDiff);
+    }
+}
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+// Better Approach - Sorting + Without HashMap
+// Time: O(n logn)
+// Space: O(n)
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
