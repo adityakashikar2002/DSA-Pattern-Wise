@@ -1,0 +1,41 @@
+// Time: O(n)
+// Space: O(n)
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+class Solution {
+    public String firstNonRepeating(String s) {
+        // code here
+        int n = s.length();
+        
+        if(n == 1)
+            return s;
+        
+        StringBuilder res = new StringBuilder("");
+        Queue<Character> q = new LinkedList<>();
+        
+        int[] freq = new int[26];
+        
+        for(int i = 0; i < n; i++)
+        {
+            char ch = s.charAt(i);
+            freq[ch - 'a']++;
+            q.add(ch);
+            
+            while(!q.isEmpty() && freq[q.peek() - 'a'] > 1)
+            {
+                q.remove();
+            }
+            
+            if(q.isEmpty())
+            {
+                res.append('#');
+            }
+            else
+            {
+                res.append(q.peek());
+            }
+        }
+        
+        return res.toString();
+    }
+}
