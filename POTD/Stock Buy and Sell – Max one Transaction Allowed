@@ -1,0 +1,30 @@
+// Time: O(n)
+// Space: O(1)
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+class Solution {
+    public int maxProfit(int[] prices) {
+        // Code here
+        int n = prices.length;
+        
+        int minVal = prices[0];
+        int maxVal = prices[0];
+        
+        int maxProfit = 0;
+        
+        for(int i = 1; i < n; i++)
+        {
+            if(prices[i] < minVal)
+            {
+                minVal = prices[i];
+                maxVal = prices[i];
+            }
+            else if(prices[i] > maxVal)
+                maxVal = prices[i];
+            
+            maxProfit = Math.max(maxVal - minVal, maxProfit);    
+        }
+        
+        return maxProfit;
+    }
+}
