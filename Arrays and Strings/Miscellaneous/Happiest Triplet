@@ -1,0 +1,144 @@
+// Time: O(n logn)
+// Space: O(1)
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+/*
+ * 🧠 Problem Intuition (Seedhi soch):
+ * ------------------------------------------------
+ * Teen arrays diye gaye hain: a[], b[], c[]
+ * Har array se ek element lena hai (triplet banana hai)
+ *
+ * Triplet "happiest" tab hoga jab:
+ *      (maximum - minimum) sabse chhota ho
+ *
+ * Agar multiple triplets ka difference same ho:
+ * 👉 jiska total sum sabse chhota ho, wahi winner
+ *
+ * Confusion yahin hota hai:
+ *      "Saare triplets try kare?"
+ *
+ * Answer:
+ * ❌ Nahi (n³ = barbaadi)
+ * ✅ Smart pointer movement
+ *
+ *
+ * 🔍 Real-life analogy:
+ * ------------------------------------------------
+ * Socho 3 alag groups ke log hain
+ * Har group se ek banda choose karna hai
+ *
+ * Agar weakest aur strongest ke beech ka gap kam hai
+ * to group zyada "happy" feel karega
+ *
+ * Gap kam karne ka ek hi tareeka:
+ *      weakest ko strong banana (minimum badhao)
+ *
+ *
+ * 🛠️ Approach (Step-by-step):
+ * ------------------------------------------------
+ * 1️⃣ Teeno arrays ko sort kar diya
+ *     Kyunki sorted order mein min aur max easily milta hai
+ *
+ * 2️⃣ 3 pointers use kiye:
+ *     i → a[]
+ *     j → b[]
+ *     k → c[]
+ *
+ * 3️⃣ Har step pe current triplet banaya:
+ *     x = a[i], y = b[j], z = c[k]
+ *
+ *     min = smallest(x, y, z)
+ *     max = largest(x, y, z)
+ *     diff = max - min
+ *
+ * 4️⃣ Best answer update kiya agar:
+ *     - diff chhota ho
+ *     - ya diff same ho but sum chhota ho
+ *
+ * 5️⃣ Pointer movement (MOST IMPORTANT):
+ *     Jo element minimum hai,
+ *     usi array ka pointer aage badhao
+ *
+ *     Kyunki bina minimum badhaye
+ *     range (max - min) kam nahi ho sakti
+ *
+ *
+ * 🧮 Final Output:
+ * ------------------------------------------------
+ * Jo best triplet mile,
+ * use decreasing order mein print karna hai
+ *
+ *
+ * ⏱️ Time Complexity:
+ * ------------------------------------------------
+ * Sorting: O(n log n)
+ * 3-pointer traversal: O(n)
+ * Total: O(n log n)
+ *
+ *
+ * 💡 Key Takeaway (Exam mantra):
+ * ------------------------------------------------
+ * "Range minimize karni ho to minimum ko move karo"
+ * Multi-array problems = sorting + multiple pointers
+ */
+
+class Solution {
+    int[] smallestDiff(int a[], int b[], int c[]) {
+        int[] res = new int[3];
+
+        int n = a.length;
+
+        Arrays.sort(a);
+        Arrays.sort(b);
+        Arrays.sort(c);
+
+        int i = 0, j = 0, k = 0;
+        int bestDiff = Integer.MAX_VALUE;
+        int bestSum = Integer.MAX_VALUE;
+
+        while (i < n && j < n && k < n) {
+
+            int x = a[i];
+            int y = b[j];
+            int z = c[k];
+
+            int min = Math.min(x, Math.min(y, z));
+            int max = Math.max(x, Math.max(y, z));
+            int diff = max - min;
+            int sum = x + y + z;
+
+            if (diff < bestDiff || (diff == bestDiff && sum < bestSum)) {
+                bestDiff = diff;
+                bestSum = sum;
+
+                // store exact triplet
+                res[0] = x;
+                res[1] = y;
+                res[2] = z;
+            }
+
+            // move pointer of minimum element
+            if (min == x) i++;
+            else if (min == y) j++;
+            else k++;
+        }
+
+        // decreasing order as required
+        Arrays.sort(res);
+        reverse(res);
+
+        return res;
+    }
+
+    void reverse(int[] arr) {
+        int l = 0, r = arr.length - 1;
+        while (l < r) {
+            int temp = arr[l];
+            arr[l] = arr[r];
+            arr[r] = temp;
+            l++;
+            r--;
+        }
+    }
+}
+
