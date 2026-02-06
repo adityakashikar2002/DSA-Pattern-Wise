@@ -1,0 +1,77 @@
+// Time: O(n logn)
+// Space: O(1)
+------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------
+/**
+ * 🧠 Problem Intuition (Seedha soch):
+ * ------------------------------------------------
+ * Hume array ko "balanced" banana hai jahan:
+ *      maxElement <= minElement * k
+ *
+ * Ab confusion yahin hota hai:
+ *      "Kaunse elements remove kare?"
+ *
+ * Trick yeh hai:
+ * ❌ Remove ka mat socho
+ * ✅ Sabse bada valid group kaun sa rakh sakte hain, yeh socho
+ *
+ * Kyunki:
+ *      minimum removals = total elements - maximum elements kept
+ *
+ *
+ * 🔍 Real-life analogy:
+ * ------------------------------------------------
+ * Socho ek study group hai jahan weakest student × k >= strongest student
+ * Agar koi zyada strong aa gaya, to group ka weakest change karna padega
+ * (yaani left pointer aage badhao)
+ *  seedhi baat hogi strong ko balance krne k liye, weak ka bar aur high set krna padega
+ *
+ * 🛠️ Approach (Step-by-step):
+ * ------------------------------------------------
+ * 1️⃣ Array ko sort kar diya
+ *     Kyunki removals ke baad order matter nahi karta
+ *
+ * 2️⃣ Two pointers use kiye (Sliding Window):
+ *     - left  → weakest element (min)
+ *     - right → strongest element (max)
+ *
+ * 3️⃣ Window ko expand karte gaye (right++)
+ *     Jab tak condition valid hai:
+ *          nums[right] <= nums[left] * k
+ *
+ * 4️⃣ Agar condition toot jaaye:
+ *     - left++ (minimum badhao)
+ *     - window firse balanced ho jaata hai
+ *
+ * 5️⃣ Har step pe maximum valid window ka size store kar liya
+ *
+ *
+ * 🧮 Final Answer:
+ * ------------------------------------------------
+ * minimum removals = total elements - largest balanced window
+ *
+ * 💡 Key Takeaway (Yaad rakhne wali baat):
+ * ------------------------------------------------
+ * "Subsets try karna is a trap"
+ * Sorted array + sliding window = clean & fast solution
+ */
+
+class Solution {
+    public int minRemoval(int[] nums, int k) {
+        int n = nums.length;
+        Arrays.sort(nums);
+        
+        int left = 0;
+        int maxWin = Integer.MIN_VALUE;
+
+        for(int right = 0; right < n; right++)
+        {
+            while((long) nums[right] > (long) k * nums[left])
+                left++;
+            
+            maxWin = Math.max(maxWin, right - left + 1);
+        }
+
+        return n - maxWin;
+    }
+}
