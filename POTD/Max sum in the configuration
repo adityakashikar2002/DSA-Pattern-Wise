@@ -31,3 +31,150 @@ class Solution {
 // Space: O(1)
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
+/*
+ * Problem:
+ * --------
+ * Given an integer array arr[], we need to find the maximum value of:
+ *
+ *      sum = Σ (i * arr[i])   where 0 <= i < n
+ *
+ * Allowed operation:
+ * ------------------
+ * Sirf array rotations (clockwise ya anticlockwise) allowed hain.
+ * Rearrangement ya sorting allowed nahi hai.
+ *
+ *
+ * Core Intuition:
+ * ---------------
+ * Har possible rotation ke liye upar wala sum nikalna hai
+ * aur maximum value return karni hai.
+ *
+ * Brute force approach O(n^2) ho jaata hai:
+ *  - Har rotation ke liye poora sum dobara calculate karna
+ *  - Isliye efficient approach chahiye
+ *
+ *
+ * Key Observation (Rotation Insight):
+ * ----------------------------------
+ * Jab array ko ek position clockwise rotate karte hain:
+ *
+ * Example:
+ *   Original:   a0  a1  a2  a3
+ *   Rotated:    a3  a0  a1  a2
+ *
+ * To kya hota hai?
+ *
+ * 1) Index shift:
+ *    - a0 ka index 0 -> 1
+ *    - a1 ka index 1 -> 2
+ *    - a2 ka index 2 -> 3
+ *
+ *    Matlab:
+ *    Har element ka index +1 ho jaata hai
+ *
+ *
+ * 2) Index +1 ka effect:
+ *    Agar kisi element x ka index i se (i+1) ho jaaye:
+ *
+ *      Old contribution  = i * x
+ *      New contribution  = (i+1) * x
+ *
+ *      Difference = +x
+ *
+ *    Iska matlab:
+ *    👉 Har element apni value jitna extra contribute karta hai
+ *
+ *
+ * 3) Sab elements ka combined effect:
+ *    Kyunki har element apni value add karta hai,
+ *    total extra contribution ho jaata hai:
+ *
+ *      arr[0] + arr[1] + arr[2] + ... + arr[n-1]
+ *
+ *    Yeh hi array ka TOTAL SUM hota hai
+ *
+ *    👉 Isliye rotation ke baad TOTAL SUM add hota hai
+ *
+ *
+ * Special Case: Last Element
+ * --------------------------
+ * Last element (arr[n-1]) ka behaviour thoda alag hota hai:
+ *
+ *  - Old index = (n-1)
+ *  - New index = 0
+ *
+ *  Old contribution = (n-1) * arr[n-1]
+ *  New contribution = 0 * arr[n-1] = 0
+ *
+ *  Matlab:
+ *  Pehle humne index +1 logic se arr[n-1] add kar diya
+ *  Lekin actual mein uska pura contribution n times kam ho jaata hai
+ *
+ *  Isliye correction:
+ *
+ *      - n * arr[n-1]
+ *
+ *
+ * Final Relation (Rotation Formula):
+ * ---------------------------------
+ * Agar current configuration ka value R hai,
+ * to next clockwise rotation ka value hoga:
+ *
+ *      R_next = R + totalSum - (n * lastElement)
+ *
+ *
+ * Algorithm Summary:
+ * ------------------
+ * 1) totalSum calculate karo
+ * 2) Initial value R0 = Σ(i * arr[i]) nikaalo
+ * 3) Har rotation ke liye:
+ *      - upar wale formula se R update karo
+ *      - maximum value track karo
+ *
+ *
+ * Time Complexity:
+ * ----------------
+ * O(n) — kyunki har rotation ka value O(1) mein update hota hai
+ *
+ * Space Complexity:
+ * -----------------
+ * O(1) — sirf variables use hote hain
+ *
+ *
+ * One-Line Yaad Rakhne Wali Baat:
+ * -------------------------------
+ * Rotation mein sabka index +1 hota hai,
+ * index +1 ka matlab value add,
+ * aur sabki value ka sum = total sum.
+ */
+
+class Solution {
+    int maxSum(int[] arr) {
+        // code here
+        int n = arr.length;
+        
+        int totalSum = 0;
+        int currSum = 0;
+        
+        // Calculate Total Sum
+        for(int i = 0; i < n; i++)
+        {
+            currSum += i * arr[i];
+            totalSum += arr[i];
+        }
+        
+        int maxS = currSum;
+        
+        for(int i = 1; i < n; i++)
+        {
+            // n * arr[n - i]
+            // isliye kyuki last ele ka contri, n times n-1 se 0 hota hai
+            int nextSum = currSum + totalSum - n * arr[n - i];
+            currSum = nextSum;
+            
+            maxS = Math.max(maxS, currSum);
+        }
+        
+        return maxS;
+    }
+}
