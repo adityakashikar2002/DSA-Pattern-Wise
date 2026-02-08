@@ -31,3 +31,143 @@ class Solution {
 // Space: O(1)
 ----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
+/*
+ * 🧠 Problem: Maximum Product Subarray
+ *
+ * ------------------------------------------------------------
+ * 📌 Problem Samajho (Seedhi Bhasha mein):
+ * ------------------------------------------------------------
+ * Ek array diya hai jisme:
+ *  - Positive numbers ho sakte hain
+ *  - Negative numbers ho sakte hain
+ *  - Zero bhi ho sakta hai
+ *
+ * Humein ek CONTIGUOUS subarray (lagataar elements)
+ * ka maximum PRODUCT nikalna hai.
+ *
+ * ------------------------------------------------------------
+ * ❌ Galat Soch (Jo naturally dimag mein aati hai):
+ * ------------------------------------------------------------
+ * "Sliding window laga dete hain"
+ *
+ * ❌ Ye kaam nahi karta kyunki:
+ *  - Negative number sign flip kar deta hai
+ *  - Zero poora product reset kar deta hai
+ *  - Left se element hataane se product kab badhega,
+ *    kab girega — koi guarantee nahi
+ *
+ * Isliye sliding window FAIL ❌
+ *
+ * ------------------------------------------------------------
+ * 💡 Core Intuition (Asli Game Yahin Hai):
+ * ------------------------------------------------------------
+ * Product ke case mein NEGATIVE numbers wildcard hote hain.
+ *
+ * - Aaj ka worst product
+ *   kal best ban sakta hai
+ *
+ * Example:
+ *   (-2) × (-3) = +6
+ *
+ * Isliye sirf "best so far" yaad rakhna kaafi nahi.
+ *
+ * ------------------------------------------------------------
+ * 🧠 Har Index Pe Kya Sochna Hai?
+ * ------------------------------------------------------------
+ * Har element pe sirf ye 2 sawal important hain:
+ *
+ * 1️⃣ Is index pe END hote hue maximum product kya ho sakta hai?
+ * 2️⃣ Is index pe END hote hue minimum product kya ho sakta hai?
+ *
+ * ❓ Minimum kyu?
+ * 👉 Kyunki negative × negative = positive
+ * 👉 Aaj ka worst, kal ka hero ho sakta hai
+ *
+ * ------------------------------------------------------------
+ * 🔁 Transition (Har Element Pe Kya Options Hain):
+ * ------------------------------------------------------------
+ * Maan lo current element = X
+ *
+ * Tumhare paas 3 choices hoti hain:
+ *
+ * 1️⃣ Sirf X se naya subarray start karo
+ * 2️⃣ Pichhle maximum product ko X se multiply karo
+ * 3️⃣ Pichhle minimum product ko X se multiply karo
+ *
+ * In 3 options me se:
+ *  - Sabse bada → naya maximum
+ *  - Sabse chhota → naya minimum
+ *
+ * Bas itna hi yaad rakhna hai.
+ *
+ * ------------------------------------------------------------
+ * 🧨 Zero Ka Case:
+ * ------------------------------------------------------------
+ * Zero ka matlab:
+ * "Game reset"
+ *
+ * - Jo bhi product chal raha tha → 0 ho jaayega
+ * - Agla element se naya subarray shuru
+ *
+ * Ye logic naturally upar wale steps me handle ho jaata hai.
+ *
+ * ------------------------------------------------------------
+ * 🏆 Final Answer:
+ * ------------------------------------------------------------
+ * Ek alag variable rakho jo:
+ *  - Har step pe maximum product ka track rakhe
+ *
+ * Jo bhi index pe best product mile,
+ * usko global answer se compare karte raho.
+ *
+ * ------------------------------------------------------------
+ * 🧠 Ye Question Kis Topic Ka Hai?
+ * ------------------------------------------------------------
+ * ✔ Dynamic Programming (Kadane’s Algorithm ka product version)
+ *
+ * Lekin yaad rakhna:
+ * DP ka matlab table nahi,
+ * DP ka matlab:
+ * "Past ke useful results ko carry karna"
+ *
+ * ------------------------------------------------------------
+ * 🪄 Yaad Rakhne Ka Golden Rule:
+ * ------------------------------------------------------------
+ * Sum wale problems → sirf MAX track karo
+ * Product wale problems → MAX + MIN dono track karo
+ *
+ * ------------------------------------------------------------
+ * 💬 Interview Line (1 Sentence):
+ * ------------------------------------------------------------
+ * "Because of negative numbers, the minimum product so far
+ * can turn into the maximum product later,
+ * so we track both."
+ *
+ */
+
+class Solution {
+    int maxProduct(int[] arr) {
+        // code here
+        int n = arr.length;
+        int maxRes = arr[0];
+        int maxP = arr[0];
+        int minP = arr[0];
+        
+        for (int i = 1; i < n; i++) 
+        {
+            int curr = arr[i];
+
+            // purane values save karo
+            int prevMax = maxP;
+            int prevMin = minP;
+
+            // ab update karo
+            maxP = Math.max(curr, Math.max(prevMax * curr, prevMin * curr));
+            minP = Math.min(curr, Math.min(prevMax * curr, prevMin * curr));
+
+            maxRes = Math.max(maxRes, maxP);
+        }
+        
+        return maxRes;
+    }
+}
