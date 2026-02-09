@@ -45,3 +45,48 @@ class Solution {
 // Space: O(1)
 -------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------
+/*
+ * Finds the number of times a sorted array has been rotated.
+ *
+ * A rotated sorted array contains exactly one element that is smaller
+ * than all others. The index of this minimum element represents the
+ * number of rotations (k).
+ *
+ * This method uses binary search to locate the minimum element
+ * in O(log n) time.
+ *
+ * Logic:
+ * 
+ *   If the current search range is already sorted, the first element
+ *       is the minimum.
+ *   If arr[mid] > arr[high], the minimum lies in the right half.
+ *   Otherwise, the minimum lies in the left half (including mid).
+ * 
+ * 
+ *
+ */
+
+class Solution {
+    public int findKRotation(int arr[]) {
+        // Code here
+        int n = arr.length;
+        
+        int low = 0;
+        int high = n - 1;
+        
+        while(low <= high)
+        {
+            if(arr[low] <= arr[high])
+                return low;
+            
+            int mid = (low + high) / 2;
+            
+            if(arr[mid] > arr[high])
+                low = mid + 1;
+            else
+                high = mid;
+        }
+        
+        return low;
+    }
+}
