@@ -1,0 +1,48 @@
+// Time: O(n * log(max(arr[i])))
+// Space: O(1)
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+class Solution {
+    public int kokoEat(int[] arr, int k) {
+        // code here
+        int n = arr.length;
+        int answer = -1;
+        
+        int low = 1, high = arr[0];
+        
+        // Calculating the range [low, high]
+        for(int i = 0; i < n; i++)
+        {
+            high = Math.max(high, arr[i]);
+        }
+        
+        while(low <= high)
+        {
+            int bananas = (low + high) / 2;
+            
+            int minHours = calMinHours(bananas, arr);
+            
+            if(minHours <= k)
+            {
+                answer = bananas;
+                high = bananas - 1;
+            }
+            else
+                low = bananas + 1;
+        }
+        
+        return answer;
+    }
+    
+    public int calMinHours(int bananas, int[] arr)
+    {
+        int minHours = 0;
+        
+        for(int i = 0; i < arr.length; i++)
+        {
+            minHours += Math.ceil((double) arr[i] / bananas);
+        }
+        
+        return minHours;
+    }
+}
