@@ -1,0 +1,250 @@
+// Brute Force
+// Time: O((maxHeight - minHeight) * n)
+// Space: O(1)
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+class Solution {
+    public int minCost(int[] heights, int[] cost) {
+        // code here
+        int n = cost.length;
+
+        int minEle = heights[0];
+        int maxEle = heights[0];
+        
+        long answer = Long.MAX_VALUE;
+        
+        for(int i = 1; i < n; i++)
+        {
+            minEle = Math.min(minEle, heights[i]);
+            maxEle = Math.max(maxEle, heights[i]);
+        }
+        
+        for(int h = minEle; h <= maxEle; h++)
+        {
+            long currCost = 0L;
+            
+            for(int i = 0; i < n; i++)
+            {
+                currCost += Math.abs(heights[i] - h) * cost[i];
+            }
+            
+            answer = Math.min(currCost, answer);
+        }
+        
+        return (int) answer;
+    }
+}
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O(n * log(maxHeight - minHeight))
+// Space: O(1)
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+/*
+ * Equalize the Towers – Binary Search on Convex Cost Function
+ *
+ * ------------------------------------------------------------
+ * 🧠 Intuition:
+ * ------------------------------------------------------------
+ * We are asked to make all towers equal in height at minimum cost.
+ * Changing height of tower i by 1 unit costs cost[i].
+ *
+ * If we choose a target height H, the total cost becomes:
+ *
+ *      f(H) = Σ (cost[i] * |heights[i] - H|)
+ *
+ * This is a weighted sum of absolute differences.
+ *
+ * ------------------------------------------------------------
+ * 📈 Why Does the Cost Form a V-Shape?
+ * ------------------------------------------------------------
+ * When H is very small:
+ *    - Most towers are taller than H.
+ *    - We must reduce many towers.
+ *    - Total cost is high.
+ *
+ * When H is very large:
+ *    - Most towers are shorter than H.
+ *    - We must increase many towers.
+ *    - Total cost is high.
+ *
+ * As we move H from minimum height toward a balanced value:
+ *    - Some towers need less adjustment.
+ *    - Total cost decreases.
+ *
+ * At an optimal point:
+ *    - The cost becomes minimum.
+ *
+ * After crossing that point:
+ *    - Adjustments increase again.
+ *    - Total cost increases.
+ *
+ * Therefore:
+ *      The function f(H) first decreases,
+ *      reaches a minimum,
+ *      then increases.
+ *
+ * This creates a convex (V-shaped) curve.
+ *
+ * Convex property:
+ *      There is only ONE global minimum.
+ *
+ * ------------------------------------------------------------
+ * 💡 Key Insight:
+ * ------------------------------------------------------------
+ * Since f(H) is convex,
+ * we do NOT need to check every possible height.
+ *
+ * Instead, we can apply Binary Search on the answer space.
+ *
+ * ------------------------------------------------------------
+ * 🚀 Why Binary Search Works Here?
+ * ------------------------------------------------------------
+ * In a convex function:
+ *    - If we are on the left of minimum → slope is negative (decreasing).
+ *    - If we are on the right of minimum → slope is positive (increasing).
+ *
+ * So by comparing:
+ *      f(mid-1), f(mid), f(mid+1)
+ *
+ * We can determine:
+ *
+ * 1) If f(mid) is smaller than both neighbors:
+ *        → mid is the minimum.
+ *
+ * 2) If f(mid+1) < f(mid):
+ *        → We are in decreasing region.
+ *        → Move right (low = mid + 1).
+ *
+ * 3) If f(mid-1) < f(mid):
+ *        → We are in increasing region.
+ *        → Move left (high = mid - 1).
+ *
+ * This guarantees convergence to the global minimum.
+ *
+ * ------------------------------------------------------------
+ * 📋 Step-by-Step Approach:
+ * ------------------------------------------------------------
+ * 1) Find minimum and maximum height in heights[].
+ *    This defines the search space.
+ *
+ * 2) Apply Binary Search between [minHeight, maxHeight].
+ *
+ * 3) For each mid:
+ *      Compute:
+ *          costLeft  = findCost(mid - 1)
+ *          costMid   = findCost(mid)
+ *          costRight = findCost(mid + 1)
+ *
+ * 4) Based on comparison:
+ *
+ *      if costMid <= costLeft AND costMid <= costRight:
+ *             return costMid  (minimum found)
+ *
+ *      else if costRight < costMid:
+ *             low = mid + 1
+ *
+ *      else:
+ *             high = mid - 1
+ *
+ * 5) Continue until low > high.
+ *
+ * ------------------------------------------------------------
+ * ⏱ Time Complexity:
+ * ------------------------------------------------------------
+ * Let:
+ *    N = number of towers
+ *    R = maxHeight - minHeight
+ *
+ * Each cost computation takes O(N).
+ * Binary search runs log2(R) times.
+ *
+ * Total Time:
+ *      O(N × log(R))
+ *
+ * Space:
+ *      O(1)
+ *
+ * ------------------------------------------------------------
+ * 🎯 Interview Insight:
+ * ------------------------------------------------------------
+ * This problem is actually minimizing:
+ *
+ *      Σ (weight × absolute difference)
+ *
+ * The optimal point is theoretically the Weighted Median.
+ * Binary search works because the cost function is convex.
+ *
+ */
+
+// \               /
+//  \             /
+//   \           /
+//    \         /
+//     \       /
+//      \     /
+//       \   /
+//        \ /
+//         V
+
+class Solution {
+    public int minCost(int[] heights, int[] cost) {
+        // code here
+        int n = cost.length;
+
+        int minEle = heights[0];
+        int maxEle = heights[0];
+        
+        int answer = 0;
+        
+        for(int i = 1; i < n; i++)
+        {
+            minEle = Math.min(minEle, heights[i]);
+            maxEle = Math.max(maxEle, heights[i]);
+        }
+        
+        int low = minEle;
+        int high = maxEle;
+        
+        while(low <= high)
+        {
+            int mid = (low + high) / 2;
+            
+            int costLeft = findCost(mid - 1, heights, cost);
+            int costMid = findCost(mid, heights, cost);
+            int costRight = findCost(mid + 1, heights, cost);
+            
+            // costMid <= costLeft && costMid <= costRight (valley point hai, bottom point hai)
+            if(costMid <= costLeft && costMid <= costRight)
+            {
+                answer = costMid;
+                break;
+            } // left slope
+            else if(costMid <= costLeft && costMid >= costRight)
+            {
+                low = mid + 1;
+            } // right slope
+            else if(costLeft <= costMid && costMid <= costRight)
+            {
+                high = mid - 1;
+            }
+            
+        }
+        
+        return answer;
+    }
+    
+    public int findCost(int targetHeight, int[] heights, int[] cost)
+    {
+        int totalCost = 0;
+        
+        for(int i = 0; i < cost.length; i++)
+        {
+            totalCost += Math.abs(heights[i] - targetHeight) * cost[i];
+        }
+        
+        return totalCost;
+    }
+    
+}
