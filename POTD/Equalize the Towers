@@ -1,0 +1,43 @@
+// Brute Force
+// Time: O((maxHeight - minHeight) * n)
+// Space: O(1)
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+class Solution {
+    public int minCost(int[] heights, int[] cost) {
+        // code here
+        int n = cost.length;
+
+        int minEle = heights[0];
+        int maxEle = heights[0];
+        
+        long answer = Long.MAX_VALUE;
+        
+        for(int i = 1; i < n; i++)
+        {
+            minEle = Math.min(minEle, heights[i]);
+            maxEle = Math.max(maxEle, heights[i]);
+        }
+        
+        for(int h = minEle; h <= maxEle; h++)
+        {
+            long currCost = 0L;
+            
+            for(int i = 0; i < n; i++)
+            {
+                currCost += Math.abs(heights[i] - h) * cost[i];
+            }
+            
+            answer = Math.min(currCost, answer);
+        }
+        
+        return (int) answer;
+    }
+}
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+// Optimal Approach
+// Time: O()
+// Space: O()
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
