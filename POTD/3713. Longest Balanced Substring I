@@ -1,3 +1,43 @@
+// Brute Force
+// Time: O(n²)
+// Space: O(26) ~ O(1)
+----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------
+/**
+ * Problem: 3713. Longest Balanced Substring I
+ *
+ * 💡 Intuition (Soch kya hai?)
+ * Humein string ka sabse lamba substring find karna hai jisme:
+ * 👉 Jo bhi characters present ho us substring mein,
+ * 👉 Un sabki frequency exactly same ho.
+ *
+ * Example:
+ * "aabb" ✔ (a=2, b=2 → balanced)
+ * "aabbb" ❌ (a=2, b=3 → not balanced)
+ *
+ * --------------------------------------------------------
+ *
+ * 🧠 Approach (Brute Force - All Substrings Check karna)
+ *
+ * 1. Har possible starting index 'i' se substring banana start karte hain.
+ * 2. Ek frequency array (size 26) maintain karte hain jo har character ka count store karega.
+ * 3. Har ending index 'j' tak substring extend karte hain.
+ * 4. Har step par check karte hain ki:
+ *      - Jo bhi characters aaye hain unki frequency equal hai ya nahi.
+ * 5. Agar balanced hai → max length update kar dete hain.
+ *
+ * --------------------------------------------------------
+ *
+ * ⚙️ Kaise check ho raha hai balanced?
+ *
+ * checkBalancedFreq():
+ * - Pehle non-zero frequency ko reference bana lete hain.
+ * - Fir baaki sab non-zero frequencies compare karte hain.
+ * - Agar sab same hai → substring balanced.
+ * - Agar ek bhi alag mila → false.
+ *
+ * --------------------------------------------------------
+ */
 class Solution {
     public int longestBalanced(String s) {
         int n = s.length();
