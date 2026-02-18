@@ -1,0 +1,167 @@
+// Brute Force
+// Time: O(n²)
+// Space: O(1)
+---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+class Solution {
+    static int inversionCount(int arr[]) {
+        // Code Here
+        int n = arr.length;
+        
+        int count = 0;
+        
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = i + 1; j < n; j++)
+            {
+                if(arr[i] > arr[j])
+                    count++;
+            }
+        }
+        
+        return count;
+    }
+}
+---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+
+// Optimal Approach
+// Time: O(n logn)
+// Space: O(n)
+---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+/*
+ * Approach: Count Inversions using Modified Merge Sort (O(n log n))
+ *
+ * Problem Samajh:
+ * Inversion ka matlab hai aise pairs (i, j) jahan:
+ * i < j  &&  arr[i] > arr[j]
+ *
+ * Brute Force Approach:
+ * - Har element ke liye uske right side check karo.
+ * - Time Complexity: O(n^2)
+ * - n = 10^5 ho sakta hai, to O(n^2) TLE dega.
+ *
+ * So humein better approach chahiye -> O(n log n)
+ *
+ * Idea Kaise Aaya?
+ * Dhyaan do:
+ * Inversion basically tab hota hai jab ek bada element
+ * chhote element se pehle aa jata hai.
+ *
+ * Ye exactly wahi condition hai jo sorting ke time detect hoti hai.
+ *
+ * Isliye hum Merge Sort use karte hain,
+ * kyunki:
+ * 1. Ye divide and conquer approach follow karta hai
+ * 2. Left aur Right halves already sorted hote hain
+ * 3. Merge step ke time hum efficiently count kar sakte hain inversions
+ *
+ * Key Insight (Merge Step Magic):
+ *
+ * Jab merge karte waqt:
+ *
+ * left[i] <= right[j]
+ * -> Normal merge, koi inversion nahi
+ *
+ * But agar:
+ * left[i] > right[j]
+ *
+ * To iska matlab:
+ * - left[i] right[j] se bada hai
+ * - Aur kyunki left sorted hai,
+ *   left[i+1], left[i+2] ... sab bhi right[j] se bade honge
+ *
+ * Isliye ek-ek check karne ki zarurat nahi,
+ * directly count add kar dete hain:
+ *
+ * inversions += (number of remaining elements in left half)
+ *
+ * Yahi optimization brute force ko O(n log n) bana deta hai.
+ *
+ * Total Inversions =
+ *     inversions from left half +
+ *     inversions from right half +
+ *     inversions during merge
+ *
+ *
+ * Why It Works?
+ * Kyunki har inversion ya to:
+ * - Left half me hoga
+ * - Right half me hoga
+ * - Ya cross half (merge step) me hoga
+ *
+ * Aur merge step me sorted nature ka fayda uthake
+ * hum ek hi step me multiple inversions count kar lete hain.
+ *
+ * Isliye ye approach optimal aur interview-friendly hai.
+ */
+class Solution {
+    static int inversionCount(int arr[]) {
+        // Code Here
+        int n = arr.length;
+        
+        return mergeSort(0, n - 1, arr);
+    }
+    
+    
+    public static int mergeSort(int low, int high, int[] arr)
+    {
+        int count = 0;
+        
+        if(low < high)
+        {
+            int mid = (low + high) / 2;
+            
+            count += mergeSort(low, mid, arr);
+            count += mergeSort(mid + 1, high, arr);
+            count += merge(low, mid, high, arr);
+        }
+        
+        return count;
+    }
+    
+    public static int merge(int low, int mid, int high, int[] arr)
+    {
+        int count = 0;
+        
+        int[] tempArr = new int[high - low + 1];
+        
+        int i = low;
+        int j = mid + 1;
+        int k = 0;
+        
+        while(i <= mid && j <= high)
+        {
+            if(arr[i] <= arr[j])
+            {
+                tempArr[k++] = arr[i];
+                i++;
+            }
+            else
+            {
+                tempArr[k++] = arr[j];
+                count += mid - i + 1; 
+                j++;
+            }
+        }
+        
+        while(i <= mid)
+        {
+            tempArr[k++] = arr[i++];
+        }
+        
+        while(j <= high)
+        {
+            tempArr[k++] = arr[j++];
+        }
+        
+        
+        for (k = 0; k < tempArr.length; k++)
+        {
+            arr[low + k] = tempArr[k];
+        }
+        
+        return count;
+    }
+}
