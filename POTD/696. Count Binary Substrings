@@ -1,0 +1,110 @@
+// Time: O(n)
+// Space: O(1)
+-------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------
+/**
+ *
+ * Problem samjho simple words me:
+ * Hume aise substrings count karne hai jisme:
+ * 1) 0 aur 1 ki count equal ho
+ * 2) Saare 0 ek saath grouped ho aur saare 1 ek saath grouped ho
+ *
+ * Example:
+ * "0011" ✅ valid (00 ek group, 11 ek group)
+ * "0101" ❌ invalid (alternating hai, grouped nahi hai)
+ *
+ * ------------------------------------------------------------
+ * 💡 OBSERVATION (Yahi se idea aaya!)
+ *
+ * Agar hum string ko dhyaan se dekhe:
+ * "00110011"
+ *
+ * Ye actually groups me toot sakti hai:
+ * "00" | "11" | "00" | "11"
+ *
+ * Matlab pattern kuch aisa hota hai:
+ * 0 ka group -> 1 ka group -> 0 ka group -> 1 ka group
+ *
+ * Ab key observation:
+ * Valid substring tabhi banegi jab:
+ * Ek 0 ka group aur uske just next 1 ka group (ya vice versa) ko use kare.
+ *
+ * Example:
+ * "00" aur "11"
+ *
+ * Dono ka length = 2
+ *
+ * Toh hum bana sakte hai:
+ * "01"
+ * "0011"
+ *
+ * Total possible substrings = min(length_of_group1, length_of_group2)
+ *
+ * Kyun min?
+ * Kyunki agar:
+ * 000 (3 times)
+ * 11 (2 times)
+ *
+ * Toh max equal pairing 2 hi ban sakti hai.
+ *
+ * ------------------------------------------------------------
+ * 🧠 STRATEGY:
+ *
+ * Hum poori string ko groups me sochenge.
+ *
+ * Hum maintain karenge:
+ * prevCount → previous group ka size
+ * currCount → current group ka size
+ *
+ * Jab bhi character change hoga:
+ * - current group khatam
+ * - answer me add karenge: min(prevCount, currCount)
+ * - prevCount = currCount
+ * - currCount reset = 1
+ *
+ * End me ek last baar add karna zaruri hai
+ * kyunki loop ke baad last group ke liye calculation nahi hua hota.
+ *
+ * ------------------------------------------------------------
+ * ⚡ Why This Works?
+ *
+ * Har valid substring exactly do adjacent groups se banti hai.
+ * Aur har adjacent group pair ke liye answer = min(size1, size2).
+ *
+ * Hum sirf group sizes track kar rahe hai.
+ * Substrings explicitly generate nahi kar rahe.
+ *
+ * ------------------------------------------------------------
+ * 🚀 Intuition in One Line:
+ *
+ * "Binary substrings ka count bas adjacent 0-1 groups ke minimum size ka sum hota hai."
+ *
+ */
+
+class Solution {
+    public int countBinarySubstrings(String s) {
+        int n = s.length();
+
+        int count = 0;
+        int prevCount = 0;
+        int currCount = 1;
+
+        for(int i = 1; i < n; i++)
+        {
+            if(s.charAt(i) == s.charAt(i - 1))
+            {
+                currCount++;
+            }
+            else
+            {
+                count += Math.min(prevCount, currCount);
+                prevCount = currCount;
+                currCount = 1;
+            }
+        }
+
+        count += Math.min(prevCount, currCount);
+
+        return count;
+    }
+}
