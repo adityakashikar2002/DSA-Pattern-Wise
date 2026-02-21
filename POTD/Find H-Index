@@ -1,34 +1,29 @@
-Brute Approach
-----------------------------------------------------
-// Time: O(n²) (nested loop after sorting O(n log n), overall dominated by O(n²))
-// Space: O(1) (ignoring sorting space)
-----------------------------------------------------
-
+// Brute Force
+// Time: O(n²)
+// Space: O(1)
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 class Solution {
     public int hIndex(int[] citations) {
-        // code here
-        
         int n = citations.length;
+        int maxH = 0;
         
         Arrays.sort(citations);
-        int ans = 0;
         
-        for(int i = n - 1; i >=0; i--)
-        {
-            int curr = citations[i];
+        for(int h = 1; h <= n; h++) {
             int count = 0;
             
-            for(int j = 0; j < n; j++)
+            for(int j = 0; j < n; j++) 
             {
-                if(citations[j] >= curr)
+                if(citations[j] >= h)
                     count++;
             }
             
-            if(count >= curr)
-                ans = ans = Math.max(ans, curr);
+            if(count >= h)
+                maxH = h;
         }
         
-        return ans;
+        return maxH;
     }
 }
 
