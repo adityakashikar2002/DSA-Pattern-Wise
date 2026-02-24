@@ -1,0 +1,146 @@
+// Brute Approach
+// Time: O(n²)
+// Space: O(1)
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+class Solution {
+    public int equalSumSpan(int[] a1, int[] a2) {
+        // code here
+        int n = a1.length;
+        
+        int maxLen = 0;
+        
+        for(int i = 0; i < n; i++)
+        {
+            int sum1 = 0;
+            int sum2 = 0;
+            
+            for(int j = i; j < n; j++)
+            {
+                sum1 += a1[j];
+                sum2 += a2[j];
+                
+                if(sum1 == sum2)
+                {
+                    maxLen = Math.max(maxLen, j - i + 1);
+                }
+                    
+            }
+        }
+        
+        return maxLen;
+    }
+}
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+// Optimal Approach - Using Difference Array and PrefixSum
+// Time: O(n)
+// Space: O(n)
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+/**
+ * 🔥 Longest Span with Equal Sum in Two Binary Arrays 🔥
+ *
+ * Problem Samajho:
+ * Hume do binary arrays diye gaye hain (0 aur 1 wale),
+ * aur hume longest span (i se j tak) find karna hai
+ * jaha dono arrays ka sum equal ho.
+ *
+ * ---------------------------------------------------------
+ * 🧠 CORE IDEA (Sabse Important Part)
+ *
+ * Directly dono arrays ka sum compare karna mushkil lag sakta hai.
+ * But agar hum thoda mathematically soche:
+ *
+ *   sum(a1[i..j]) == sum(a2[i..j])
+ *
+ * Iska matlab:
+ *
+ *   sum(a1[i..j]) - sum(a2[i..j]) == 0
+ *
+ * Ab agar hum ek naya difference bana dein:
+ *
+ *   diff[i] = a1[i] - a2[i]
+ *
+ * Toh problem convert ho jaati hai:
+ *
+ *   Longest subarray in diff[] jiska sum = 0
+ *
+ * 💥 BOOM! Ye ek classic problem hai:
+ * "Longest Subarray with Sum 0"
+ *
+ * ---------------------------------------------------------
+ * ⚙️ Approach (Step by Step Thinking)
+ *
+ * 1️⃣ Har index pe diff calculate karte chalo:
+ *       sum += (a1[i] - a2[i])
+ *
+ * 2️⃣ Prefix Sum maintain karo.
+ *
+ * 3️⃣ Ek HashMap use karo jo store kare:
+ *       prefixSum -> first index jaha ye aaya
+ *
+ * 4️⃣ Agar kabhi prefixSum dobara mile,
+ *    iska matlab beech ka subarray ka sum 0 hai.
+ *
+ *       length = currentIndex - firstOccurrenceIndex
+ *
+ * 5️⃣ Agar prefixSum == 0 ho,
+ *    matlab 0 se i tak ka pura span valid hai.
+ *
+ * ---------------------------------------------------------
+ * 🤯 Important Insight:
+ *
+ * Hum map me sirf FIRST occurrence store karte hain.
+ * Kyunki longest length chahiye,
+ * aur pehli baar aane wala index hi maximum distance dega.
+ *
+ * ---------------------------------------------------------
+ * ⏱ Time Complexity:
+ * O(n)  -> Sirf ek pass kar rahe hain array pe.
+ *
+ * 📦 Space Complexity:
+ * O(n)  -> HashMap me prefix sums store ho sakte hain.
+ *
+ * ---------------------------------------------------------
+ * 🎯 Final Mental Shortcut:
+ *
+ * Do arrays equal sum span?
+ *   → Difference lo.
+ *   → Zero sum subarray find karo.
+ *
+ * Bas itna yaad rakhna hai 💯
+ */
+class Solution {
+    public int equalSumSpan(int[] a1, int[] a2) {
+        // code here
+        int n = a1.length;
+        
+        int maxLen = 0;
+        
+        int[] diffArr = new int[n];
+        
+        for(int i = 0; i < n; i++)
+        {
+            diffArr[i] = a1[i] - a2[i];
+        }
+        
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int sum = 0;
+        
+        for(int i = 0; i < n; i++)
+        {
+            sum += diffArr[i];
+            
+            if(sum == 0)
+                maxLen = Math.max(maxLen, i + 1);
+            
+            if(!map.containsKey(sum))
+                map.put(sum, i);
+            else
+                maxLen = Math.max(maxLen, i - map.get(sum));
+        }
+        
+        return maxLen;
+    }
+}
