@@ -1,0 +1,43 @@
+// Approach 1 : Using XOR Prefix Array
+// Time: O(n)
+// Space: O(n)
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+class Solution {
+    public long subarrayXor(int arr[], int k) {
+        // code here
+        int n = arr.length;
+        int count = 0;
+        
+        int[] arrXOR = new int[n];
+        
+        arrXOR[0] = arr[0];
+        
+        for(int i = 1; i < n; i++)
+        {
+            arrXOR[i] = arrXOR[i - 1] ^ arr[i];
+        }
+        
+        HashMap<Integer, Integer> map = new HashMap<>();
+        
+        for(int i = 0; i < n; i++)
+        {
+            if(arrXOR[i] == k)
+                count++;
+            
+            if(map.containsKey(arrXOR[i] ^ k))
+                count += map.get(arrXOR[i] ^ k);
+            
+            map.put(arrXOR[i], map.getOrDefault(arrXOR[i], 0) + 1);
+        }
+        
+        return count;
+    }
+}
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+// Approach 2 : Without Using XOR Prefix Array
+// Time: O(n)
+// Space: O(n)
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
