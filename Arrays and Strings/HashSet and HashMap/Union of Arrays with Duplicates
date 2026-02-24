@@ -1,0 +1,26 @@
+// Time: O(n + m)
+// Space: O(n + m)
+-------------------------------------------------------------------------------------------
+class Solution {
+    public static ArrayList<Integer> findUnion(int[] a, int[] b) {
+        // code here
+        
+        Set<Integer> set = new HashSet<>();
+
+        
+        for(int ele : a)
+            set.add(ele);
+            
+        for(int ele : b)
+            set.add(ele);    
+        
+        
+            
+        ArrayList<Integer> res = new ArrayList<>();
+        
+        res.addAll(set);
+    
+        
+        return res;
+    }
+}
