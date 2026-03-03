@@ -31,6 +31,42 @@ class Solution {
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
 // Optimal Approach
-
+// Time: O(n)
+// Space: O(1)
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
+/*
+    simple idea hai 
+    sliding window use kro,
+    
+    ek hashmap me frequency store kro elements ki,
+    taki jab shrink krenge, tab jiska frequency-count zero hoga
+    usko remove kr denge aur phir uss window me 2 distinct ele bachenge
+*/
+class Solution {
+    public int totalElements(int[] arr) {
+        // code here
+        int n = arr.length;
+        
+        int maxLen = 0;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        
+        int l = 0;
+        for(int r = 0; r < n; r++)
+        {
+            map.put(arr[r], map.getOrDefault(arr[r], 0) + 1);
+            
+            while(map.size() > 2)
+            {
+                map.put(arr[l], map.get(arr[l]) - 1);
+                if(map.get(arr[l]) == 0)
+                    map.remove(arr[l]);
+                l++;
+            }
+            
+            maxLen = Math.max(maxLen, r - l + 1);
+            
+        }
+        return maxLen;
+    }
+}
