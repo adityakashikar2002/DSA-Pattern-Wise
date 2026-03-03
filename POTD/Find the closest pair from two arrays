@@ -34,7 +34,153 @@ class Solution {
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
 // Optimal Approach
-// Time: O()
-// Space: O()
+// Time: O(n + m)
+// Space: O(1)
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
+/*
+ *
+ * ------------------------------------------------------------
+ * 🧠 INTUITION (Soch Kaise Develop Hui?)
+ * ------------------------------------------------------------
+ *
+ * Sabse pehle brute force dimag me aata hai:
+ * Har element of arr1 ko arr2 ke har element ke saath pair karke
+ * sum nikal lo aur minimum difference track karo.
+ *
+ * But ye O(n * m) ho gaya.
+ *
+ * Phir question me ek GOLDEN hint mila:
+ * 👉 Dono arrays SORTED hain.
+ *
+ * Sorted arrays ka matlab hota hai:
+ * - Left → right jaoge to values badhengi
+ * - Right → left jaoge to values ghatengi
+ *
+ * Ab socha:
+ * Agar sum chhota ho x se → mujhe sum badhana hai
+ * Agar sum bada ho x se → mujhe sum kam karna hai
+ *
+ * Matlab mujhe intelligently move karna hai,
+ * random combinations try nahi karne.
+ *
+ * ------------------------------------------------------------
+ * 🎯 APPROACH (Two Pointer Strategy)
+ * ------------------------------------------------------------
+ *
+ * Step 1:
+ * Ek pointer arr1 ke starting pe (smallest element)
+ * Ek pointer arr2 ke ending pe (largest element)
+ *
+ * Why?
+ * Kyuki smallest + largest se balanced start milta hai.
+ *
+ * Step 2:
+ * Har iteration me:
+ *   sum = arr1[i] + arr2[j]
+ *   diff = |x - sum|
+ *
+ * Step 3:
+ * Agar ye diff ab tak ke best diff se chhota hai,
+ * to current pair ko store kar lo.
+ *
+ * Step 4:
+ * Ab decision lena hai pointer move ka:
+ *
+ *   Agar sum > x
+ *      → sum zyada hai
+ *      → hume sum kam karna hai
+ *      → arr2 me left move karo (j--)
+ *
+ *   Agar sum < x
+ *      → sum chhota hai
+ *      → hume sum badhana hai
+ *      → arr1 me right move karo (i++)
+ *
+ * Step 5:
+ * Jab tak i < n and j >= 0
+ * tab tak process repeat karo.
+ *
+ * ------------------------------------------------------------
+ * 💡 WHY THIS WORKS?
+ * ------------------------------------------------------------
+ *
+ * Hum saare combinations try nahi kar rahe.
+ * Hum ek diagonal path follow kar rahe hain.
+ *
+ * Har step pe:
+ * - Ya sum badh raha hai
+ * - Ya sum ghat raha hai
+ *
+ * Matlab hum har move me target ke kareeb ja rahe hain.
+ *
+ * Isliye ye greedy + two pointer approach kaam karta hai.
+ *
+ * ------------------------------------------------------------
+ * ⏱ TIME COMPLEXITY
+ * ------------------------------------------------------------
+ *
+ * Har pointer maximum ek hi direction me move karega.
+ * i → 0 se n tak
+ * j → m-1 se 0 tak
+ *
+ * Isliye total steps = O(n + m)
+ *
+ * Brute force tha O(n * m)
+ * Ye ho gaya linear traversal.
+ *
+ * ------------------------------------------------------------
+ * 🎓 KEY TAKEAWAY
+ * ------------------------------------------------------------
+ *
+ * Jab bhi:
+ * 1. Do sorted arrays ho
+ * 2. Sum ya difference minimize karna ho
+ *
+ * Turant two pointer sochna start karo.
+ *
+ * Ye pattern interviews me bahut baar aata hai.
+ */
+class Solution {
+    public static ArrayList<Integer> findClosestPair(int arr1[], int arr2[], int x) {
+        // code here
+        int n = arr1.length;
+        int m = arr2.length;
+        
+        int closest = Integer.MAX_VALUE;
+        
+        ArrayList<Integer> res = new ArrayList<>();
+        
+        int i = 0;
+        int j = m - 1;
+        
+        while(i < n && j >= 0)
+        {
+            int sum = arr1[i] + arr2[j];
+            
+            if(sum == x)
+                return new ArrayList<>(Arrays.asList(arr1[i], arr2[j]));
+            
+            int diff = Math.abs(x - sum);
+            
+            if(diff < closest)
+            {
+                closest = diff;
+                res = new ArrayList<>(Arrays.asList(arr1[i], arr2[j]));
+            }
+            
+            if(sum > x)
+            {
+                j--;
+            }
+            else
+            {
+                i++;
+            }
+            
+            
+        }
+        
+        return res;
+    }
+}
