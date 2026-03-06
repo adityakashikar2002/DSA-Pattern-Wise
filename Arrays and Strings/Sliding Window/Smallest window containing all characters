@@ -1,0 +1,79 @@
+// Brute Force
+// Time: O(pLen + sLen²) ~ O(sLen²)
+// Space: O(pLen) or O(1) [a-z] constant (26)
+---------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
+/*
+Brute Force Intuition:
+
+Hume s ke har possible starting index se substring banana hai aur check karna hai ki
+kya usme p ke saare characters (including duplicates) present hain.
+
+Steps simple hain:
+
+1) p ke characters ka frequency map bana lo.
+
+2) s ke har index i ko starting point maan lo.
+
+3) i se aage j chalao aur substring expand karo.
+
+4) Jaise hi substring me p ke saare characters mil jaye, window valid ho gayi.
+
+5) Uska length check karo aur agar chhota hai to answer update karo.
+*/
+
+class Solution {
+    public static String minWindow(String s, String p) {
+        // code here
+        int sLen = s.length();
+        
+        int startIndex = -1;
+        int minLen = Integer.MAX_VALUE;
+        
+        HashMap<Character, Integer> map = new HashMap<>();
+        
+        for(char pChar : p.toCharArray())
+        {
+            map.put(pChar, map.getOrDefault(pChar, 0) + 1);    
+        }
+        
+        for(int i = 0; i < sLen; i++)
+        {
+            HashMap<Character, Integer> seen = new HashMap<>(map);
+            
+            for(int j = i; j < sLen; j++)
+            {
+                char ch = s.charAt(j);
+                
+                if(seen.containsKey(ch))
+                {
+                    seen.put(ch, seen.get(ch) - 1);
+                    
+                    if(seen.get(ch) == 0)
+                        seen.remove(ch);
+                }
+                
+                if(seen.size() == 0)
+                {
+                    int len = j - i + 1;
+                    
+                    if(len< minLen)
+                    {
+                        minLen = len;
+                        startIndex = i;
+                    } 
+                    
+                    break;
+                }
+            }
+            
+        }
+        
+        return startIndex == -1 ? "" : s.substring(startIndex, startIndex + minLen);
+    }
+}
+---------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
