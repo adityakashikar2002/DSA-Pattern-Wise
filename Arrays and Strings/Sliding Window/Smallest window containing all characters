@@ -233,3 +233,73 @@ class Solution {
         return startIndex == -1 ? "" : s.substring(startIndex, startIndex + minLen);
     }
 }
+---------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
+// Optimal Approach 2 - Using Freq Arrays (Faster than HashMap)
+// Time: O(sLen)
+// Space: O(1)
+---------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
+class Solution {
+    public static String minWindow(String s, String p) {
+        // code here
+        int n = s.length();
+        
+        int minLen = Integer.MAX_VALUE;
+        int startIndex = -1;
+        
+        int[] pMap = new int[26];
+        
+        int neededChars = 0;
+        for(char pChar : p.toCharArray())
+        {
+            if(pMap[pChar - 'a'] == 0)
+                neededChars++;
+                
+            pMap[pChar - 'a']++;
+        }
+        
+        int[] wMap = new int[26];
+        
+        int formedChars = 0;
+        
+        int l = 0;
+        for(int r = 0; r < n; r++)
+        {
+            int ch = s.charAt(r) - 'a';
+            
+            if(pMap[ch] > 0)
+            {
+                wMap[ch]++;
+                
+                if(pMap[ch] == wMap[ch])
+                {
+                    formedChars++;
+                }    
+            }
+            
+            while(l <= r && formedChars == neededChars)
+            {
+                if(r - l + 1 < minLen)
+                {
+                    minLen = r - l + 1;
+                    startIndex = l;
+                }
+                
+                int leftChar = s.charAt(l) - 'a';
+                
+                if(pMap[leftChar] > 0)
+                {
+                    wMap[leftChar]--;
+                    
+                    if(wMap[leftChar] < pMap[leftChar])
+                        formedChars--;
+                }
+                
+                l++;
+            }
+        }
+        
+        return startIndex == -1 ? "" : s.substring(startIndex, startIndex + minLen);
+    }
+}
