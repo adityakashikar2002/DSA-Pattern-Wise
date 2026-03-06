@@ -74,6 +74,162 @@ class Solution {
 }
 ---------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------
+// Optimal Approach 1 - Using Freq HashMaps
+// Time: O(sLen)
+// Space: O(k) or O(1)
+---------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
+/*
+Intuition (Sliding Window Thinking):
 
----------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------
+Problem bol raha hai ki hume s ka smallest substring find karna hai
+jisme p ke saare characters present ho (including duplicates).
+
+Brute force approach me hum har index se substring bana ke check kar sakte the,
+lekin wo O(N²) ho jata hai jo large constraints (10^6) me slow hai.
+
+Observation:
+
+Agar ek window me p ke saare characters mil gaye,
+to shayad us window ko left se shrink karke aur chhota window mil sakta hai.
+
+Isliye hum Sliding Window technique use karte hain.
+
+Idea simple hai:
+
+1) Right pointer (r) se window expand karte jao.
+2) Jaise hi window valid ho jaye (p ke saare characters mil jaye),
+   tab left pointer (l) se window shrink karna start karo.
+3) Shrink karte waqt minimum window update karte jao.
+
+Is process me har character maximum 2 baar visit hota hai
+(isliye overall time complexity O(N) ho jati hai).
+
+
+Approach:
+
+Step 1:
+p ke characters ka frequency map banate hain (p_map).
+Ye batata hai ki har character kitni baar required hai.
+
+Example:
+p = "aabc"
+
+p_map:
+a → 2
+b → 1
+c → 1
+
+
+Step 2:
+Sliding window maintain karne ke liye ek window_map rakhte hain
+jo current window me characters ka count store karta hai.
+
+
+Step 3:
+Do pointers use karte hain:
+
+l → window ka left boundary
+r → window ka right boundary
+
+
+Step 4:
+Right pointer se window expand karte hain.
+
+Agar current character p_map me exist karta hai,
+to uska count window_map me increase kar dete hain.
+
+Agar kisi character ka frequency window_map me exactly
+p_map ke barabar ho jata hai,
+to iska matlab wo character requirement satisfy kar raha hai.
+
+Is case me formedChars++ kar dete hain.
+
+
+Step 5:
+Jab formedChars == neededChars ho jata hai
+(yaani p ke saare unique characters ki required frequency mil gayi),
+to window valid hai.
+
+Ab hum window shrink karte hain taaki smallest window mil sake.
+
+
+Step 6:
+Shrinking phase me:
+
+1) Current window length check karte hain aur agar chhoti ho to answer update karte hain.
+2) Left character remove karte hain.
+3) Agar removal ke baad kisi character ki frequency required se kam ho gayi,
+   to formedChars-- kar dete hain.
+4) Left pointer aage move kar dete hain.
+
+
+Step 7:
+Ye process tab tak chalta hai jab tak r pura string traverse nahi kar leta.
+
+Key Sliding Window Insight:
+
+Expand window until it becomes valid,
+then shrink it as much as possible while keeping it valid.
+
+This ensures we always capture the minimum valid window.
+*/
+
+class Solution {
+    public static String minWindow(String s, String p) {
+        // code here
+        int sLen = s.length();
+        
+        int startIndex = -1;
+        int minLen = Integer.MAX_VALUE;
+        
+        HashMap<Character, Integer> p_map = new HashMap<>();
+        
+        for(char pChar : p.toCharArray())
+        {
+            p_map.put(pChar, p_map.getOrDefault(pChar, 0) + 1);    
+        }
+        
+        HashMap<Character, Integer> window_map = new HashMap<>();
+        int formedChars = 0;
+        int neededChars = p_map.size();
+        
+        int l = 0;
+        
+        for(int r = 0; r < sLen; r++)
+        {
+            char ch = s.charAt(r);
+            
+            if(p_map.containsKey(ch))
+            {
+                window_map.put(ch, window_map.getOrDefault(ch, 0) + 1);
+            
+                if(window_map.get(ch).intValue() == p_map.get(ch).intValue())
+                    formedChars++;
+            }        
+            
+            while(l <= r && formedChars == neededChars)
+            {
+                if(r - l + 1 < minLen)
+                {
+                    minLen = r - l + 1;
+                    startIndex = l;
+                }
+                
+                char leftChar = s.charAt(l);
+                
+                if(p_map.containsKey(leftChar))
+                {
+                    window_map.put(leftChar, window_map.get(leftChar) - 1);
+                    
+                    if(window_map.get(leftChar).intValue() < p_map.get(leftChar).intValue())
+                        formedChars--;
+                }
+                
+                l++;
+            }
+        }
+        
+        return startIndex == -1 ? "" : s.substring(startIndex, startIndex + minLen);
+    }
+}
